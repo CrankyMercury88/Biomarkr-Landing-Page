@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q-SENS · CBRN Host Response Simulator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #080c10;
+  --surface:  #0e1419;
+  --surface2: #141c24;
+  --border:   #1e2d3d;
+  --border2:  #2a3f55;
+  --text:     #d4e4f4;
+  --dim:      #5a7a96;
+  --accent:   #00d4ff;
+  --accent2:  #0090bb;
+
+  --il6:   #ff5c7a;
+  --il10:  #00d4ff;
+  --tnfa:  #ff9f45;
+  --ifng:  #00e5b0;
+  --il1b:  #b97aff;
+  --pct:   #f0c040;
+
+  --sep:  #4a9eff;
+  --bio:  #ff5c7a;
+  --rad:  #f0c040;
+  --chem: #00e5b0;
+
+  --mild:     #238636;
+  --moderate: #9e6a03;
+  --severe:   #da3633;
+
+  --mono: 'Space Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 48px 1fr;
+  overflow: hidden;
+}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 20px;
+}
+
+.logo {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.logo span { color: var(--dim); font-weight: 400; }
+
+.topbar-sep { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+
+.topbar-title {
+  font-size: 12px;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+}
+
+.topbar-pills { display: flex; gap: 6px; margin-left: auto; }
+
+.pill {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid;
+  letter-spacing: 0.03em;
+}
+.pill-sep  { color: var(--sep);  border-color: var(--sep);  background: rgba(74,158,255,0.08); }
+.pill-bio  { color: var(--bio);  border-color: var(--bio);  background: rgba(255,92,122,0.08); }
+.pill-rad  { color: var(--rad);  border-color: var(--rad);  background: rgba(240,192,64,0.08); }
+.pill-chem { color: var(--chem); border-color: var(--chem); background: rgba(0,229,176,0.08); }
+
+/* ── MAIN LAYOUT ─────────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr 176px;
+  overflow: hidden;
+}
+
+/* ── LEFT SIDEBAR ────────────────────────────────────── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-section {
+  border-bottom: 1px solid var(--border);
+  padding: 12px;
+}
+
+.section-hdr {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* Group tabs */
+.grp-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.grp-tab {
+  padding: 5px 0;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--dim);
+  text-align: center;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+}
+.grp-tab:hover { background: var(--surface2); color: var(--text); }
+.grp-tab.active[data-grp="sepsis"]  { border-color: var(--sep);  color: var(--sep);  background: rgba(74,158,255,0.1); }
+.grp-tab.active[data-grp="bio"]     { border-color: var(--bio);  color: var(--bio);  background: rgba(255,92,122,0.1); }
+.grp-tab.active[data-grp="rad"]     { border-color: var(--rad);  color: var(--rad);  background: rgba(240,192,64,0.1); }
+.grp-tab.active[data-grp="chem"]    { border-color: var(--chem); color: var(--chem); background: rgba(0,229,176,0.1); }
+
+/* Condition list */
+.cond-list { display: flex; flex-direction: column; gap: 3px; }
+
+.cond-item {
+  padding: 7px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: var(--surface2);
+  transition: all 0.15s;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.cond-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.cond-label { font-size: 12px; color: var(--dim); line-height: 1.35; }
+.cond-sub   { font-size: 10px; color: var(--dim); opacity: 0.6; margin-top: 1px; }
+
+.cond-item:hover { background: #1c2d3e; border-color: var(--border2); }
+.cond-item:hover .cond-label { color: var(--text); }
+
+.cond-item.active .cond-label { color: var(--text); font-weight: 500; }
+.cond-item.active[data-grp="sepsis"]  { border-color: var(--sep);  background: rgba(74,158,255,0.08); }
+.cond-item.active[data-grp="bio"]     { border-color: var(--bio);  background: rgba(255,92,122,0.08); }
+.cond-item.active[data-grp="rad"]     { border-color: var(--rad);  background: rgba(240,192,64,0.08); }
+.cond-item.active[data-grp="chem"]    { border-color: var(--chem); background: rgba(0,229,176,0.08); }
+
+/* Controls (sidebar bottom) */
+.controls { padding: 12px; display: flex; flex-direction: column; gap: 11px; flex: 1; overflow-y: auto; }
+
+.ctrl-row { display: flex; flex-direction: column; gap: 5px; }
+
+.ctrl-lbl {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ctrl-lbl span:first-child { font-size: 12px; color: var(--dim); }
+
+.ctrl-val {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: var(--border2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0,212,255,0.4);
+}
+
+/* Severity */
+.sev-row { display: flex; gap: 4px; }
+
+.sev-btn {
+  flex: 1;
+  padding: 5px 0;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--dim);
+  text-align: center;
+  transition: all 0.15s;
+  letter-spacing: 0.03em;
+}
+.sev-btn:hover { background: var(--surface2); color: var(--text); }
+.sev-btn.active.mild     { background: rgba(35,134,54,0.2);  color: #3fb950; border-color: #238636; }
+.sev-btn.active.moderate { background: rgba(158,106,3,0.2);  color: #e3b341; border-color: #9e6a03; }
+.sev-btn.active.severe   { background: rgba(218,54,51,0.2);  color: #f85149; border-color: #da3633; }
+
+/* Toggle */
+.toggle-row { display: flex; justify-content: space-between; align-items: center; }
+.toggle-lbl { font-size: 12px; color: var(--dim); }
+
+.tgl { display: flex; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+.tgl-btn {
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  color: var(--dim);
+  border: none;
+  transition: all 0.15s;
+}
+.tgl-btn.active { background: var(--accent2); color: #fff; }
+
+/* ── CENTER CONTENT ──────────────────────────────────── */
+.center {
+  display: grid;
+  grid-template-rows: 1fr 52px 90px;
+  overflow: hidden;
+  padding: 12px;
+  gap: 8px;
+  background: var(--bg);
+}
+
+.chart-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.chart-cond-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.chart-note {
+  font-size: 11px;
+  color: var(--dim);
+  font-style: italic;
+}
+
+canvas#mainChart { width: 100% !important; }
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--dim);
+}
+
+.legend-dot {
+  width: 10px; height: 3px;
+  border-radius: 2px;
+}
+
+/* Time control */
+.time-ctrl {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.time-lbl {
+  font-size: 11px;
+  color: var(--dim);
+  white-space: nowrap;
+  min-width: 110px;
+}
+
+.time-val {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+  min-width: 65px;
+}
+
+.time-ctrl input[type=range] { flex: 1; }
+
+/* Interpretation panel */
+.interp {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.interp-hdr {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.interp-body {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.disc-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+
+.disc-tag {
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: 1px solid;
+}
+.tag-high-pct    { color: #f0c040; border-color: rgba(240,192,64,0.4); background: rgba(240,192,64,0.08); }
+.tag-low-pct     { color: #00e5b0; border-color: rgba(0,229,176,0.4); background: rgba(0,229,176,0.08); }
+.tag-high-ifng   { color: #b97aff; border-color: rgba(185,122,255,0.4); background: rgba(185,122,255,0.08); }
+.tag-early-spike { color: #00d4ff; border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.08); }
+.tag-cytostorm   { color: #ff5c7a; border-color: rgba(255,92,122,0.4); background: rgba(255,92,122,0.08); }
+.tag-delayed     { color: #ff9f45; border-color: rgba(255,159,69,0.4); background: rgba(255,159,69,0.08); }
+.tag-no-infect   { color: #3fb950; border-color: rgba(63,185,80,0.4); background: rgba(63,185,80,0.08); }
+.tag-intracell   { color: #b97aff; border-color: rgba(185,122,255,0.4); background: rgba(185,122,255,0.08); }
+
+/* ── RIGHT PANEL ─────────────────────────────────────── */
+.right {
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 12px;
+  gap: 6px;
+}
+
+.right-hdr {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.mcard {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  transition: border-color 0.2s;
+}
+
+.mcard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3px;
+}
+
+.mcard-name { font-size: 11px; font-weight: 600; }
+.mcard-unit { font-size: 10px; color: var(--dim); }
+
+.mcard-val {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.mcard-fold {
+  font-size: 10px;
+  color: var(--dim);
+  margin-top: 2px;
+}
+
+.mbar-bg { height: 3px; background: var(--border); border-radius: 2px; margin: 5px 0 2px; }
+.mbar    { height: 3px; border-radius: 2px; transition: width 0.4s; max-width: 100%; }
+
+.right-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="topbar">
+  <div class="logo">Q-SENS <span>// CBRN</span></div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-title">Host Response Cytokine Simulator · 6-Plex Panel</div>
+  <div class="topbar-pills">
+    <span class="pill pill-sep">Sepsis</span>
+    <span class="pill pill-bio">Biological</span>
+    <span class="pill pill-rad">Radiological</span>
+    <span class="pill pill-chem">Chemical</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="section-hdr">Threat Category</div>
+      <div class="grp-tabs">
+        <button class="grp-tab active" data-grp="sepsis">Sepsis</button>
+        <button class="grp-tab" data-grp="bio">Biological</button>
+        <button class="grp-tab" data-grp="rad">Radiological</button>
+        <button class="grp-tab" data-grp="chem">Chemical</button>
+      </div>
+      <div class="cond-list" id="condList"></div>
+    </div>
+
+    <div class="controls">
+      <div class="section-hdr">Patient Variables</div>
+
+      <div class="ctrl-row">
+        <div class="ctrl-lbl">
+          <span>Age</span>
+          <span class="ctrl-val" id="ageVal">35 yr</span>
+        </div>
+        <input type="range" id="ageSlider" min="18" max="80" value="35">
+      </div>
+
+      <div class="toggle-row">
+        <span class="toggle-lbl">Biological Sex</span>
+        <div class="tgl">
+          <button class="tgl-btn active" id="sexM" onclick="setSex('M')">M</button>
+          <button class="tgl-btn" id="sexF" onclick="setSex('F')">F</button>
+        </div>
+      </div>
+
+      <div class="ctrl-row">
+        <div class="ctrl-lbl">
+          <span>BMI</span>
+          <span class="ctrl-val" id="bmiVal">24</span>
+        </div>
+        <input type="range" id="bmiSlider" min="17" max="45" value="24">
+      </div>
+
+      <div class="toggle-row">
+        <span class="toggle-lbl">Immunosuppressed</span>
+        <div class="tgl">
+          <button class="tgl-btn active" id="imsN" onclick="setIms(false)">No</button>
+          <button class="tgl-btn" id="imsY" onclick="setIms(true)">Yes</button>
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <span class="toggle-lbl">Vaccinated</span>
+        <div class="tgl">
+          <button class="tgl-btn active" id="vacN" onclick="setVac(false)">No</button>
+          <button class="tgl-btn" id="vacY" onclick="setVac(true)">Yes</button>
+        </div>
+      </div>
+
+      <div class="section-hdr" style="margin-top:4px">Disease Severity</div>
+      <div class="sev-row">
+        <button class="sev-btn mild" id="sevMild"     onclick="setSev('mild')">Mild</button>
+        <button class="sev-btn moderate active" id="sevMod" onclick="setSev('moderate')">Moderate</button>
+        <button class="sev-btn severe"  id="sevSev"   onclick="setSev('severe')">Severe</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CENTER -->
+  <div class="center">
+    <div class="chart-wrap">
+      <div class="chart-hdr">
+        <div>
+          <div class="chart-cond-name" id="condTitle">Sepsis — Moderate</div>
+          <div class="chart-note">Cytokine fold-elevation above ULN · log scale · hours post symptom onset</div>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <canvas id="mainChart"></canvas>
+    </div>
+
+    <div class="time-ctrl">
+      <div class="time-lbl">Time post-onset</div>
+      <div class="time-val" id="timeDisplay">24 h</div>
+      <input type="range" id="timeSlider" min="0" max="72" value="24" step="1">
+      <div class="time-lbl" style="text-align:right; min-width:80px; font-family:var(--mono); font-size:11px" id="timePhase">Early</div>
+    </div>
+
+    <div class="interp">
+      <div class="interp-hdr">Clinical Pattern · Interpretation</div>
+      <div class="interp-body" id="interpText">—</div>
+      <div class="disc-tags" id="discTags"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right">
+    <div class="right-hdr">Current Values</div>
+    <div id="markerCards"></div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+
+const T  = [0, 2, 6, 12, 24, 48, 72]; // timepoints (hours)
+
+// Marker metadata
+const MARKERS = [
+  { key:'il6',  label:'IL-6',   color:'#ff5c7a', uln:7,    unit:'pg/mL' },
+  { key:'il10', label:'IL-10',  color:'#00d4ff', uln:9.8,  unit:'pg/mL' },
+  { key:'tnfa', label:'TNF-α',  color:'#ff9f45', uln:8.1,  unit:'pg/mL' },
+  { key:'ifng', label:'IFN-γ',  color:'#00e5b0', uln:15.1, unit:'pg/mL' },
+  { key:'il1b', label:'IL-1β',  color:'#b97aff', uln:5.0,  unit:'pg/mL' },
+  { key:'pct',  label:'PCT',    color:'#f0c040', uln:0.1,  unit:'ng/mL' },
+];
+
+// Conditions: fold above ULN at timepoints T
+// [IL-6, IL-10, TNF-α, IFN-γ, IL-1β, PCT]
+const CONDITIONS = {
+
+  // ── SEPSIS ─────────────────────────────────────────
+  sepsis_mod: {
+    name:'Sepsis', sub:'Moderate Bacterial', grp:'sepsis', color:'#4a9eff',
+    timeLabel:'Hours post symptom onset',
+    il6:  [0.4, 0.5, 2.0, 15,  50,  30,  15],
+    il10: [0.5, 0.5, 1.0,  8,  20,  12,   6],
+    tnfa: [0.4, 0.5, 3.0, 20,  30,  15,   8],
+    ifng: [0.5, 0.5, 1.0,  5,  10,   8,   4],
+    il1b: [0.4, 0.5, 2.0, 10,  25,  15,   8],
+    pct:  [0.5, 0.5, 1.0,  5,  15,  20,  25],
+    interp:'Moderate bacterial sepsis: IL-6 and TNF-α lead the early response, with PCT rising progressively over 12–24h. IL-10 elevation signals the compensatory anti-inflammatory response. Rising PCT is a key discriminator from viral etiology.',
+    tags:[ ['High PCT','tag-high-pct'], ['IL-6 dominant','tag-cytostorm'] ]
+  },
+
+  sepsis_sev: {
+    name:'Severe Sepsis', sub:'Septic Shock', grp:'sepsis', color:'#1f6feb',
+    timeLabel:'Hours post symptom onset',
+    il6:  [0.4, 0.6,  8,  80, 300, 150,  80],
+    il10: [0.5, 0.6,  4,  40, 150, 120,  60],
+    tnfa: [0.4, 0.6, 10,  80, 200, 100,  50],
+    ifng: [0.5, 0.6,  4,  25,  70,  45,  20],
+    il1b: [0.4, 0.6,  8,  60, 180, 100,  50],
+    pct:  [0.5, 0.6,  4,  30, 120, 180, 200],
+    interp:'Septic shock: pan-cytokine storm with massive IL-6, TNF-α, and IL-10 elevation. PCT reaches extreme levels (>10 ng/mL) reflecting uncontrolled bacterial burden. Sustained IL-10 elevation indicates immunoparalysis and poor prognosis.',
+    tags:[ ['High PCT','tag-high-pct'], ['Cytokine Storm','tag-cytostorm'], ['Immunoparalysis','tag-intracell'] ]
+  },
+
+  // ── BIOLOGICAL ─────────────────────────────────────
+  vhf: {
+    name:'Viral Hemorrhagic Fever', sub:'Ebola / Lassa-like', grp:'bio', color:'#ff5c7a',
+    timeLabel:'Hours post symptom onset',
+    il6:  [2,   5,  20,  80, 200, 250, 150],
+    il10: [1,   3,  15,  60, 150, 200, 120],
+    tnfa: [2,   5,  25, 100, 250, 300, 180],
+    ifng: [2,   8,  50, 150, 250, 220, 100],
+    il1b: [1.5, 3,  15,  60, 120, 100,  60],
+    pct:  [0.5, 0.5, 0.8, 2,   3,   3.5,  4],
+    interp:'VHF cytokine storm: massively elevated IFN-γ (T-cell and NK activation) is characteristic of viral hemorrhagic fever. TNF-α drives vascular leak. KEY DISCRIMINATOR: PCT remains low-normal despite severe clinical illness, clearly distinguishing viral from bacterial etiology.',
+    tags:[ ['Low PCT (viral)','tag-low-pct'], ['High IFN-γ','tag-high-ifng'], ['Cytokine Storm','tag-cytostorm'] ]
+  },
+
+  anthrax: {
+    name:'Inhalation Anthrax', sub:'Bacillus anthracis', grp:'bio', color:'#ff7a5c',
+    timeLabel:'Hours post symptom onset',
+    il6:  [0.4, 0.5,  1,   5,  40, 150, 300],
+    il10: [0.5, 0.5, 0.8,  3,  20,  60, 100],
+    tnfa: [0.5, 0.5,  1,   8,  60, 120, 150],
+    ifng: [0.5, 0.5,  1,   4,  18,  35,  50],
+    il1b: [0.4, 0.5,  1,   5,  30, 100, 150],
+    pct:  [0.5, 0.5,  1,   5,  30, 100, 180],
+    interp:'Inhalation anthrax shows a deceptively mild early phase (prodrome) followed by explosive cytokine and PCT elevation as bacillary toxins are released (>24h). High PCT confirms bacterial etiology. The late-phase IL-6/IL-1β surge reflects toxin-mediated vascular collapse.',
+    tags:[ ['High PCT (bacterial)','tag-high-pct'], ['Late explosive rise','tag-delayed'] ]
+  },
+
+  tularemia: {
+    name:'Pneumonic Tularemia', sub:'Francisella tularensis', grp:'bio', color:'#e05a8a',
+    timeLabel:'Hours post symptom onset',
+    il6:  [1,   2,   8,  35,  70,  55,  30],
+    il10: [0.5, 1,   5,  18,  35,  28,  15],
+    tnfa: [1,   2,  10,  40,  75,  55,  30],
+    ifng: [1,   3,  20,  90, 180, 140,  70],
+    il1b: [0.5, 1,   5,  18,  38,  28,  15],
+    pct:  [0.5, 0.5, 1,   2.5, 5,   6,   7],
+    interp:'Pneumonic tularemia: markedly elevated IFN-γ reflects the dominant Th1 CD4+ T-cell response to Francisella (an intracellular pathogen). PCT is moderate-low because intracellular bacteria generate less endotoxin than extracellular gram-negatives — a key discriminator from typical gram-negative sepsis.',
+    tags:[ ['High IFN-γ (Th1)','tag-high-ifng'], ['Low-mod PCT (intracellular)','tag-low-pct'], ['Intracellular pathogen','tag-intracell'] ]
+  },
+
+  brucella: {
+    name:'Brucellosis', sub:'Brucella spp. (undulant)', grp:'bio', color:'#c05070',
+    timeLabel:'Hours from acute presentation',
+    il6:  [0.5, 0.5,  1,   3,   7,   6,   5],
+    il10: [0.5, 0.5,  1,   5,  12,  10,   8],
+    tnfa: [0.5, 0.5,  1,   4,   8,   7,   5],
+    ifng: [0.5, 1,    6,  25,  50,  65,  80],
+    il1b: [0.5, 0.5,  1,   3,   6,   5,   4],
+    pct:  [0.5, 0.5, 0.5, 0.8, 1.2, 1.3, 1.5],
+    interp:'Brucellosis: moderate, chronic cytokine pattern with strikingly elevated IFN-γ that rises progressively — hallmark of Th1 response to chronic intracellular infection. Very low PCT (often <0.2 ng/mL) distinguishes brucellosis from acute gram-negative sepsis and from VHF. Undulant fever pattern may require serial testing.',
+    tags:[ ['Very low PCT','tag-low-pct'], ['High IFN-γ (chronic Th1)','tag-high-ifng'], ['Intracellular pathogen','tag-intracell'] ]
+  },
+
+  // ── RADIOLOGICAL ───────────────────────────────────
+  ars: {
+    name:'Acute Radiation Syndrome', sub:'Hematopoietic / GI', grp:'rad', color:'#f0c040',
+    timeLabel:'Hours post radiation exposure',
+    il6:  [0.4,  8,  20,  12,   5,   3,   2],
+    il10: [0.4,  2,   8,   5,   2.5, 2,   1.5],
+    tnfa: [0.4,  4,  12,   7,   3,   2,   1.5],
+    ifng: [0.4,  1,   3,   1.5, 0.8, 0.5, 0.4],
+    il1b: [0.4,  8,  18,  10,   4,   2.5, 2],
+    pct:  [0.4,  0.4, 0.5, 0.5, 0.4, 0.4, 0.4],
+    interp:'Acute Radiation Syndrome: EARLY (2–6h) transient IL-6 and IL-1β spike (inflammasome activation, bystander effect) then rapid decline as lymphopenia develops. IFN-γ is notably suppressed (T-cell depletion is early). CRITICAL DISCRIMINATOR: PCT remains normal throughout — absence of PCT elevation rules out infection as the primary driver, distinguishing ARS from sepsis even when clinical pictures overlap.',
+    tags:[ ['Early spike then fall','tag-early-spike'], ['Very low PCT (no infection)','tag-no-infect'], ['Low IFN-γ (lymphopenia)','tag-low-pct'] ]
+  },
+
+  // ── CHEMICAL ───────────────────────────────────────
+  nerve_agent: {
+    name:'Nerve Agent', sub:'Organophosphate / Sarin (G-agent)', grp:'chem', color:'#00e5b0',
+    timeLabel:'Hours post exposure',
+    il6:  [0.4, 2,   5,   7,   6,   4,   3],
+    il10: [0.4, 1,   3,   5,   4,   3,   2],
+    tnfa: [0.4, 2,   6,   8,   6,   4,   2.5],
+    ifng: [0.4, 0.5, 1,   2,   2,   1.5, 1],
+    il1b: [0.4, 2,   5,   7,   5,   3.5, 2.5],
+    pct:  [0.4, 0.4, 0.5, 0.5, 0.5, 0.4, 0.4],
+    interp:'Nerve agent (organophosphate) exposure: moderate cytokine elevation reflecting neurogenic inflammation and cholinergic crisis-mediated immune activation. IFN-γ remains low. KEY DISCRIMINATOR: PCT does not rise — helps distinguish chemical injury from concurrent biological agent or infection. Cytokine amplitude is substantially lower than sepsis or biological threats.',
+    tags:[ ['No PCT elevation','tag-no-infect'], ['Moderate cytokines','tag-early-spike'], ['Neurogenic inflammation','tag-delayed'] ]
+  },
+
+  vesicant: {
+    name:'Vesicant / Blister Agent', sub:'Sulfur Mustard (HD)', grp:'chem', color:'#50d0b0',
+    timeLabel:'Hours post exposure',
+    il6:  [0.4, 0.5, 1,   3,   8,  14,  12],
+    il10: [0.4, 0.4, 0.8, 2,   5,   8,   7],
+    tnfa: [0.4, 0.5, 1,   4,  10,  16,  14],
+    ifng: [0.4, 0.4, 0.5, 1,   2.5, 4,   4],
+    il1b: [0.4, 0.5, 1,   4,  10,  15,  13],
+    pct:  [0.4, 0.4, 0.5, 0.8, 1.5, 2.5, 4],
+    interp:'Sulfur mustard (HD) vesicant: DELAYED and progressive cytokine rise (24–72h) driven by extensive tissue necrosis and alkylation injury — not immediate. IL-6, TNF-α, and IL-1β proportional to extent of skin/pulmonary involvement. PCT rises modestly only if secondary bacterial infection develops. IFN-γ remains relatively low, helping distinguish from biological threat.',
+    tags:[ ['Delayed tissue-damage response','tag-delayed'], ['Low IFN-γ','tag-low-pct'], ['PCT rises only w/ 2° infection','tag-no-infect'] ]
+  },
+};
+
+// Group membership
+const GROUPS = {
+  sepsis: ['sepsis_mod','sepsis_sev'],
+  bio:    ['vhf','anthrax','tularemia','brucella'],
+  rad:    ['ars'],
+  chem:   ['nerve_agent','vesicant'],
+};
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let state = {
+  grp:          'sepsis',
+  cond:         'sepsis_mod',
+  severity:     'moderate',
+  age:          35,
+  sex:          'M',
+  bmi:          24,
+  vaccinated:   false,
+  immunosupp:   false,
+  timeH:        24,
+};
+
+// ═══════════════════════════════════════════════════════
+// INTERPOLATION (Catmull-Rom)
+// ═══════════════════════════════════════════════════════
+function catmullRom(p0, p1, p2, p3, t) {
+  const t2 = t*t, t3 = t2*t;
+  return 0.5*(2*p1 + (-p0+p2)*t + (2*p0-5*p1+4*p2-p3)*t2 + (-p0+3*p1-3*p2+p3)*t3);
+}
+
+function interpolate(vals, h) {
+  if (h <= T[0]) return vals[0];
+  if (h >= T[T.length-1]) return vals[vals.length-1];
+  let i = 0;
+  while (i < T.length-1 && T[i+1] <= h) i++;
+  const t = (h - T[i]) / (T[i+1] - T[i]);
+  const p0 = vals[Math.max(0, i-1)];
+  const p1 = vals[i];
+  const p2 = vals[i+1];
+  const p3 = vals[Math.min(vals.length-1, i+2)];
+  return Math.max(0.05, catmullRom(p0, p1, p2, p3, t));
+}
+
+// ═══════════════════════════════════════════════════════
+// MODIFIERS
+// ═══════════════════════════════════════════════════════
+function applyMods(foldVal, isBaseline, markerKey, condGrp) {
+  if (isBaseline || foldVal <= 0.5) return foldVal;
+
+  const { severity, age, sex, bmi, vaccinated, immunosupp } = state;
+
+  const sevM = { mild:0.35, moderate:1.0, severe:2.6 };
+  let m = sevM[severity];
+
+  // Age
+  if (markerKey !== 'pct') {
+    if (age > 65) m *= 0.62;
+    else if (age > 55) m *= 0.82;
+    else if (age < 25) m *= 1.12;
+  }
+
+  // Sex: females mount stronger innate cytokine response
+  if (sex === 'F' && ['il6','tnfa','il1b'].includes(markerKey)) m *= 1.18;
+
+  // BMI: obesity elevates IL-6 baseline/response
+  if (markerKey === 'il6' && bmi >= 30) m *= 1 + (bmi-30)*0.02;
+
+  // Vaccination: attenuates response for relevant bio agents
+  if (vaccinated && condGrp === 'bio') {
+    if (['ifng','tnfa'].includes(markerKey)) m *= 0.52;
+    else if (markerKey === 'il6') m *= 0.62;
+  }
+
+  // Immunosuppression: blunts cytokines (not PCT)
+  if (immunosupp && markerKey !== 'pct') m *= 0.42;
+
+  const caps = { il6:2500, il10:800, tnfa:600, ifng:600, il1b:400, pct:400 };
+  return Math.min(foldVal * m, caps[markerKey]);
+}
+
+function getValues(condId) {
+  const c = CONDITIONS[condId];
+  return MARKERS.map(mk => {
+    const vals = c[mk.key];
+    const hours = Array.from({length:73}, (_,i)=>i).map(h => {
+      const raw = interpolate(vals, h);
+      return applyMods(raw, raw <= 0.52, mk.key, c.grp);
+    });
+    return hours;
+  });
+}
+
+function getValueAt(condId, h) {
+  const c = CONDITIONS[condId];
+  return MARKERS.map(mk => {
+    const raw = interpolate(c[mk.key], h);
+    return applyMods(raw, raw <= 0.52, mk.key, c.grp);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// CHART
+// ═══════════════════════════════════════════════════════
+const HOURS = Array.from({length:73}, (_,i)=>i);
+
+let chart = null;
+let cursorPlugin = {
+  id:'cursor',
+  afterDraw(chart) {
+    const h = state.timeH;
+    const x = chart.scales.x.getPixelForValue(h);
+    const {top,bottom} = chart.chartArea;
+    const ctx = chart.ctx;
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x, top);
+    ctx.lineTo(x, bottom);
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4,4]);
+    ctx.stroke();
+    ctx.restore();
+  }
+};
+
+function buildChart() {
+  const ctx = document.getElementById('mainChart').getContext('2d');
+  const cond = CONDITIONS[state.cond];
+
+  const allValues = getValues(state.cond);
+
+  const datasets = MARKERS.map((mk, i) => ({
+    label: mk.label,
+    data: HOURS.map((_, h) => allValues[i][h]),
+    borderColor: mk.color,
+    backgroundColor: mk.color + '15',
+    borderWidth: 2,
+    pointRadius: 0,
+    tension: 0.4,
+    fill: false,
+  }));
+
+  // Add ULN reference line (y=1)
+  const refData = HOURS.map(() => 1);
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: 'line',
+    plugins: [cursorPlugin],
+    data: {
+      labels: HOURS,
+      datasets: [
+        ...datasets,
+        {
+          label:'_uln',
+          data: refData,
+          borderColor:'rgba(255,255,255,0.18)',
+          borderWidth:1,
+          borderDash:[6,4],
+          pointRadius:0,
+          fill:false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration:300 },
+      interaction: { mode:'index', intersect:false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor:'rgba(14,20,25,0.95)',
+          borderColor:'rgba(30,45,61,0.8)',
+          borderWidth:1,
+          padding:10,
+          callbacks: {
+            title: (items) => `Hour ${items[0].label}`,
+            label: (item) => {
+              if (item.dataset.label === '_uln') return null;
+              const mk = MARKERS.find(m=>m.label===item.dataset.label);
+              if (!mk) return null;
+              const fold = item.raw;
+              const conc = fold * mk.uln;
+              return ` ${mk.label}: ${fold.toFixed(1)}× ULN  (${conc.toFixed(conc<10?2:0)} ${mk.unit})`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          min: 0, max: 72,
+          title: { display:true, text:'Hours Post Symptom Onset', color:'rgba(90,122,150,0.8)', font:{size:11} },
+          ticks: {
+            color:'rgba(90,122,150,0.8)',
+            font:{size:10},
+            stepSize:12,
+            callback: v => v+'h',
+          },
+          grid: { color:'rgba(30,45,61,0.5)' },
+        },
+        y: {
+          type: 'logarithmic',
+          min: 0.05, max: 800,
+          title: { display:true, text:'Fold Above ULN', color:'rgba(90,122,150,0.8)', font:{size:11} },
+          ticks: {
+            color:'rgba(90,122,150,0.8)',
+            font:{size:10, family:"'Space Mono',monospace"},
+            callback: v => {
+              const vals = [0.1,0.5,1,2,5,10,50,100,500];
+              return vals.includes(v) ? (v===1?'1× ULN':v+'×') : null;
+            }
+          },
+          grid: { color:'rgba(30,45,61,0.5)' },
+        }
+      }
+    }
+  });
+}
+
+function updateChart() {
+  if (!chart) return;
+  const allValues = getValues(state.cond);
+  MARKERS.forEach((mk, i) => {
+    chart.data.datasets[i].data = HOURS.map((_, h) => allValues[i][h]);
+  });
+  chart.update('none');
+}
+
+// ═══════════════════════════════════════════════════════
+// RIGHT PANEL — MARKER CARDS
+// ═══════════════════════════════════════════════════════
+function buildMarkerCards() {
+  const el = document.getElementById('markerCards');
+  el.innerHTML = MARKERS.map((mk, i) => `
+    <div class="mcard" id="mcard-${mk.key}" style="border-color:${mk.color}30">
+      <div class="mcard-top">
+        <div class="mcard-name" style="color:${mk.color}">${mk.label}</div>
+        <div class="mcard-unit">${mk.unit}</div>
+      </div>
+      <div class="mcard-val" id="mval-${mk.key}" style="color:${mk.color}">—</div>
+      <div class="mcard-fold" id="mfold-${mk.key}">—</div>
+      <div class="mbar-bg"><div class="mbar" id="mbar-${mk.key}" style="background:${mk.color}"></div></div>
+    </div>
+  `).join('');
+}
+
+function updateMarkerCards() {
+  const vals = getValueAt(state.cond, state.timeH);
+  MARKERS.forEach((mk, i) => {
+    const fold = vals[i];
+    const conc = fold * mk.uln;
+    const pctLog = Math.min(100, Math.max(0, (Math.log10(fold)-Math.log10(0.05))/(Math.log10(800)-Math.log10(0.05))*100));
+
+    const concStr = mk.key === 'pct'
+      ? (conc < 0.1 ? conc.toFixed(3) : conc.toFixed(2))
+      : (conc < 10 ? conc.toFixed(1) : conc.toFixed(0));
+
+    document.getElementById(`mval-${mk.key}`).textContent = concStr;
+    document.getElementById(`mfold-${mk.key}`).textContent = `${fold.toFixed(1)}× ULN`;
+    document.getElementById(`mbar-${mk.key}`).style.width = `${pctLog}%`;
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// CONDITION LIST
+// ═══════════════════════════════════════════════════════
+function buildCondList() {
+  const el = document.getElementById('condList');
+  const ids = GROUPS[state.grp];
+  el.innerHTML = ids.map(id => {
+    const c = CONDITIONS[id];
+    const active = id === state.cond ? 'active' : '';
+    return `
+      <div class="cond-item ${active}" data-grp="${c.grp}" data-id="${id}" onclick="selectCond('${id}')">
+        <div class="cond-dot" style="background:${c.color}"></div>
+        <div>
+          <div class="cond-label">${c.name}</div>
+          <div class="cond-sub">${c.sub}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// LEGEND
+// ═══════════════════════════════════════════════════════
+function buildLegend() {
+  document.getElementById('legend').innerHTML = MARKERS.map(mk =>
+    `<div class="legend-item">
+      <div class="legend-dot" style="background:${mk.color}"></div>
+      <span>${mk.label}</span>
+    </div>`
+  ).join('') + `
+  <div class="legend-item">
+    <div class="legend-dot" style="background:rgba(255,255,255,0.18); border:1px dashed rgba(255,255,255,0.3)"></div>
+    <span style="color:var(--dim)">ULN</span>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// INTERPRETATION
+// ═══════════════════════════════════════════════════════
+function updateInterp() {
+  const c = CONDITIONS[state.cond];
+  document.getElementById('condTitle').textContent = `${c.name} — ${c.sub}`;
+  document.getElementById('interpText').textContent = c.interp;
+
+  const phases = ['Pre-onset / Baseline','Early Prodrome','Early Response','Developing','Established','Sustained','Late / Resolving / Escalating'];
+  const hi = state.timeH;
+  let pi = 0;
+  if (hi >= 60) pi = 6;
+  else if (hi >= 36) pi = 5;
+  else if (hi >= 18) pi = 4;
+  else if (hi >= 9)  pi = 3;
+  else if (hi >= 4)  pi = 2;
+  else if (hi >= 1)  pi = 1;
+  document.getElementById('timePhase').textContent = phases[pi];
+
+  document.getElementById('discTags').innerHTML = c.tags.map(([label,cls]) =>
+    `<span class="disc-tag ${cls}">${label}</span>`
+  ).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// EVENT HANDLERS
+// ═══════════════════════════════════════════════════════
+function selectGroup(grp) {
+  state.grp = grp;
+  document.querySelectorAll('.grp-tab').forEach(el => {
+    el.classList.toggle('active', el.dataset.grp === grp);
+  });
+  // Select first condition in group
+  state.cond = GROUPS[grp][0];
+  buildCondList();
+  updateAll();
+}
+
+function selectCond(id) {
+  state.cond = id;
+  document.querySelectorAll('.cond-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === id);
+  });
+  updateAll();
+}
+
+function setSev(sev) {
+  state.severity = sev;
+  const idMap = { mild:'sevMild', moderate:'sevMod', severe:'sevSev' };
+  Object.entries(idMap).forEach(([s, id]) => {
+    const el = document.getElementById(id);
+    el.classList.toggle('active', s === sev);
+  });
+  updateAll();
+}
+
+function setSex(s) {
+  state.sex = s;
+  document.getElementById('sexM').classList.toggle('active', s==='M');
+  document.getElementById('sexF').classList.toggle('active', s==='F');
+  updateAll();
+}
+
+function setIms(v) {
+  state.immunosupp = v;
+  document.getElementById('imsN').classList.toggle('active', !v);
+  document.getElementById('imsY').classList.toggle('active', v);
+  updateAll();
+}
+
+function setVac(v) {
+  state.vaccinated = v;
+  document.getElementById('vacN').classList.toggle('active', !v);
+  document.getElementById('vacY').classList.toggle('active', v);
+  updateAll();
+}
+
+function updateAll() {
+  updateChart();
+  updateMarkerCards();
+  updateInterp();
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  buildLegend();
+  buildCondList();
+  buildMarkerCards();
+  buildChart();
+  updateMarkerCards();
+  updateInterp();
+
+  // Group tabs
+  document.querySelectorAll('.grp-tab').forEach(btn => {
+    btn.addEventListener('click', () => selectGroup(btn.dataset.grp));
+  });
+
+  // Age slider
+  const ageSlider = document.getElementById('ageSlider');
+  ageSlider.addEventListener('input', () => {
+    state.age = +ageSlider.value;
+    document.getElementById('ageVal').textContent = `${state.age} yr`;
+    updateAll();
+  });
+
+  // BMI slider
+  const bmiSlider = document.getElementById('bmiSlider');
+  bmiSlider.addEventListener('input', () => {
+    state.bmi = +bmiSlider.value;
+    document.getElementById('bmiVal').textContent = state.bmi;
+    updateAll();
+  });
+
+  // Time slider
+  const timeSlider = document.getElementById('timeSlider');
+  timeSlider.addEventListener('input', () => {
+    state.timeH = +timeSlider.value;
+    document.getElementById('timeDisplay').textContent = `${state.timeH} h`;
+    updateMarkerCards();
+    updateInterp();
+    chart.update('none');
+  });
+});
+</script>
+</body>
+</html>
