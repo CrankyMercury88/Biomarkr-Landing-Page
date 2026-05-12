@@ -394,6 +394,15 @@ header {
     transition: color 0.3s ease;
 }
 
+.hero-wordmark {
+    height: 28px;
+    width: auto;
+    margin-bottom: 0.75rem;
+    display: block;
+    filter: invert(var(--logo-invert));
+    transition: filter 0.3s ease;
+}
+
 .left-content .main-text {
     font-size: 1.75rem;
     font-weight: 300;
@@ -780,13 +789,13 @@ header {
 }
 
 .footer-logo img {
-    width: 100px;
-    height: auto;
-    filter: invert(0);
+    height: 32px;
+    width: auto;
+    filter: invert(1);
 }
 
-body.light-mode .footer-logo img {
-    filter: invert(1);
+[data-theme="dark"] .footer-logo img {
+    filter: invert(0);
 }
 
 .footer-left h3 {
@@ -1019,7 +1028,8 @@ body.light-mode .footer-logo img {
     }
     
     .footer-logo img {
-        width: 60px;
+        height: 24px;
+        width: auto;
     }
     
     .footer-content {
