@@ -1,0 +1,78 @@
+/* ============================================================
+   Biomarkr — Base element defaults & a few brand utilities.
+   Kept deliberately minimal: set the typographic baseline and
+   the signature helpers (eyebrow, hairline rule, mist).
+   ============================================================ */
+
+.bm-root,
+.bm-scope {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+/* --- Signature type helpers ------------------------------- */
+.bm-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--role-eyebrow-size);
+  font-weight: var(--role-eyebrow-weight);
+  letter-spacing: var(--role-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.bm-display {
+  font-family: var(--font-sans);
+  font-size: var(--role-display-size);
+  font-weight: var(--role-display-weight);
+  letter-spacing: var(--role-display-tracking);
+  line-height: var(--role-display-leading);
+  color: var(--text-primary);
+}
+
+.bm-title {
+  font-family: var(--font-sans);
+  font-size: var(--role-title-size);
+  font-weight: var(--role-title-weight);
+  letter-spacing: var(--role-title-tracking);
+  line-height: var(--role-title-leading);
+  color: var(--text-primary);
+}
+
+.bm-serif {
+  font-family: var(--font-serif);
+  font-weight: var(--weight-light);
+}
+
+.bm-body {
+  font-family: var(--font-sans);
+  font-size: var(--role-body-size);
+  font-weight: var(--role-body-weight);
+  line-height: var(--role-body-leading);
+  color: var(--text-secondary);
+}
+
+/* --- The animated accent rule under section titles -------- */
+.bm-rule {
+  display: block;
+  width: 60px;
+  height: var(--rule);
+  background: var(--text-primary);
+  border: 0;
+}
+
+/* --- Mist: fade-to-paper gradient over imagery ------------ */
+.bm-mist {
+  background: linear-gradient(
+    to top,
+    rgba(var(--mist-rgb), 1) 0%,
+    rgba(var(--mist-rgb), 0.9) 20%,
+    rgba(var(--mist-rgb), 0.5) 50%,
+    rgba(var(--mist-rgb), 0.1) 75%,
+    rgba(var(--mist-rgb), 0) 100%
+  );
+}

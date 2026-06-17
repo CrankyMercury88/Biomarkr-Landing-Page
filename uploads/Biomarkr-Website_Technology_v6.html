@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technology — The Q-SENS Platform | Biomarkr</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap');
+
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #1A2E44;
+    --navy-light: #243B55;
+    --teal: #0E9B8A;
+    --teal-light: #14C5B0;
+    --amber: #E8913A;
+    --amber-light: #F5B56A;
+    --slate: #8BA4BA;
+    --slate-light: #C5D5E4;
+    --cream: #F7F4EE;
+    --white: #FFFFFF;
+    --red: #D64045;
+    --green: #2D8653;
+    --purple: #7B5EA7;
+    --blue: #378BD4;
+    --text-primary: #0D1B2A;
+    --text-secondary: #3D5470;
+    --border: rgba(13,27,42,0.09);
+    --section-gap: 4.25rem;
+    --shadow-sm: 0 1px 2px rgba(13,27,42,0.04), 0 1px 3px rgba(13,27,42,0.05);
+    --shadow-md: 0 2px 6px rgba(13,27,42,0.04), 0 10px 28px rgba(13,27,42,0.06);
+    --shadow-lg: 0 18px 50px rgba(13,27,42,0.12);
+    --r: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    background: var(--cream);
+    background-image:
+      radial-gradient(circle at 12% 0%, rgba(14,155,138,0.05), transparent 42%),
+      radial-gradient(circle at 92% 18%, rgba(232,145,58,0.045), transparent 38%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ── Nav bar ── */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(13,27,42,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 3rem;
+  }
+  .nav-brand {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.35rem;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-brand .nav-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    box-shadow: 0 0 0 4px rgba(20,197,176,0.18);
+  }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--teal-light); }
+  .nav-links a.active { color: var(--teal-light); }
+  .nav-cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--white) !important;
+    border: 1px solid rgba(14,155,138,0.5);
+    background: rgba(14,155,138,0.15);
+    padding: 7px 16px;
+    border-radius: 999px;
+    transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .nav-cta:hover {
+    background: rgba(14,155,138,0.3);
+    border-color: var(--teal-light);
+    box-shadow: 0 0 0 4px rgba(20,197,176,0.12);
+  }
+
+  /* ── Cover ── */
+  .cover {
+    background:
+      radial-gradient(circle at 78% 12%, rgba(14,155,138,0.16), transparent 46%),
+      linear-gradient(160deg, #112236 0%, var(--navy) 55%, #0A1622 100%);
+    color: var(--white);
+    padding: 5rem 5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after, .cover::before { pointer-events: none; }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(14,155,138,0.2);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 1px solid rgba(14,155,138,0.35);
+  }
+  .cover-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cover-tag::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--teal);
+  }
+  .cover h1 {
+    font-family: 'EB Garamond', serif;
+    font-size: 3.1rem;
+    font-weight: 500;
+    line-height: 1.16;
+    letter-spacing: -0.01em;
+    max-width: 760px;
+    margin-bottom: 1.3rem;
+    text-wrap: balance;
+  }
+  .cover h1 em {
+    color: var(--teal-light);
+    font-style: italic;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: var(--slate-light);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+  }
+  .cover-meta-item label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .cover-meta-item span {
+    font-size: 14px;
+    color: var(--white);
+    font-weight: 500;
+  }
+  .barda-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(14,155,138,0.14);
+    border: 1px solid rgba(14,155,138,0.4);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--teal-light);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0 0 4px rgba(14,155,138,0.06);
+  }
+
+  /* ── Layout ── */
+  .doc-body {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 4.5rem 3rem;
+  }
+
+  /* ── Sections ── */
+  .section { margin-bottom: var(--section-gap); }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+    background: rgba(14,155,138,0.09);
+    border: 1px solid rgba(14,155,138,0.22);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .section-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.65rem;
+    font-weight: 500;
+    color: var(--navy);
+    letter-spacing: -0.005em;
+  }
+  p { margin-bottom: 1rem; color: var(--text-secondary); }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ── Callout box ── */
+  .callout {
+    background: linear-gradient(155deg, var(--navy-mid), var(--navy));
+    color: var(--white);
+    padding: 1.9rem 2.25rem 1.9rem 3rem;
+    border-radius: var(--r);
+    margin: 1.75rem 0;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.22rem;
+    line-height: 1.62;
+    font-style: italic;
+    position: relative;
+    box-shadow: var(--shadow-md);
+    border-left: 3px solid var(--teal);
+  }
+  .callout::before {
+    content: '“';
+    font-size: 4rem;
+    color: var(--teal-light);
+    position: absolute;
+    top: 0.2rem; left: 1.4rem;
+    font-style: normal;
+    line-height: 1;
+    opacity: 0.6;
+  }
+  .callout p { color: var(--white); padding-top: 1rem; }
+
+  /* ── Inline highlights / tags ── */
+  .highlight { color: var(--teal); font-weight: 600; }
+  .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+  .tag-navy { background: rgba(13,27,42,0.08); color: var(--navy-mid); border: 1px solid rgba(13,27,42,0.15); }
+  .tag-teal { background: rgba(14,155,138,0.08); color: var(--teal); border: 1px solid rgba(14,155,138,0.25); }
+  .tag-amber { background: rgba(232,145,58,0.1); color: var(--amber); border: 1px solid rgba(232,145,58,0.25); }
+
+  /* ── Tech specs ── */
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .spec-item {
+    text-align: center;
+    padding: 1.5rem 0.85rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .spec-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(14,155,138,0.3);
+  }
+  .spec-val {
+    font-family: 'EB Garamond', serif;
+    font-size: 2.15rem;
+    font-weight: 500;
+    color: var(--navy);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .spec-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.3;
+  }
+
+  /* ── Figure wrapper ── */
+  .figure {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1.75rem;
+    margin: 1.75rem 0;
+    box-shadow: var(--shadow-md);
+  }
+  .figure .fig-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+  .figure svg { display: block; width: 100%; height: auto; }
+  .fig-note {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* ── Component cards (system elements) ── */
+  .component-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .component-card {
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1.4rem 1.6rem;
+    background: var(--white);
+    display: flex;
+    gap: 1.1rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .component-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(14,155,138,0.28);
+  }
+  .component-icon {
+    width: 40px; height: 40px;
+    border-radius: 9px;
+    background: linear-gradient(150deg, var(--navy-light), var(--navy));
+    color: var(--teal-light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: inset 0 0 0 1px rgba(20,197,176,0.18);
+  }
+  .component-body .c-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+  .component-body .c-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* ── Step list (immunoassay) ── */
+  .step-list { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; }
+  .step-item {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .step-item:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--white);
+    background: linear-gradient(150deg, var(--teal-light), var(--teal));
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    box-shadow: 0 2px 6px rgba(14,155,138,0.3);
+  }
+  .step-body .s-title { font-weight: 600; font-size: 14px; color: var(--text-primary); margin-bottom: 3px; }
+  .step-body .s-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 0; }
+
+  /* ── Attribute cards ── */
+  .attr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .attr-card {
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1.4rem 1.6rem;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .attr-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(14,155,138,0.28);
+  }
+  .attr-card .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.5rem;
+  }
+  .attr-card .a-title { font-weight: 600; font-size: 14px; color: var(--text-primary); margin-bottom: 0.4rem; }
+  .attr-card p { color: var(--text-secondary); font-size: 13px; margin-bottom: 0; line-height: 1.5; }
+
+  /* ── Pipeline (cloud + AI) ── */
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    align-items: stretch;
+  }
+  .pipe-stage {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1.2rem 1.1rem;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+  }
+  .pipe-stage .p-step {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.5rem;
+  }
+  .pipe-stage .p-title { font-weight: 600; font-size: 13.5px; color: var(--text-primary); margin-bottom: 0.4rem; }
+  .pipe-stage .p-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+  .pipe-stage:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -0.65rem; top: 50%;
+    transform: translateY(-50%);
+    color: var(--teal);
+    font-size: 14px;
+    z-index: 2;
+  }
+
+  /* ── Two-column prose+list ── */
+  .feature-table { width: 100%; border-collapse: collapse; margin: 1.75rem 0; font-size: 14px; border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow-md); }
+  .feature-table th {
+    background: linear-gradient(155deg, var(--navy-mid), var(--navy));
+    color: var(--white);
+    padding: 13px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .feature-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); color: var(--text-secondary); background: var(--white); }
+  .feature-table tr:nth-child(even) td { background: rgba(13,27,42,0.022); }
+  .feature-table tr:last-child td { border-bottom: none; }
+  .feature-table td:first-child { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+
+  /* ── Chart ── */
+  .chart-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 1.5rem 1.75rem;
+    margin: 1.75rem 0;
+    box-shadow: var(--shadow-md);
+  }
+  .chart-card .chart-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+  }
+  .chart-wrap { position: relative; height: 220px; }
+  .chart-note { font-size: 12px; color: var(--text-secondary); margin-top: 0.75rem; font-style: italic; }
+
+  /* ── Footer ── */
+  .doc-footer {
+    background: var(--navy);
+    color: var(--slate);
+    padding: 2rem 5rem;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .doc-footer a { color: var(--teal-light); text-decoration: none; }
+  .footer-brand {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Stack layers ── */
+  .stack-img { display: block; width: 100%; border-radius: 6px; }
+  .stack-layers { display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0; }
+  .stack-layer {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left-width: 4px;
+    border-radius: var(--r);
+    padding: 1.15rem 1.6rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .stack-layer:hover { transform: translateX(3px); box-shadow: var(--shadow-md); }
+  .stack-layer.ai { border-left-color: var(--teal); }
+  .stack-layer.data { border-left-color: var(--amber); }
+  .stack-layer.hw { border-left-color: var(--navy-light); }
+  .sl-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+  }
+  .stack-layer.ai .sl-tag { color: var(--teal); }
+  .stack-layer.data .sl-tag { color: var(--amber); }
+  .sl-title { font-weight: 600; font-size: 14px; color: var(--text-primary); margin-bottom: 0.3rem; }
+  .stack-layer p { font-size: 13px; margin-bottom: 0; line-height: 1.55; }
+
+  @media (max-width: 720px) {
+    .navbar { padding: 0.8rem 1.25rem; }
+    .nav-links { gap: 1rem; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .cover { padding: 2.5rem 1.5rem; }
+    .cover h1 { font-size: 2rem; }
+    .doc-body { padding: 2.5rem 1.25rem; }
+    .specs-grid { grid-template-columns: 1fr 1fr; }
+    .component-grid, .attr-grid { grid-template-columns: 1fr; }
+    .pipeline { grid-template-columns: 1fr; }
+    .pipe-stage:not(:last-child)::after { content: '↓'; right: 50%; top: auto; bottom: -0.85rem; transform: translateX(50%); }
+    .doc-footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAV
+════════════════════════════════════════════ -->
+<nav class="navbar">
+  <a class="nav-brand" href="index.html"><span class="nav-dot"></span>biomarkr</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="#" class="active">Technology</a>
+    <a href="index.html#use-cases">Applications</a>
+    <a href="index.html#team">Team</a>
+    <a href="/cdn-cgi/l/email-protection#80e4f9ece1eec0e2e9efede1f2ebf2aee8e5e1ecf4e8" class="nav-cta">Contact</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     COVER
+════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-tag">Technology — The Q-SENS Platform</div>
+  <h1>Laboratory-grade immune measurement, <em>reduced to a fingerstick</em></h1>
+  <p class="cover-sub">Q-SENS is a cloud-connected, silicon-photonic biosensor platform that performs quantitative multiplex immunoassays directly from 10 µL of whole blood, returning results in under 10 minutes without centrifugation, serum separation, or laboratory infrastructure.</p>
+  <div class="barda-badge">✓ BARDA-validated 5-plex panel · CV under 20% · Luminex equivalency confirmed</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><label>Modality</label><span>Evanescent-wave fluorescence</span></div>
+    <div class="cover-meta-item"><label>Sample</label><span>10 µL fingerstick whole blood</span></div>
+    <div class="cover-meta-item"><label>Time to Result</label><span>Under 10 minutes</span></div>
+    <div class="cover-meta-item"><label>Multiplex Capacity</label><span>Up to 32 analytes per chip</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     BODY
+════════════════════════════════════════════ -->
+<div class="doc-body">
+
+  <!-- 1. SYSTEM OVERVIEW -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01 —</span>
+      <h2 class="section-title">System Overview: Five Integrated Elements</h2>
+    </div>
+
+    <p>Q-SENS combines optical biosensing, microfluidics, disposable cartridges, cloud computing, and mobile communications into a single diagnostic ecosystem. A palm-sized reader interrogates a single-use cartridge, then streams raw optical data to the cloud, where it is converted into calibrated, longitudinal results and delivered to the patient and clinician through a mobile application.</p>
+
+    <div class="figure">
+      <div class="fig-title">Q-SENS test flow — from fingerstick to clinical insight</div>
+      <svg viewBox="0 0 1000 248" xmlns="http://www.w3.org/2000/svg" font-family="Outfit, sans-serif">
+        <defs>
+          <marker id="ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0E9B8A"/>
+          </marker>
+          <linearGradient id="gDrop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#F0635A"/><stop offset="1" stop-color="#C0282E"/>
+          </linearGradient>
+          <linearGradient id="gCart" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e7ebef"/>
+          </linearGradient>
+          <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f6f8fa"/><stop offset="1" stop-color="#d7dde3"/>
+          </linearGradient>
+          <linearGradient id="gSide" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#c2cad2"/><stop offset="1" stop-color="#a7b1bb"/>
+          </linearGradient>
+        </defs>
+
+        <!-- connecting arrows -->
+        <g stroke="#0E9B8A" stroke-width="1.7">
+          <line x1="130" y1="120" x2="170" y2="120" marker-end="url(#ar)"/>
+          <line x1="312" y1="120" x2="352" y2="120" marker-end="url(#ar)"/>
+          <line x1="498" y1="120" x2="538" y2="120" marker-end="url(#ar)"/>
+          <line x1="650" y1="120" x2="690" y2="120" marker-end="url(#ar)"/>
+          <line x1="815" y1="120" x2="855" y2="120" marker-end="url(#ar)"/>
+        </g>
+
+        <!-- 1. FINGERSTICK / BLOOD DROP -->
+        <g>
+          <path d="M83 74 C83 74 63 103 63 121 a20 20 0 0 0 40 0 C103 103 83 74 83 74 Z" fill="url(#gDrop)"/>
+          <ellipse cx="75" cy="113" rx="4.5" ry="8" fill="#ffffff" opacity="0.35" transform="rotate(-18 75 113)"/>
+          <text x="83" y="212" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0D1B2A">Fingerstick</text>
+          <text x="83" y="228" text-anchor="middle" font-size="10" fill="#3D5470">10 µL whole blood</text>
+        </g>
+
+        <!-- 2. CARTRIDGE -->
+        <g>
+          <rect x="200" y="92" width="100" height="60" rx="9" fill="url(#gCart)" stroke="#c2cad2" stroke-width="1.2"/>
+          <rect x="206" y="97" width="88" height="2" rx="1" fill="#ffffff" opacity="0.7"/>
+          <!-- blood inlet port -->
+          <circle cx="216" cy="110" r="7" fill="#ffffff" stroke="#E8913A" stroke-width="2"/>
+          <circle cx="216" cy="110" r="3" fill="#D64045"/>
+          <!-- silicon photonic chip window -->
+          <rect x="234" y="116" width="30" height="28" rx="3" fill="#0D1B2A"/>
+          <g stroke="#14C5B0" stroke-width="0.7" opacity="0.85">
+            <line x1="234" y1="123" x2="264" y2="123"/><line x1="234" y1="130" x2="264" y2="130"/><line x1="234" y1="137" x2="264" y2="137"/>
+            <line x1="241" y1="116" x2="241" y2="144"/><line x1="248" y1="116" x2="248" y2="144"/><line x1="255" y1="116" x2="255" y2="144"/>
+          </g>
+          <g fill="#14C5B0">
+            <circle cx="241" cy="123" r="1.3"/><circle cx="248" cy="123" r="1.3"/><circle cx="255" cy="123" r="1.3"/>
+            <circle cx="241" cy="130" r="1.3"/><circle cx="248" cy="130" r="1.3"/><circle cx="255" cy="130" r="1.3"/>
+            <circle cx="241" cy="137" r="1.3"/><circle cx="248" cy="137" r="1.3"/><circle cx="255" cy="137" r="1.3"/>
+          </g>
+          <!-- reagent blisters -->
+          <rect x="272" y="102" width="22" height="8" rx="4" fill="#eef1f4" stroke="#d4dbe1" stroke-width="0.8"/>
+          <rect x="272" y="113" width="22" height="8" rx="4" fill="#eef1f4" stroke="#d4dbe1" stroke-width="0.8"/>
+          <!-- gold edge contacts -->
+          <g fill="#E8913A">
+            <rect x="276" y="128" width="2" height="18" rx="1"/><rect x="280" y="128" width="2" height="18" rx="1"/>
+            <rect x="284" y="128" width="2" height="18" rx="1"/><rect x="288" y="128" width="2" height="18" rx="1"/>
+            <rect x="292" y="128" width="2" height="18" rx="1"/>
+          </g>
+          <text x="250" y="212" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0D1B2A">Disposable cartridge</text>
+          <text x="250" y="228" text-anchor="middle" font-size="10" fill="#3D5470">chip, reagents, fluidics</text>
+        </g>
+
+        <!-- 3. PORTABLE READER -->
+        <g>
+          <ellipse cx="416" cy="180" rx="54" ry="7" fill="#0D1B2A" opacity="0.10"/>
+          <rect x="368" y="104" width="96" height="62" rx="20" fill="url(#gSide)"/>
+          <rect x="368" y="90" width="96" height="62" rx="20" fill="url(#gTop)" stroke="#cdd4db" stroke-width="1.2"/>
+          <circle cx="416" cy="120" r="30" fill="none" stroke="#F5B56A" stroke-width="6" opacity="0.35"/>
+          <circle cx="416" cy="120" r="27" fill="none" stroke="#E8913A" stroke-width="2.4"/>
+          <circle cx="416" cy="120" r="18" fill="#eef1f4"/>
+          <circle cx="416" cy="120" r="4" fill="#cdd4db"/>
+          <!-- front slot + inserted cartridge tab -->
+          <rect x="398" y="149" width="36" height="7" rx="2" fill="#2a3340"/>
+          <rect x="404" y="152" width="24" height="17" rx="2" fill="#ffffff" stroke="#cdd4db" stroke-width="1"/>
+          <rect x="404" y="165" width="24" height="4" rx="1" fill="#E8913A" opacity="0.8"/>
+          <text x="416" y="212" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0D1B2A">Portable reader</text>
+          <text x="416" y="228" text-anchor="middle" font-size="10" fill="#3D5470">optics, detectors, wireless</text>
+        </g>
+
+        <!-- 4. CLOUD + AI -->
+        <g>
+          <path d="M566 134 q-17 0 -17 -15 q0 -13 15 -14 q2 -15 19 -15 q16 0 18 14 q13 0 13 14 q0 16 -16 16 Z" fill="#e7f6f3" stroke="#0E9B8A" stroke-width="1.5"/>
+          <text x="585" y="124" text-anchor="middle" font-size="15" font-weight="600" fill="#0E9B8A">AI</text>
+          <text x="583" y="212" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0D1B2A">Cloud + AI</text>
+          <text x="583" y="228" text-anchor="middle" font-size="10" fill="#3D5470">signal, calibration, models</text>
+        </g>
+
+        <!-- 5. MOBILE APP -->
+        <g>
+          <rect x="724" y="70" width="52" height="96" rx="11" fill="#0D1B2A"/>
+          <rect x="729" y="80" width="42" height="78" rx="5" fill="#ffffff"/>
+          <rect x="743" y="74" width="14" height="3.5" rx="1.7" fill="#1A2E44"/>
+          <rect x="734" y="86" width="22" height="5" rx="2.5" fill="#e7f6f3"/>
+          <text x="750" y="111" text-anchor="middle" font-size="16" font-weight="600" fill="#0E9B8A">28</text>
+          <text x="750" y="120" text-anchor="middle" font-size="5.5" fill="#3D5470">inflammation age</text>
+          <polyline points="734,140 740,134 746,137 752,128 758,131 764,124 770,127" fill="none" stroke="#0E9B8A" stroke-width="1.4"/>
+          <rect x="736" y="146" width="28" height="7" rx="3.5" fill="#2D8653" opacity="0.85"/>
+          <text x="750" y="212" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0D1B2A">Mobile app</text>
+          <text x="750" y="228" text-anchor="middle" font-size="10" fill="#3D5470">results, trends, alerts</text>
+        </g>
+
+        <!-- 6. PATIENT + CLINICIAN -->
+        <g>
+          <circle cx="905" cy="104" r="9" fill="#8BA4BA"/>
+          <path d="M888 136 a17 17 0 0 1 34 0 Z" fill="#8BA4BA"/>
+          <circle cx="926" cy="108" r="8" fill="#0E9B8A"/>
+          <path d="M911 137 a15 15 0 0 1 30 0 Z" fill="#0E9B8A"/>
+          <text x="914" y="212" text-anchor="middle" font-size="12.5" font-weight="600" fill="#0D1B2A">Patient + clinician</text>
+          <text x="914" y="228" text-anchor="middle" font-size="10" fill="#3D5470">decisions</text>
+        </g>
+      </svg>
+      <div class="fig-note">Each fingerstick cartridge is read by the palm-sized reader, which streams raw optical signal to the cloud. Calibration, quality control, and the AI models all live in software, so the platform keeps improving without any hardware change. Device illustrations are schematic renderings.</div>
+    </div>
+
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-icon">01</div>
+        <div class="component-body">
+          <div class="c-title">Disposable Test Cartridge</div>
+          <p class="c-desc">Single-use cartridge integrating the optical sensing chip, reagent reservoirs, sample-processing components, fluidic network, calibration reagents, and a waste chamber. Single use eliminates cross-contamination and simplifies workflow.</p>
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-icon">02</div>
+        <div class="component-body">
+          <div class="c-title">Optical Sensing Chip</div>
+          <p class="c-desc">A silicon-based planar waveguide with a functionalized sensing surface and multiple independent sensing regions, read by fluorescence detection. Fabricated with semiconductor-compatible processes for low-cost mass production.</p>
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-icon">03</div>
+        <div class="component-body">
+          <div class="c-title">Portable Reader</div>
+          <p class="c-desc">Battery-powered, palm-sized reader housing the excitation light source, optical coupling, photodetectors, fluidic-control electronics, and the cartridge interface. It interrogates the chip and transmits data wirelessly to the cloud.</p>
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-icon">04</div>
+        <div class="component-body">
+          <div class="c-title">Cloud Infrastructure</div>
+          <p class="c-desc">Performs signal processing, calibration, quality control, secure data storage, longitudinal patient tracking, and clinical reporting. Over-the-air updates let the platform evolve without touching the hardware.</p>
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-icon">05</div>
+        <div class="component-body">
+          <div class="c-title">Mobile Application</div>
+          <p class="c-desc">Handles test initiation, user authentication, result viewing, data management, physician communication, and population analytics, turning each measurement into a tracked point on a personal trajectory.</p>
+        </div>
+      </div>
+      <div class="component-card">
+        <div class="component-icon">∞</div>
+        <div class="component-body">
+          <div class="c-title">A Platform, Not a Single Test</div>
+          <p class="c-desc">The same reader and cartridge architecture supports a growing biomarker menu spanning inflammation, infectious disease, cardiovascular, oncology, autoimmune, and women's health applications.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. TECHNOLOGY STACK -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02 —</span>
+      <h2 class="section-title">The Technology Stack: Hardware, Data, and Intelligence</h2>
+    </div>
+
+    <p>Q-SENS is best understood as three stacked layers. At the base, the silicon photonic hardware is the <strong>enabler</strong>: it produces laboratory-grade, multiplexed immune measurements from a 10 µL fingerstick, anywhere. Each measurement feeds the layer above it, a growing body of <strong>personalized immune data</strong>. Sitting on top of both is an <strong>AI analysis layer</strong> that interprets the complex, longitudinal trends that data reveals. The hardware is necessary, but the value compounds as you move up the stack.</p>
+
+    <div class="figure">
+      <div class="fig-title">Biomarkr technology stack — hardware enables data, data enables intelligence</div>
+      <img class="stack-img" src="assets/qsens_layered.jpg" alt="Q-SENS layered system: silicon photonic hardware at the base, personalized immune data in the middle, and AI analysis on top">
+      <div class="fig-note">The three layers build on one another: hardware captures the optical signal, the data layer maps each patient's inflammatory baseline, and the AI layer forecasts deviations before symptoms appear.</div>
+    </div>
+
+    <div class="stack-layers">
+      <div class="stack-layer ai">
+        <div class="sl-tag">Layer 03 — AI Analysis</div>
+        <div class="sl-title">Intelligence over longitudinal trends</div>
+        <p>Deep-learning anomaly detection and predictive trend forecasting read each patient's immune trajectory, turning subtle deviations into proactive, actionable prevention rather than after-the-fact diagnosis.</p>
+      </div>
+      <div class="stack-layer data">
+        <div class="sl-tag">Layer 02 — Personalized Immune Data</div>
+        <div class="sl-title">A multi-dimensional personal baseline</div>
+        <p>Every fingerstick adds calibrated CIP measurements (IL-6, TNF-α, IL-1β, IFN-γ, IL-10, with hs-CRP) to a secure, cloud-based map of the individual's inflammatory baseline, which is the substrate the AI layer learns from.</p>
+      </div>
+      <div class="stack-layer hw">
+        <div class="sl-tag">Layer 01 — Hardware (the enabler)</div>
+        <div class="sl-title">Silicon photonic measurement at the point of need</div>
+        <p>The disposable cartridge and palm-sized reader perform quantitative multiplex immunoassays from 10 µL of whole blood in under 10 minutes, making frequent, personal immune data collection possible in the first place.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. DETECTION TECHNOLOGY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03 —</span>
+      <h2 class="section-title">The Core Technology: Evanescent-Wave Biosensing</h2>
+    </div>
+
+    <p>Q-SENS uses a planar optical waveguide that confines light within a thin layer on the chip. While most of the light stays inside the waveguide, a small portion extends just beyond the surface as an <strong>evanescent field</strong> that penetrates only about <strong>50 to 150 nm</strong>. This short reach is the central trick of the platform: it selectively excites fluorescent labels bound at the surface while leaving everything deeper in the sample dark.</p>
+
+    <div class="callout">
+      <p>The evanescent field reaches only about 50 to 150 nanometers. An antibody is 10 to 15 nm. A red blood cell is 6,000 to 8,000 nm. Surface-bound signal is excited; blood cells sit outside the light entirely. That is what makes direct whole-blood testing possible.</p>
+    </div>
+
+    <div class="figure">
+      <div class="fig-title">Selective surface excitation — why whole blood works without separation</div>
+      <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" font-family="Outfit, sans-serif">
+        <!-- bulk sample with blood cells -->
+        <rect x="40" y="20" width="820" height="150" fill="#fbf4f1" stroke="#e7d9d2" stroke-width="1"/>
+        <text x="56" y="42" font-size="12" fill="#3D5470" font-style="italic">Whole-blood sample (cells remain outside the excitation zone)</text>
+        <!-- blood cells -->
+        <g fill="#D64045" opacity="0.75">
+          <ellipse cx="160" cy="95" rx="22" ry="14"/><ellipse cx="320" cy="70" rx="22" ry="14"/>
+          <ellipse cx="500" cy="100" rx="22" ry="14"/><ellipse cx="660" cy="68" rx="22" ry="14"/>
+          <ellipse cx="780" cy="110" rx="22" ry="14"/><ellipse cx="240" cy="135" rx="22" ry="14"/>
+          <ellipse cx="580" cy="140" rx="22" ry="14"/>
+        </g>
+        <g fill="#7B5EA7" opacity="0.55">
+          <circle cx="420" cy="60" r="17"/><circle cx="720" cy="135" r="17"/>
+        </g>
+        <text x="690" y="100" font-size="10" fill="#fff" font-weight="600" text-anchor="middle">RBC 6–8 µm</text>
+        <!-- evanescent field band -->
+        <rect x="40" y="170" width="820" height="26" fill="#14C5B0" opacity="0.30"/>
+        <rect x="40" y="170" width="820" height="13" fill="#14C5B0" opacity="0.45"/>
+        <text x="56" y="187" font-size="11" fill="#0D1B2A" font-weight="600">Evanescent field · ~50–150 nm</text>
+        <!-- waveguide -->
+        <rect x="40" y="196" width="820" height="34" fill="#243B55"/>
+        <!-- light beam inside waveguide -->
+        <line x1="50" y1="213" x2="850" y2="213" stroke="#14C5B0" stroke-width="3" opacity="0.8"/>
+        <polygon points="850,213 838,208 838,218" fill="#14C5B0"/>
+        <text x="56" y="223" font-size="10" fill="#9fb6c9">Guided excitation light (silicon planar waveguide)</text>
+        <!-- chip base -->
+        <rect x="40" y="230" width="820" height="20" fill="#0D1B2A"/>
+        <text x="450" y="244" font-size="10" fill="#8BA4BA" text-anchor="middle">Silicon photonic chip</text>
+        <!-- immunocomplexes on surface -->
+        <g>
+          <!-- complex 1 -->
+          <path d="M250 196 l-6 -16 M250 196 l6 -16" stroke="#0D1B2A" stroke-width="2"/>
+          <circle cx="250" cy="174" r="6" fill="#E8913A"/>
+          <path d="M250 168 l-6 -14 M250 168 l6 -14" stroke="#0D1B2A" stroke-width="2"/>
+          <circle cx="250" cy="151" r="5" fill="#14C5B0"/>
+          <circle cx="250" cy="151" r="11" fill="none" stroke="#14C5B0" stroke-width="1" opacity="0.6"/>
+          <!-- complex 2 -->
+          <path d="M470 196 l-6 -16 M470 196 l6 -16" stroke="#0D1B2A" stroke-width="2"/>
+          <circle cx="470" cy="174" r="6" fill="#E8913A"/>
+          <path d="M470 168 l-6 -14 M470 168 l6 -14" stroke="#0D1B2A" stroke-width="2"/>
+          <circle cx="470" cy="151" r="5" fill="#14C5B0"/>
+          <circle cx="470" cy="151" r="11" fill="none" stroke="#14C5B0" stroke-width="1" opacity="0.6"/>
+          <!-- complex 3 -->
+          <path d="M690 196 l-6 -16 M690 196 l6 -16" stroke="#0D1B2A" stroke-width="2"/>
+          <circle cx="690" cy="174" r="6" fill="#E8913A"/>
+          <path d="M690 168 l-6 -14 M690 168 l6 -14" stroke="#0D1B2A" stroke-width="2"/>
+          <circle cx="690" cy="151" r="5" fill="#14C5B0"/>
+          <circle cx="690" cy="151" r="11" fill="none" stroke="#14C5B0" stroke-width="1" opacity="0.6"/>
+        </g>
+        <text x="785" y="158" font-size="10" fill="#3D5470">fluorophore excited</text>
+        <text x="785" y="172" font-size="10" fill="#3D5470">at the surface</text>
+      </svg>
+      <div class="fig-note">Only labels within roughly 50 to 150 nanometers of the surface are excited, so background fluorescence from cells and bulk plasma is dramatically reduced. The result is laboratory-grade sensitivity from an unprocessed whole-blood drop.</div>
+    </div>
+
+    <p>Beyond this optical selectivity, additional proprietary cartridge design further directs blood cells away from the sensing surface, sharpening the signal-to-background advantage. <em>Patent pending.</em></p>
+
+    <p>Each sensing region carries an immobilized capture antibody specific to one analyte, and the assay is a standard fluorescence sandwich. The five-step sequence below runs entirely inside the cartridge.</p>
+
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="s-title">Capture antibody immobilization</div>
+          <p class="s-desc">Analyte-specific antibodies are pre-bound to defined sensing regions on the chip (for example IL-6, TNF-α, IFN-γ, IL-10, IL-1β), each region measuring one biomarker.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="s-title">Sample introduction</div>
+          <p class="s-desc">Whole blood enters the cartridge and target biomarkers bind to their capture antibodies. No centrifugation or serum separation is required.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="s-title">Detection antibody binding</div>
+          <p class="s-desc">Fluorescently labeled detection antibodies bind the captured analytes, forming the sandwich: capture antibody → biomarker → detection antibody.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="s-title">Optical excitation</div>
+          <p class="s-desc">The waveguide excites only the fluorophores near the surface, so signal comes overwhelmingly from genuine surface-bound complexes rather than free label in the bulk sample.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="s-title">Quantitation</div>
+          <p class="s-desc">Measured fluorescence intensity is converted to analyte concentration through calibration algorithms applied in the cloud.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. MULTIPLEX ARCHITECTURE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04 —</span>
+      <h2 class="section-title">Multiplex Architecture: 32 Measurements on One Chip</h2>
+    </div>
+
+    <p>The waveguide matrix crosses <strong>4 optical input channels</strong> with <strong>8 output channels</strong>, creating <strong>4 × 8 = 32 independent sensing locations</strong> on a single chip. That capacity is spent on analytes, replicates, controls, and on-chip calibration standards, so a single fingerstick can return a full multiplexed panel with built-in quality control.</p>
+
+    <div class="figure">
+      <div class="fig-title">Waveguide matrix — 4 inputs × 8 outputs = 32 sensing sites</div>
+      <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="Outfit, sans-serif">
+        <!-- input channels (vertical-ish, left) labels -->
+        <text x="40" y="20" font-size="11" fill="#3D5470" font-weight="600">4 optical inputs</text>
+        <!-- 4 input lines -->
+        <g stroke="#E8913A" stroke-width="2.5" opacity="0.85">
+          <line x1="70" y1="60" x2="690" y2="60"/>
+          <line x1="70" y1="115" x2="690" y2="115"/>
+          <line x1="70" y1="170" x2="690" y2="170"/>
+          <line x1="70" y1="225" x2="690" y2="225"/>
+        </g>
+        <g fill="#E8913A" font-size="10">
+          <text x="44" y="64">in1</text><text x="44" y="119">in2</text><text x="44" y="174">in3</text><text x="44" y="229">in4</text>
+        </g>
+        <!-- 8 output lines -->
+        <text x="600" y="270" font-size="11" fill="#3D5470" font-weight="600" text-anchor="end">8 outputs</text>
+        <g stroke="#0E9B8A" stroke-width="2.5" opacity="0.8">
+          <line x1="110" y1="40" x2="110" y2="250"/>
+          <line x1="190" y1="40" x2="190" y2="250"/>
+          <line x1="270" y1="40" x2="270" y2="250"/>
+          <line x1="350" y1="40" x2="350" y2="250"/>
+          <line x1="430" y1="40" x2="430" y2="250"/>
+          <line x1="510" y1="40" x2="510" y2="250"/>
+          <line x1="590" y1="40" x2="590" y2="250"/>
+          <line x1="670" y1="40" x2="670" y2="250"/>
+        </g>
+        <!-- 32 intersection spots -->
+        <g>
+          <!-- generate rows at y 60,115,170,225 and cols 110..670 -->
+          <!-- row1 -->
+          <g fill="#14C5B0">
+            <circle cx="110" cy="60" r="6"/><circle cx="190" cy="60" r="6"/><circle cx="270" cy="60" r="6"/><circle cx="350" cy="60" r="6"/><circle cx="430" cy="60" r="6"/><circle cx="510" cy="60" r="6"/><circle cx="590" cy="60" r="6"/><circle cx="670" cy="60" r="6"/>
+            <circle cx="110" cy="115" r="6"/><circle cx="190" cy="115" r="6"/><circle cx="270" cy="115" r="6"/><circle cx="350" cy="115" r="6"/><circle cx="430" cy="115" r="6"/><circle cx="510" cy="115" r="6"/><circle cx="590" cy="115" r="6"/><circle cx="670" cy="115" r="6"/>
+            <circle cx="110" cy="170" r="6"/><circle cx="190" cy="170" r="6"/><circle cx="270" cy="170" r="6"/><circle cx="350" cy="170" r="6"/><circle cx="430" cy="170" r="6"/><circle cx="510" cy="170" r="6"/><circle cx="590" cy="170" r="6"/><circle cx="670" cy="170" r="6"/>
+            <circle cx="110" cy="225" r="6"/><circle cx="190" cy="225" r="6"/><circle cx="270" cy="225" r="6"/><circle cx="350" cy="225" r="6"/><circle cx="430" cy="225" r="6"/><circle cx="510" cy="225" r="6"/><circle cx="590" cy="225" r="6"/><circle cx="670" cy="225" r="6"/>
+          </g>
+          <!-- halo on a few to denote the CIP analytes -->
+          <g fill="none" stroke="#0D1B2A" stroke-width="1.4">
+            <circle cx="110" cy="60" r="11"/><circle cx="190" cy="60" r="11"/><circle cx="270" cy="60" r="11"/><circle cx="350" cy="60" r="11"/><circle cx="430" cy="60" r="11"/>
+          </g>
+        </g>
+        <text x="110" y="288" font-size="9" fill="#3D5470" text-anchor="middle">IL-6</text>
+        <text x="190" y="288" font-size="9" fill="#3D5470" text-anchor="middle">TNF-α</text>
+        <text x="270" y="288" font-size="9" fill="#3D5470" text-anchor="middle">IL-1β</text>
+        <text x="350" y="288" font-size="9" fill="#3D5470" text-anchor="middle">IFN-γ</text>
+        <text x="430" y="288" font-size="9" fill="#3D5470" text-anchor="middle">IL-10</text>
+        <text x="590" y="288" font-size="9" fill="#3D5470" text-anchor="middle">controls /</text>
+        <text x="590" y="299" font-size="9" fill="#3D5470" text-anchor="middle">standards</text>
+      </svg>
+      <div class="fig-note">The Core Inflammation Panel (CIP) occupies five sites; the remaining capacity carries replicates, controls, and calibration standards, or expands the menu toward the full 32-analyte ceiling.</div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-item"><span class="spec-val">4 × 8</span><span class="spec-label">Input × output<br>waveguide matrix</span></div>
+      <div class="spec-item"><span class="spec-val">32</span><span class="spec-label">Independent sensing<br>sites per chip</span></div>
+      <div class="spec-item"><span class="spec-val">5</span><span class="spec-label">Cytokines in the<br>Core Inflammation Panel</span></div>
+      <div class="spec-item"><span class="spec-val">1</span><span class="spec-label">Cartridge, fully<br>self-calibrating</span></div>
+    </div>
+  </div>
+
+  <!-- 4. ATTRIBUTES -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05 —</span>
+      <h2 class="section-title">Platform Attributes</h2>
+    </div>
+
+    <p>Each design choice removes a barrier that keeps cytokine testing locked inside centralized laboratories.</p>
+
+    <div class="attr-grid">
+      <div class="attr-card">
+        <div class="label">Direct whole blood</div>
+        <div class="a-title">No centrifugation, no serum separation</div>
+        <p>Conventional cytokine assays need serum or plasma and a centrifuge. Q-SENS reads a 10 µL fingerstick drop directly, which also preserves cytokines that degrade rapidly after collection, improving biological accuracy.</p>
+      </div>
+      <div class="attr-card">
+        <div class="label">Sensitivity</div>
+        <div class="a-title">Single-digit pg/mL detection</div>
+        <p>The platform targets single-digit pg/mL sensitivity for cytokines such as IL-6, TNF-α, and IFN-γ, approaching or exceeding many centralized laboratory systems.</p>
+      </div>
+      <div class="attr-card">
+        <div class="label">Self-calibration</div>
+        <div class="a-title">Standards built into every cartridge</div>
+        <p>Each sensing site is measured in two steps: first the unknown sample, then an on-cartridge standard. This per-sensor calibration, together with internal controls and reference channels carried inside every cartridge, reduces reader-to-reader and cartridge-to-cartridge variation, improves reproducibility, and lowers maintenance for the user.</p>
+      </div>
+      <div class="attr-card">
+        <div class="label">Speed</div>
+        <div class="a-title">Results in under 10 minutes</div>
+        <p>Typical turnaround is roughly 5 to 10 minutes at the point of need, fast enough for in-visit decisions and for serial monitoring across hours where cytokines move quickly.</p>
+      </div>
+      <div class="attr-card">
+        <div class="label">Manufacturing</div>
+        <div class="a-title">Semiconductor-compatible fabrication</div>
+        <p>The silicon photonic chip is built with semiconductor-compatible processes, supporting low-cost, high-volume manufacturing as the menu and install base scale.</p>
+      </div>
+      <div class="attr-card">
+        <div class="label">Setting</div>
+        <div class="a-title">Decentralized and at home</div>
+        <p>The same device fits emergency departments, clinics, physician offices, resource-limited settings, and the home, which is the platform's primary frame for chronic inflammation monitoring.</p>
+      </div>
+    </div>
+
+    <table class="feature-table">
+      <thead><tr><th>Specification</th><th>Q-SENS</th><th>Conventional lab cytokine testing</th></tr></thead>
+      <tbody>
+        <tr><td>Sample</td><td>10 µL fingerstick whole blood</td><td>Venous draw, serum or plasma</td></tr>
+        <tr><td>Pre-processing</td><td>None</td><td>Centrifugation and separation</td></tr>
+        <tr><td>Time to result</td><td>Under 10 minutes</td><td>24 to 72 hours</td></tr>
+        <tr><td>Multiplexing</td><td>Up to 32 analytes per chip</td><td>Single-plex (ELISA) to multiplex (lab-bound Luminex)</td></tr>
+        <tr><td>Setting</td><td>Point of care and home</td><td>Centralized laboratory</td></tr>
+        <tr><td>Calibration</td><td>On-cartridge, self-calibrating</td><td>Instrument and operator dependent</td></tr>
+        <tr><td>Output</td><td>Longitudinal, cloud-tracked trajectory</td><td>Isolated single-timepoint snapshot</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 5. CLOUD + AI -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06 —</span>
+      <h2 class="section-title">Cloud and AI Infrastructure</h2>
+    </div>
+
+    <p>The reader is deliberately thin. It captures raw optical signal and hands the heavy work to the cloud, where every measurement is processed, calibrated, quality-checked, and stored against the patient's history. This is what turns Q-SENS from a testing device into a <strong>monitoring platform</strong>: the value is the trajectory, not the single reading.</p>
+
+    <div class="pipeline">
+      <div class="pipe-stage">
+        <div class="p-step">Stage 1</div>
+        <div class="p-title">Signal extraction</div>
+        <div class="p-desc">Raw optical signal is cleaned of optical artifacts and corrected for nonspecific background fluorescence.</div>
+      </div>
+      <div class="pipe-stage">
+        <div class="p-step">Stage 2</div>
+        <div class="p-title">Calibration + QC</div>
+        <div class="p-desc">Calibration curves convert intensity to concentration; automated quality control validates each assay using on-chip standards.</div>
+      </div>
+      <div class="pipe-stage">
+        <div class="p-step">Stage 3</div>
+        <div class="p-title">Longitudinal data layer</div>
+        <div class="p-desc">Each result is stored against the patient's history, building a personal, circadian-aware cytokine baseline over time.</div>
+      </div>
+      <div class="pipe-stage">
+        <div class="p-step">Stage 4</div>
+        <div class="p-title">AI trajectory models</div>
+        <div class="p-desc">Models read rate of change and deviation from personal baseline to flag immune events and surface clinical reports.</div>
+      </div>
+    </div>
+
+    <p>Because the intelligence lives in software, analytical performance improves continuously without recalling or modifying a single device. Calibration refinements, new quality-control rules, and better predictive models reach the entire install base through over-the-air updates.</p>
+
+    <div class="attr-grid">
+      <div class="attr-card">
+        <div class="label">Personal baselines</div>
+        <div class="a-title">Deviation, not absolute value</div>
+        <p>Repeated measurement establishes each individual's cytokine baseline, so future readings are interpreted as movement relative to that person rather than against a population reference range.</p>
+      </div>
+      <div class="attr-card">
+        <div class="label">Trajectory signal</div>
+        <div class="a-title">Rate of change and dynamics</div>
+        <p>Rate of change, time-to-peak, resolution velocity, and cytokine ratios encode information invisible to any single measurement. The cloud computes these features across the longitudinal record.</p>
+      </div>
+      <div class="attr-card">
+        <div class="label">Predictive models</div>
+        <div class="a-title">Pre-symptomatic detection</div>
+        <p>Models trained on personal trajectories aim to detect immune deviations before clinical symptoms appear, the same logic that made continuous glucose monitoring more useful than isolated glucose readings.</p>
+      </div>
+      <div class="attr-card">
+        <div class="label">App + reporting</div>
+        <div class="a-title">Patient and clinician views</div>
+        <p>The mobile application delivers results, trends, and alerts to patients while routing clinical reports and population analytics to physicians, closing the loop from fingerstick to decision.</p>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Snapshot vs. trajectory — why frequent measurement changes the signal</div>
+      <div class="chart-svg">
+        <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" font-family="Outfit, sans-serif" style="display:block;width:100%;height:auto">
+          <g stroke="rgba(0,0,0,0.06)" stroke-width="1">
+            <line x1="60" y1="198" x2="690" y2="198"/><line x1="60" y1="156" x2="690" y2="156"/>
+            <line x1="60" y1="114" x2="690" y2="114"/><line x1="60" y1="72" x2="690" y2="72"/><line x1="60" y1="30" x2="690" y2="30"/>
+          </g>
+          <line x1="60" y1="30" x2="60" y2="240" stroke="#cdd4db" stroke-width="1.2"/>
+          <line x1="60" y1="240" x2="690" y2="240" stroke="#cdd4db" stroke-width="1.2"/>
+          <g fill="#8BA4BA" font-size="10" text-anchor="end">
+            <text x="52" y="201">1x</text><text x="52" y="159">2x</text><text x="52" y="117">3x</text><text x="52" y="75">4x</text><text x="52" y="33">5x</text>
+          </g>
+          <g fill="#8BA4BA" font-size="10" text-anchor="middle">
+            <text x="60" y="256">0</text><text x="165" y="256">2</text><text x="270" y="256">4</text><text x="375" y="256">6</text><text x="480" y="256">8</text><text x="585" y="256">10</text><text x="690" y="256">12</text>
+          </g>
+          <text x="375" y="276" text-anchor="middle" font-size="10.5" fill="#3D5470">Days of monitoring</text>
+          <text x="16" y="135" text-anchor="middle" font-size="10.5" fill="#3D5470" transform="rotate(-90 16 135)">Cytokine (fold vs. baseline)</text>
+          <line x1="375" y1="30" x2="375" y2="240" stroke="#8BA4BA" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+          <polyline fill="none" stroke="#D64045" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"
+            points="60,198 112.5,193.8 165,185.4 217.5,172.8 270,156 322.5,130.8 375,101.4 427.5,72 480,55.2 532.5,51 585,59.4 637.5,76.2 690,97.2"/>
+          <polyline fill="none" stroke="#2D8653" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"
+            points="60,55.2 112.5,72 165,93 217.5,114 270,130.8 322.5,147.6 375,160.2 427.5,168.6 480,177 532.5,181.2 585,185.4 637.5,189.6 690,193.8"/>
+          <rect x="368.5" y="94.9" width="13" height="13" rx="1.5" fill="#0D1B2A" transform="rotate(45 375 101.4)"/>
+          <text x="375" y="84" text-anchor="middle" font-size="9.5" fill="#0D1B2A">one reading, two possible futures</text>
+          <g font-size="11" fill="#3D5470">
+            <line x1="86" y1="291" x2="104" y2="291" stroke="#D64045" stroke-width="2.4"/>
+            <text x="109" y="294.5">Rising (flare developing)</text>
+            <line x1="270" y1="291" x2="288" y2="291" stroke="#2D8653" stroke-width="2.4"/>
+            <text x="293" y="294.5">Falling (flare resolving)</text>
+            <rect x="452" y="286.5" width="9" height="9" rx="1" fill="#0D1B2A" transform="rotate(45 456.5 291)"/>
+            <text x="466" y="294.5">Single lab snapshot</text>
+          </g>
+        </svg>
+      </div>
+      <div class="chart-note">Illustrative. The same absolute value carries opposite meaning depending on direction and rate of change. A lab snapshot sees one dot; cloud-tracked longitudinal monitoring sees the curve and the deviation from an individual baseline.</div>
+    </div>
+  </div>
+
+  <!-- 6. VALIDATION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">07 —</span>
+      <h2 class="section-title">Validation and Performance</h2>
+    </div>
+
+    <p>Q-SENS has been developed in part with BARDA DRIVe funding. Under BARDA Contract 75A50122C00023, the platform demonstrated a validated 5-plex panel and strong agreement with established laboratory methods.</p>
+
+    <div class="specs-grid">
+      <div class="spec-item"><span class="spec-val">5-plex</span><span class="spec-label">Panel validated<br>(IL-6, IL-10, TNF-α, IFN-γ, IFN-α2)</span></div>
+      <div class="spec-item"><span class="spec-val">&lt;20%</span><span class="spec-label">CV at 500 pg/mL across<br>5 instruments, 50 cartridges</span></div>
+      <div class="spec-item"><span class="spec-val">0</span><span class="spec-label">Failures recorded<br>across that run</span></div>
+      <div class="spec-item"><span class="spec-val">R² 0.999</span><span class="spec-label">Luminex equivalency for IL-10<br>(0.965 for IL-6), Stanford HIMC</span></div>
+    </div>
+
+    <p>The Core Inflammation Panel (IL-6, IL-1β, TNF-α, IFN-γ, IL-10) anchors the regulatory path, with fingerstick CRP incorporated as a market-entry wedge. The longer-term menu extends to infectious disease, cardiovascular markers such as NT-proBNP and troponin, maternal health markers including PlGF and sFlt-1, oncology, and companion diagnostics, all on the same reader and cartridge architecture.</p>
+
+    <div class="callout">
+      <p>The biology of inflammation is understood and the cytokines are validated. What has been missing is the measurement infrastructure to make immune monitoring frequent, quantitative, and personal. That is the engineering problem Q-SENS solves.</p>
+    </div>
+  </div>
+
+</div><!-- /doc-body -->
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<div class="doc-footer">
+  <div>
+    <div class="footer-brand">biomarkr</div>
+    <div style="margin-top:4px">Longitudinal Inflammation Monitoring · Thousand Oaks, CA</div>
+  </div>
+  <div style="text-align:right">
+    <div><a href="/cdn-cgi/l/email-protection#8de9f4e1ece3cdefe4e2e0ecffe6ffa3e5e8ece1f9e5"><span class="__cf_email__" data-cfemail="385c41545956785a515755594a534a16505d59544c50">[email&#160;protected]</span></a></div>
+    <div style="margin-top:4px"><a href="https://biomarkr.health">biomarkr.health</a></div>
+    <div style="margin-top:6px; color: rgba(255,255,255,0.3); font-size:11px">The Q-SENS Platform · Technology Overview · June 2026</div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

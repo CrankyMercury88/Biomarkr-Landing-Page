@@ -1,0 +1,43 @@
+/* ============================================================
+   Biomarkr — Webfonts
+   ------------------------------------------------------------
+   Primary UI / body typeface: Inter (the typeface used across
+   the live Biomarkr product & site).
+   Editorial / display accent: Newsreader — a quiet literary
+   serif used here as the nearest free stand-in for the bespoke
+   "biomarkr" wordmark lettering. The wordmark itself always
+   ships as artwork (assets/logo-wordmark-*.png); Newsreader is
+   only for running editorial serif text.
+
+   Fonts are loaded from Google's CDN. @font-face declarations
+   below register the families with the design-system compiler;
+   the @import guarantees every weight resolves in any consuming
+   context.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&display=swap');
+
+/* --- Inter (UI / body) ------------------------------------- */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfMZg.woff2) format('woff2');
+}
+
+/* --- Newsreader (editorial serif) -------------------------- */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v23/cY9qfjOCX1hbuyalUrK49dLac06G1ZGsZBtoBCzBDXXD9JVF438w7w.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 200 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v23/cY9pfjOCX1hbuyalUrK49dLac06G1ZG_zZjsZBtoBCzBDXXD9JVF438w7w.woff2) format('woff2');
+}

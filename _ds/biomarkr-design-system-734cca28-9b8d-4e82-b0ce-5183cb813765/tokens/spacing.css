@@ -1,0 +1,64 @@
+/* ============================================================
+   Biomarkr — Spacing, Radius, Shadow & Motion Tokens
+   ------------------------------------------------------------
+   The layout language is airy and quiet: generous whitespace,
+   hairline borders over heavy shadows, tight modest radii. The
+   one expressive curve is the fully-rounded "pill" used for the
+   floating navigation and primary actions.
+   ============================================================ */
+
+:root {
+  /* --- Spacing scale (4px base) --------------------------- */
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4 */
+  --space-2: 0.5rem;    /* 8 */
+  --space-3: 0.75rem;   /* 12 */
+  --space-4: 1rem;      /* 16 */
+  --space-5: 1.5rem;    /* 24 */
+  --space-6: 2rem;      /* 32 */
+  --space-7: 3rem;      /* 48 */
+  --space-8: 4rem;      /* 64 */
+  --space-9: 6rem;      /* 96 */
+  --space-10: 8rem;     /* 128 */
+
+  /* Page gutter — the site breathes at 10% inset */
+  --gutter: 10%;
+  --content-max: 900px;
+
+  /* --- Radii ---------------------------------------------- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+
+  /* --- Border widths -------------------------------------- */
+  --hairline: 1px;
+  --rule: 2px;          /* the animated accent rule under titles */
+
+  /* --- Shadows (used sparingly; prefer hairlines) --------- */
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
+  --shadow-float: 0 20px 60px rgba(0, 0, 0, 0.10); /* device / hero imagery */
+  --shadow-focus: 0 0 0 3px rgba(0, 0, 0, 0.12);
+
+  /* --- Motion --------------------------------------------- */
+  --ease-standard: cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --ease-in-out: ease-in-out; /* @kind other */
+  --dur-fast: 0.2s; /* @kind other */
+  --dur-base: 0.3s; /* @kind other */
+  --dur-slow: 0.8s; /* @kind other */
+  --dur-reveal: 1s; /* @kind other */
+
+  /* --- Z layers ------------------------------------------- */
+  --z-base: 0; /* @kind other */
+  --z-raised: 10; /* @kind other */
+  --z-overlay: 90; /* @kind other */
+  --z-header: 100; /* @kind other */
+  --z-modal: 1000; /* @kind other */
+}

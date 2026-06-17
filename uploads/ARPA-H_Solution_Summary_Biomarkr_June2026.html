@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARPA-H Mission Office ISO — Solution Summary | Biomarkr</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap');
+
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #1A2E44;
+    --navy-light: #243B55;
+    --teal: #0E9B8A;
+    --teal-light: #14C5B0;
+    --amber: #E8913A;
+    --amber-light: #F5B56A;
+    --slate: #8BA4BA;
+    --slate-light: #C5D5E4;
+    --cream: #F7F4EE;
+    --white: #FFFFFF;
+    --red: #D64045;
+    --green: #2D8653;
+    --purple: #7B5EA7;
+    --text-primary: #0D1B2A;
+    --text-secondary: #3D5470;
+    --border: rgba(13,27,42,0.12);
+    --section-gap: 3.5rem;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    background: var(--cream);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── Cover ── */
+  .cover {
+    background: var(--navy);
+    color: var(--white);
+    padding: 4rem 5rem 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(14,155,138,0.2);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 1px solid rgba(14,155,138,0.35);
+  }
+  .cover-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cover-tag::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--teal);
+  }
+  .cover h1 {
+    font-family: 'EB Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 500;
+    line-height: 1.2;
+    max-width: 700px;
+    margin-bottom: 1.2rem;
+  }
+  .cover h1 em {
+    color: var(--teal-light);
+    font-style: italic;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: var(--slate-light);
+    max-width: 580px;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .cover-meta-item label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .cover-meta-item span {
+    font-size: 14px;
+    color: var(--white);
+    font-weight: 500;
+  }
+  .barda-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(14,155,138,0.15);
+    border: 1px solid rgba(14,155,138,0.4);
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--teal-light);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Layout ── */
+  .doc-body {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 4rem 3rem;
+  }
+
+  /* ── Sections ── */
+  .section { margin-bottom: var(--section-gap); }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 500;
+    color: var(--navy);
+  }
+  p { margin-bottom: 1rem; color: var(--text-secondary); }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ── Callout box ── */
+  .callout {
+    background: var(--navy);
+    color: var(--white);
+    padding: 1.5rem 2rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    font-style: italic;
+    position: relative;
+  }
+  .callout::before {
+    content: '"';
+    font-size: 4rem;
+    color: var(--teal);
+    position: absolute;
+    top: -0.5rem; left: 1.5rem;
+    font-style: normal;
+    line-height: 1;
+  }
+  .callout p { color: var(--white); padding-top: 1rem; }
+
+  /* ── Problem statement ── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .problem-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    background: var(--white);
+  }
+  .problem-card .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.5rem;
+  }
+  .problem-card p { color: var(--text-secondary); font-size: 14px; margin-bottom: 0; }
+
+  /* ── Chart containers ── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+  }
+  .chart-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+  .chart-card .chart-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+  .chart-card .chart-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 0.6rem;
+    line-height: 1.4;
+  }
+  .chart-wrap { position: relative; height: 160px; }
+
+  /* ── Circadian chart ── */
+  .circadian-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .circadian-card .chart-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+  }
+  .circadian-wrap { position: relative; height: 200px; }
+  .circadian-note {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 0.75rem;
+    font-style: italic;
+  }
+
+  /* ── Use cases ── */
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .usecase-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    background: var(--white);
+    display: flex;
+    gap: 1rem;
+  }
+  .usecase-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+  .usecase-body .uc-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+  .usecase-body .uc-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+  .usecase-body .uc-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: rgba(14,155,138,0.08);
+    border: 1px solid rgba(14,155,138,0.2);
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+  }
+
+  /* ── Milestones ── */
+  .milestone-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1.5rem 0;
+  }
+  .milestone-item {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .milestone-item:last-child { border-bottom: none; }
+  .milestone-phase {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    background: var(--navy);
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .milestone-body .ms-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+  .milestone-body .ms-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+  .milestone-metric {
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .milestone-metric .m-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--teal);
+    font-weight: 500;
+  }
+  .milestone-metric .m-label {
+    font-size: 11px;
+    color: var(--slate);
+  }
+
+  /* ── Team ── */
+  .team-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .team-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    background: var(--white);
+  }
+  .team-card .t-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+  .team-card .t-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .team-card .t-bio {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* ── Budget ── */
+  .budget-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 14px;
+  }
+  .budget-table th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .budget-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+  .budget-table tr:last-child td {
+    background: rgba(14,155,138,0.06);
+    color: var(--text-primary);
+    font-weight: 600;
+    border-bottom: none;
+  }
+  .budget-table tr:nth-child(even) td { background: rgba(0,0,0,0.018); }
+
+  /* ── Footer ── */
+  .doc-footer {
+    background: var(--navy);
+    color: var(--slate);
+    padding: 2rem 5rem;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .doc-footer a { color: var(--teal-light); text-decoration: none; }
+  .footer-brand {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Inline highlights ── */
+  .highlight { color: var(--teal); font-weight: 600; }
+  .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+  .tag-navy { background: rgba(13,27,42,0.08); color: var(--navy-mid); border: 1px solid rgba(13,27,42,0.15); }
+  .tag-teal { background: rgba(14,155,138,0.08); color: var(--teal); border: 1px solid rgba(14,155,138,0.25); }
+  .tag-amber { background: rgba(232,145,58,0.1); color: var(--amber); border: 1px solid rgba(232,145,58,0.25); }
+
+  /* ── Tech specs ── */
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .spec-item {
+    text-align: center;
+    padding: 1.25rem 0.75rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .spec-val {
+    font-family: 'EB Garamond', serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--navy);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .spec-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.3;
+  }
+
+  @media print {
+    .cover { padding: 3rem 4rem 2.5rem; }
+    .doc-body { padding: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     COVER
+════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-tag">ARPA-H Mission Office ISO — Proactive Health Office</div>
+  <h1>Decoding the <em>Immune Trajectory</em>:<br>A Universal Ambulatory Cytokine Monitoring Platform</h1>
+  <p class="cover-sub">A platform engineering proposal to transform personalized immune surveillance from a laboratory procedure into a fingerstick measurement — enabling early detection, flare prediction, and treatment monitoring across 100+ inflammatory conditions.</p>
+  <div class="barda-badge">✓ Prior BARDA DRIVe Award — Home Diagnostics AOI — Validated Concept</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><label>Submitting Organization</label><span>Biomarkr, Inc.</span></div>
+    <div class="cover-meta-item"><label>Point of Contact</label><span>Dylan Brownstein, CEO · dylan@biomarkr.health</span></div>
+    <div class="cover-meta-item"><label>Submission Date</label><span>June 2026</span></div>
+    <div class="cover-meta-item"><label>Mission Office</label><span>Proactive Health Office (PHO)</span></div>
+    <div class="cover-meta-item"><label>Requested Period</label><span>24 months</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     BODY
+════════════════════════════════════════════ -->
+<div class="doc-body">
+
+  <!-- 1. THE PROBLEM -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01 —</span>
+      <h2 class="section-title">The Problem: Medicine is Blind to Immune Trajectories</h2>
+    </div>
+
+    <div class="callout">
+      <p>Immune states are dynamic, personal, and trajectory-dependent. A snapshot IL-6 of 15 pg/mL means nothing without knowing whether it rose from 5 in six hours or has been stable at 15 for two weeks. Yet every existing diagnostic gives you a snapshot.</p>
+    </div>
+
+    <p>Chronic inflammatory conditions — rheumatoid arthritis, IBD, Long COVID, cardiovascular disease — affect over <strong>100 million Americans</strong> and cost the healthcare system more than <strong>$800 billion annually</strong>. Despite this, clinicians manage these conditions with tools that are structurally mismatched to the biology:</p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="label">❌ Current Reality</div>
+        <p>Cytokine testing requires a centralized lab, venipuncture, 24–72 hour turnaround, and costs $200–$800 per panel. Results arrive too late to act on. Most patients are never tested at all.</p>
+      </div>
+      <div class="problem-card">
+        <div class="label">❌ The Snapshot Problem</div>
+        <p>Single-timepoint cytokine measurements cannot distinguish a rising flare from a resolving one, a treatment responder from a non-responder, or an early immune deviation from random noise.</p>
+      </div>
+      <div class="problem-card">
+        <div class="label">❌ Population References Fail Individuals</div>
+        <p>Reference ranges are derived from population statistics. A patient whose IL-6 doubles from their personal baseline — while remaining within "normal" range — receives no clinical alert.</p>
+      </div>
+      <div class="problem-card">
+        <div class="label">❌ Circadian Confounds Are Ignored</div>
+        <p>IL-6, TNF-α, and IL-1β follow strong circadian rhythms that vary 2–4-fold within a single day. No existing clinical protocol accounts for this, contaminating every cytokine measurement taken.</p>
+      </div>
+    </div>
+
+    <p>The clinical consequence: <strong>flares go undetected until they are severe, treatments are continued past the point of efficacy, and dose adjustments are based on symptom reports rather than biological evidence</strong>. This is a solvable engineering problem — not a scientific one. The biology is understood. The measurement infrastructure does not exist.</p>
+  </div>
+
+  <!-- 2. THE SOLUTION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02 —</span>
+      <h2 class="section-title">The Solution: Q-SENS — A Universal Immune Trajectory Platform</h2>
+    </div>
+
+    <p>Biomarkr has developed <strong>Q-SENS</strong>, a handheld silicon photonic biosensor platform that performs quantitative 5-plex immunoassay testing from a 10 µL fingerstick whole blood sample, delivering results in under 10 minutes at the point of care or at home. The platform is built on 22 issued patents covering Dr. Reuven Duer's fluorescent immunoassay technology — consolidated optics, fluidics, and signal detection in a solid-state format with no moving parts.</p>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <span class="spec-val">5</span>
+        <span class="spec-label">Cytokines simultaneously<br>(IL-6, TNF-α, IL-1β, IFN-γ, IL-10)</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-val">10µL</span>
+        <span class="spec-label">Fingerstick whole blood<br>required per test</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-val">&lt;10 min</span>
+        <span class="spec-label">Time to result<br>at point of care</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-val">32</span>
+        <span class="spec-label">Max biomarkers per chip<br>(platform architecture)</span>
+      </div>
+    </div>
+
+    <p>Q-SENS is not a diagnostic test in the traditional sense. It is a <strong>longitudinal immune monitoring platform</strong> — the cytokine equivalent of continuous glucose monitoring. Its value proposition is the trajectory, not the reading. Frequent, low-cost, multiplexed measurement at home enables three capabilities no existing technology provides:</p>
+
+    <p><strong>1. Personalized baseline establishment</strong> — repeated measurement in health establishes each patient's individual circadian-calibrated cytokine baseline, against which future readings are interpreted as deviations, not absolute values.</p>
+    <p><strong>2. Trajectory-based signal extraction</strong> — rate of change, time-to-peak, resolution velocity, and ratio dynamics encode information invisible to any single measurement.</p>
+    <p><strong>3. Pre-symptomatic flare prediction</strong> — longitudinal ML models trained on personal trajectories can detect immune deviations days before clinical symptom onset.</p>
+
+    <p><em>Prior BARDA Validation:</em> Biomarkr received a BARDA DRIVe award under the "Bringing Laboratory Testing to the Home" Area of Interest, validating the home diagnostic concept. This proposal addresses the engineering challenge BARDA's scope could not: building the trajectory-aware platform architecture and generating the longitudinal human data needed to validate its clinical utility.</p>
+  </div>
+
+  <!-- 3. CYTOKINE SIGNATURES -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03 —</span>
+      <h2 class="section-title">Cytokine Trajectory Signatures: The Diagnostic Signal</h2>
+    </div>
+
+    <p>The five Q-SENS cytokines — IL-6, TNF-α, IL-1β, IFN-γ, IL-10 — span four functional immune axes: innate initiation, systemic amplification, adaptive effector function, and counter-regulation. Each disease condition produces a characteristic <em>temporal signature</em> in the relationships and trajectories of these markers, not in their absolute values. The charts below show simulated trajectories based on published clinical literature, illustrating the pattern discrimination that longitudinal monitoring enables.</p>
+
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Sepsis — Cytokine storm signature (hours)</div>
+        <div class="chart-wrap"><canvas id="chartSepsis"></canvas></div>
+        <div class="chart-label">TNF-α &amp; IL-1β spike within hours. IL-6 rises rapidly and persists. IL-10 counter-regulatory surge. IFN-γ suppressed — immunoparalysis signature.</div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">RA Flare — Pre-symptomatic trajectory (days)</div>
+        <div class="chart-wrap"><canvas id="chartRA"></canvas></div>
+        <div class="chart-label">IL-6 &amp; TNF-α rise 3–5 days before clinical flare. IL-10 insufficient to suppress — explains breakthrough. IFN-γ shows modest Th1 involvement.</div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Long COVID — Persistent immune dysregulation (weeks)</div>
+        <div class="chart-wrap"><canvas id="chartLongCOVID"></canvas></div>
+        <div class="chart-label">IL-6 &amp; IFN-γ elevated but variable — episodic flaring pattern. Blunted IL-10 response distinguishes from recovery. TNF-α smoldering chronically.</div>
+      </div>
+    </div>
+
+    <p>The critical insight is that these signatures are <strong>trajectory-dependent, not threshold-dependent</strong>. The same absolute IL-6 concentration carries opposite clinical meaning depending on whether it is rising, stable, or falling — and whether it represents a 2-fold or 10-fold deviation from that individual's personal baseline. No single-timepoint test, however sensitive, can extract this information.</p>
+  </div>
+
+  <!-- 4. CIRCADIAN -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04 —</span>
+      <h2 class="section-title">The Circadian Problem — and Its Solution</h2>
+    </div>
+
+    <p>A fundamental and largely ignored confound in cytokine measurement is the <strong>circadian rhythm of immune mediators</strong>. IL-6, TNF-α, and IL-1β vary 2–4-fold within a single 24-hour period, peaking in the early morning hours and nadir-ing in the afternoon. This means a morning IL-6 of 8 pg/mL and an afternoon IL-6 of 4 pg/mL in the same patient may represent identical immune states — or opposite ones.</p>
+
+    <div class="circadian-card">
+      <div class="chart-title">Cytokine circadian rhythm — individual variation across a 24-hour cycle (illustrative)</div>
+      <div class="circadian-wrap"><canvas id="chartCircadian"></canvas></div>
+      <div class="circadian-note">Time axis normalized to individual wake time (T=0), not clock time. Peak-to-nadir amplitude varies substantially between individuals, making population-level correction ineffective.</div>
+    </div>
+
+    <p>The Q-SENS platform addresses this through a <strong>dedicated Circadian Characterization Phase</strong> at trial enrollment: participants test every 4 hours for 14 days, wake-time normalized (not clock-normalized), generating each individual's personal circadian cytokine profile. All subsequent trajectory analysis is phase-corrected against this personal map — a capability no existing inflammatory monitoring approach provides.</p>
+
+    <p>This is not a minor methodological refinement. Without circadian normalization, up to <strong>40% of apparent cytokine "deviations"</strong> in a longitudinal dataset are circadian noise. With it, the signal-to-noise ratio for detecting true immune events improves by an estimated 3–5x, directly enabling the pre-symptomatic flare prediction that is the platform's central clinical claim.</p>
+  </div>
+
+  <!-- 5. USE CASES -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05 —</span>
+      <h2 class="section-title">Primary Use Cases — Where This Platform Changes Outcomes</h2>
+    </div>
+
+    <p>Q-SENS is a horizontal platform. The following use cases represent the highest-priority clinical and research applications, each validated by an established unmet need and a clear cytokine biological rationale.</p>
+
+    <div class="usecase-grid">
+      <div class="usecase-card">
+        <div class="usecase-icon">🦴</div>
+        <div class="usecase-body">
+          <div class="uc-tag">RA / Autoimmune</div>
+          <div class="uc-title">Biologic Treatment Monitoring &amp; Flare Prediction</div>
+          <p class="uc-desc">1.5M US RA patients on biologics have no objective home monitoring. Q-SENS trajectories detect treatment response within days of initiation and predict flares 5–7 days before clinical presentation, enabling dose adjustment before joint damage occurs.</p>
+        </div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">🫁</div>
+        <div class="usecase-body">
+          <div class="uc-tag">Long COVID / ME-CFS</div>
+          <div class="uc-title">Objective Immune Phenotyping — No FDA Dx Exists</div>
+          <p class="uc-desc">Over 17M Americans with Long COVID have no validated objective biomarker. Longitudinal cytokine trajectories — particularly IFN-γ and IL-6 episodic patterns — provide the first objective immune fingerprint of post-acute sequelae, enabling clinical trial stratification and treatment monitoring.</p>
+        </div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">🫀</div>
+        <div class="usecase-body">
+          <div class="uc-tag">IBD</div>
+          <div class="uc-title">Treatment Response Monitoring Between Infusions</div>
+          <p class="uc-desc">3M+ IBD patients on infliximab, vedolizumab, and ustekinumab are assessed clinically every 8–12 weeks. Q-SENS monitoring between visits detects secondary loss-of-response before clinical relapse, enabling proactive switching rather than reactive dose escalation.</p>
+        </div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">💊</div>
+        <div class="usecase-body">
+          <div class="uc-tag">Pharma / DCT</div>
+          <div class="uc-title">Decentralized Clinical Trial Pharmacodynamics</div>
+          <p class="uc-desc">Pharma trials on immune-modulating biologics measure pharmacodynamic effect at site visits every 4–12 weeks. Q-SENS provides continuous remote PD data between visits, compressing trial timelines and enabling proof-of-concept at lower N with higher confidence.</p>
+        </div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">🔬</div>
+        <div class="usecase-body">
+          <div class="uc-tag">Research</div>
+          <div class="uc-title">Immune Baseline Population Studies</div>
+          <p class="uc-desc">Academic researchers studying exercise physiology, nutritional interventions, sleep, aging, and vaccine response currently rely on ELISA (72-hour turnaround, single-plex) or Luminex (lab-bound). Q-SENS enables frequent, multi-site, standardized cytokine collection in ambulatory populations.</p>
+        </div>
+      </div>
+      <div class="usecase-card">
+        <div class="usecase-icon">🏥</div>
+        <div class="usecase-body">
+          <div class="uc-tag">Proactive Health</div>
+          <div class="uc-title">Pre-Clinical Immune Surveillance in High-Risk Populations</div>
+          <p class="uc-desc">Patients at elevated cardiovascular risk, cancer survivors, and post-surgical patients carry chronic low-grade inflammation invisible to standard-of-care labs. Longitudinal Q-SENS monitoring detects smoldering immune activation before organ damage, enabling early intervention at a fraction of downstream treatment cost.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. MILESTONES -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06 —</span>
+      <h2 class="section-title">Proposed Milestones — 24-Month Program</h2>
+    </div>
+
+    <p>Consistent with ARPA-H's milestone-driven funding model, Biomarkr proposes the following go/no-go milestones. Failure to meet any milestone triggers a program review before subsequent funding is released.</p>
+
+    <div class="milestone-list">
+      <div class="milestone-item">
+        <span class="milestone-phase">M0–M6</span>
+        <div class="milestone-body">
+          <div class="ms-title">Platform Engineering: Circadian-Aware Firmware &amp; Personalized Baseline Algorithm</div>
+          <p class="ms-desc">Complete wake-normalized testing protocol in Q-SENS firmware. Develop and validate personal baseline algorithm with circadian phase correction. Bench-validated coefficient of variation &lt;8% across 5 cytokines at clinically relevant concentrations.</p>
+        </div>
+        <div class="milestone-metric">
+          <div class="m-val">CV &lt;8%</div>
+          <div class="m-label">Go/No-Go</div>
+        </div>
+      </div>
+      <div class="milestone-item">
+        <span class="milestone-phase">M6–M12</span>
+        <div class="milestone-body">
+          <div class="ms-title">Circadian Characterization Study — 30 Healthy Volunteers</div>
+          <p class="ms-desc">Enroll 30 healthy controls. 14-day 6x/day testing protocol (every 4 hours, wake-normalized). Characterize intra-individual circadian amplitude, phase, and day-to-day reproducibility for all 5 cytokines. Validate phase-correction algorithm against gold-standard lab ELISA.</p>
+        </div>
+        <div class="milestone-metric">
+          <div class="m-val">r &gt;0.90</div>
+          <div class="m-label">vs. ELISA</div>
+        </div>
+      </div>
+      <div class="milestone-item">
+        <span class="milestone-phase">M12–M20</span>
+        <div class="milestone-body">
+          <div class="ms-title">Feasibility Cohort — 60 Patients (RA + Long COVID, 30 each)</div>
+          <p class="ms-desc">Enroll 30 RA patients and 30 Long COVID patients. 6-month longitudinal monitoring (2x/week). Capture ≥3 clinician-confirmed flare events per arm. Train trajectory deviation models on personalized baselines. Primary endpoint: AUC ≥0.80 for flare detection ≥5 days pre-onset.</p>
+        </div>
+        <div class="milestone-metric">
+          <div class="m-val">AUC ≥0.80</div>
+          <div class="m-label">Go/No-Go</div>
+        </div>
+      </div>
+      <div class="milestone-item">
+        <span class="milestone-phase">M20–M24</span>
+        <div class="milestone-body">
+          <div class="ms-title">Data Package, Publications &amp; Scale-Up Readiness</div>
+          <p class="ms-desc">Complete dataset analysis. Submit 2 manuscripts (circadian normalization methods; flare prediction feasibility). Prepare longitudinal cytokine dataset as foundation for large-scale government-funded trial grant. Achieve ARPA-H program transition readiness review.</p>
+        </div>
+        <div class="milestone-metric">
+          <div class="m-val">2 papers</div>
+          <div class="m-label">Submitted</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. TEAM -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">07 —</span>
+      <h2 class="section-title">Team</h2>
+    </div>
+    <div class="team-row">
+      <div class="team-card">
+        <div class="t-name">Dr. Reuven Duer</div>
+        <div class="t-role">Chief Science Officer &amp; Co-Founder</div>
+        <p class="t-bio">Inventor of the silicon photonic immunoassay platform. 22 issued patents. Led biosensor R&D from concept through BARDA-validated prototype. Expert in fluorescent immunoassay and miniaturized optical detection.</p>
+      </div>
+      <div class="team-card">
+        <div class="t-name">Dylan Brownstein</div>
+        <div class="t-role">Chief Executive Officer</div>
+        <p class="t-bio">Operational lead with experience scaling healthcare technology companies. Led BARDA engagement, commercial strategy, and RUO GTM execution. Responsible for program management and government relations.</p>
+      </div>
+      <div class="team-card">
+        <div class="t-name">Aren Giske, MD, MOH</div>
+        <div class="t-role">Chief Operating Officer &amp; Co-Founder</div>
+        <p class="t-bio">Physician executive with expertise in regulatory strategy and occupational health. Leading FDA regulatory pathway (CRP 510(k) → De Novo CIP). FACOEM. Clinical study design and IRB navigation.</p>
+      </div>
+    </div>
+    <p>Biomarkr will recruit a Clinical Study Director (MD/PhD, rheumatology or immunology background) and Biostatistician as key personnel under this award. Advisory relationships with clinical sites in Los Angeles and San Diego are in early discussion.</p>
+  </div>
+
+  <!-- 8. BUDGET -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">08 —</span>
+      <h2 class="section-title">Budget Overview — 24 Months</h2>
+    </div>
+    <p>Biomarkr requests <strong>$4.8M over 24 months</strong>. This is milestone-gated: $1.8M releases at contract execution, with $1.5M and $1.5M releasing upon achievement of the M6 and M12 milestones respectively.</p>
+    <table class="budget-table">
+      <thead><tr><th>Category</th><th>Description</th><th>Amount</th></tr></thead>
+      <tbody>
+        <tr><td>Platform Engineering</td><td>Firmware, baseline algorithm, circadian correction software, cartridge optimization</td><td>$920,000</td></tr>
+        <tr><td>Clinical Study Operations</td><td>CRO/study coordinator, IRB, consent, participant management (90 participants)</td><td>$980,000</td></tr>
+        <tr><td>Cartridges &amp; Consumables</td><td>~18,000 tests at RUO manufacturing cost (circadian + feasibility cohorts)</td><td>$720,000</td></tr>
+        <tr><td>Laboratory Validation</td><td>ELISA reference testing, biostatistics, data management platform</td><td>$480,000</td></tr>
+        <tr><td>Participant Incentives</td><td>~$600/participant across 90 participants, visit-linked</td><td>$54,000</td></tr>
+        <tr><td>Personnel</td><td>Clinical Study Director (1.0 FTE), Biostatistician (0.5 FTE), RA (1.0 FTE), PI time</td><td>$1,140,000</td></tr>
+        <tr><td>Indirect / Overhead (15%)</td><td>Institutional overhead on direct costs</td><td>$506,000</td></tr>
+        <tr><td><strong>Total Request</strong></td><td></td><td><strong>$4,800,000</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 9. WHY ARPA-H -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">09 —</span>
+      <h2 class="section-title">Why This Is an ARPA-H Problem</h2>
+    </div>
+
+    <p>The barriers to building a trajectory-aware immune monitoring platform are not scientific — the biology is understood, the cytokines are validated, the sensing technology exists. The barriers are <strong>engineering and clinical validation challenges</strong> that private capital cannot efficiently fund at this stage:</p>
+
+    <p><strong>Private capital won't fund the circadian characterization study.</strong> Thirty healthy volunteers, 6x/day testing for 14 days, generating no revenue and no IP — but generating the normative dataset without which the trajectory algorithm is unvalidated. This is exactly the kind of enabling pre-competitive infrastructure ARPA-H is designed to fund.</p>
+
+    <p><strong>The feasibility cohort requires longitudinal infrastructure before the commercial case is proven.</strong> No Series A investor will fund a 6-month, 60-patient monitoring study at this stage. But without this data, the large-scale government-funded trial needed to validate the clinical claim cannot be justified.</p>
+
+    <p><strong>This is a platform bet, not a product bet.</strong> Q-SENS's 32-biomarker architecture means the cytokine panel validated here becomes the template for expansion to cardiovascular, oncology, neurology, and pandemic preparedness applications — exactly the kind of transformative platform impact that aligns with ARPA-H's mission to deliver health breakthroughs in years, not decades.</p>
+
+    <div class="callout">
+      <p>The CGM did not succeed because blood glucose was a new biomarker. It succeeded because frequent measurement transformed a snapshot into a trajectory — and that trajectory enabled entirely new clinical interventions. Q-SENS does the same for the immune system. ARPA-H can make this happen within 24 months.</p>
+    </div>
+  </div>
+
+</div><!-- /doc-body -->
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<div class="doc-footer">
+  <div>
+    <div class="footer-brand">biomarkr</div>
+    <div style="margin-top:4px">Longitudinal Inflammation Monitoring · Thousand Oaks, CA</div>
+  </div>
+  <div style="text-align:right">
+    <div><a href="mailto:dylan@biomarkr.health">dylan@biomarkr.health</a></div>
+    <div style="margin-top:4px"><a href="https://biomarkr.health">biomarkr.health</a></div>
+    <div style="margin-top:6px; color: rgba(255,255,255,0.3); font-size:11px">ARPA-H Mission Office ISO — Solution Summary · June 2026 · CONFIDENTIAL</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     CHARTS
+════════════════════════════════════════════ -->
+<script>
+const COLORS = {
+  il6:  '#E8913A',
+  il1b: '#D64045',
+  tnfa: '#7B5EA7',
+  ifng: '#0E9B8A',
+  il10: '#378BD4'
+};
+
+Chart.defaults.font.family = "'Outfit', sans-serif";
+Chart.defaults.font.size = 10;
+Chart.defaults.color = '#8BA4BA';
+
+const sharedOptions = (xLabel) => ({
+  responsive: true,
+  maintainAspectRatio: false,
+  animation: false,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'bottom',
+      labels: { boxWidth: 8, boxHeight: 8, padding: 6, font: { size: 9 } }
+    },
+    tooltip: { enabled: true }
+  },
+  scales: {
+    x: {
+      title: { display: true, text: xLabel, font: { size: 9 }, color: '#8BA4BA' },
+      grid: { color: 'rgba(0,0,0,0.04)' },
+      ticks: { font: { size: 9 }, maxTicksLimit: 8 }
+    },
+    y: {
+      title: { display: true, text: 'Fold vs. baseline', font: { size: 9 }, color: '#8BA4BA' },
+      grid: { color: 'rgba(0,0,0,0.04)' },
+      ticks: { font: { size: 9 } },
+      beginAtZero: true
+    }
+  }
+});
+
+// ── Sepsis chart
+const sepHours = [0,3,6,9,12,18,24,30,36,48,60,72];
+new Chart(document.getElementById('chartSepsis'), {
+  type: 'line',
+  data: {
+    labels: sepHours,
+    datasets: [
+      { label: 'IL-6',  data: [1,4,18,28,32,24,18,14,10,7,5,4],   borderColor: COLORS.il6,  backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 0 },
+      { label: 'TNF-α', data: [1,12,22,15,8,5,3,2.5,2,1.8,1.5,1.2],borderColor: COLORS.tnfa, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 0 },
+      { label: 'IL-1β', data: [1,8,16,12,7,4,2.5,2,1.8,1.5,1.2,1],borderColor: COLORS.il1b, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 0 },
+      { label: 'IL-10', data: [1,1.5,3,8,14,20,16,12,9,6,4,3],   borderColor: COLORS.il10, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 0, borderDash: [4,3] },
+      { label: 'IFN-γ', data: [1,1,1.2,1.3,1.2,1.1,1,0.9,0.8,0.8,0.9,1],borderColor: COLORS.ifng,backgroundColor:'transparent',tension:0.4,borderWidth:1.8,pointRadius:0 }
+    ]
+  },
+  options: sharedOptions('Hours from onset')
+});
+
+// ── RA Flare chart
+const raHours = [-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10];
+new Chart(document.getElementById('chartRA'), {
+  type: 'line',
+  data: {
+    labels: raHours,
+    datasets: [
+      { label: 'IL-6',  data: [1,1.1,1.3,1.6,2.0,2.8,3.8,4.5,4.8,4.6,4.2,3.8,3.2,2.6,2.1,1.7], borderColor: COLORS.il6,  backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 0 },
+      { label: 'TNF-α', data: [1,1.1,1.2,1.5,1.9,2.6,3.4,4.2,4.5,4.3,3.9,3.4,2.9,2.4,2.0,1.6], borderColor: COLORS.tnfa, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 0 },
+      { label: 'IFN-γ', data: [1,1,1.1,1.2,1.4,1.8,2.2,2.4,2.3,2.1,1.9,1.7,1.5,1.3,1.2,1.1],   borderColor: COLORS.ifng, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 0 },
+      { label: 'IL-10', data: [1,1,1.1,1.2,1.3,1.5,1.7,1.8,1.8,1.8,1.7,1.6,1.5,1.4,1.3,1.2],   borderColor: COLORS.il10, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 0, borderDash: [4,3] },
+      { label: 'IL-1β', data: [1,1,1.1,1.3,1.5,1.9,2.5,3.0,3.2,3.0,2.7,2.4,2.0,1.7,1.5,1.3],   borderColor: COLORS.il1b, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 0 }
+    ]
+  },
+  options: {
+    ...sharedOptions('Days (0 = symptom onset)'),
+    plugins: {
+      ...sharedOptions('Days (0 = symptom onset)').plugins,
+      annotation: {}
+    }
+  }
+});
+
+// ── Long COVID chart
+const lcWeeks = [0,1,2,3,4,5,6,7,8,9,10,11,12];
+new Chart(document.getElementById('chartLongCOVID'), {
+  type: 'line',
+  data: {
+    labels: lcWeeks,
+    datasets: [
+      { label: 'IL-6',  data: [2.1,2.4,1.9,2.8,2.3,3.1,2.0,2.6,2.2,3.0,2.4,2.1,2.3], borderColor: COLORS.il6,  backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 2 },
+      { label: 'IFN-γ', data: [1.8,2.1,1.6,2.5,1.9,2.7,1.7,2.3,1.8,2.6,2.1,1.7,2.0], borderColor: COLORS.ifng, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 2 },
+      { label: 'TNF-α', data: [1.6,1.7,1.5,1.9,1.7,2.0,1.6,1.8,1.6,1.9,1.7,1.6,1.7], borderColor: COLORS.tnfa, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 2 },
+      { label: 'IL-10', data: [1.1,1.2,1.1,1.2,1.1,1.2,1.1,1.2,1.1,1.2,1.1,1.1,1.2], borderColor: COLORS.il10, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 2, borderDash: [4,3] },
+      { label: 'IL-1β', data: [1.3,1.4,1.2,1.5,1.3,1.6,1.2,1.4,1.3,1.5,1.3,1.2,1.3], borderColor: COLORS.il1b, backgroundColor: 'transparent', tension: 0.4, borderWidth: 1.8, pointRadius: 2 }
+    ]
+  },
+  options: sharedOptions('Weeks post-enrollment')
+});
+
+// ── Circadian chart
+const circHours = Array.from({length: 25}, (_, i) => i);
+const circLabel = circHours.map(h => {
+  if (h === 0) return 'Wake';
+  if (h === 6) return '+6h';
+  if (h === 12) return 'Noon';
+  if (h === 18) return '+18h';
+  if (h === 24) return 'Sleep';
+  return '';
+});
+
+const circ_il6_a  = [1.0,1.4,2.1,2.8,3.2,2.9,2.4,1.9,1.5,1.2,1.0,0.9,0.8,0.8,0.85,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.3,1.1,1.0];
+const circ_il6_b  = [1.0,1.2,1.7,2.2,2.5,2.3,1.9,1.5,1.2,1.0,0.9,0.85,0.8,0.82,0.88,0.95,1.05,1.15,1.2,1.3,1.35,1.3,1.2,1.1,1.0];
+const circ_tnfa   = [1.0,1.6,2.4,3.1,3.4,3.0,2.3,1.7,1.3,1.1,0.95,0.85,0.8,0.82,0.9,0.98,1.1,1.2,1.3,1.4,1.5,1.45,1.35,1.15,1.0];
+const circ_il1b   = [1.0,1.3,1.9,2.5,2.8,2.5,2.0,1.5,1.2,1.0,0.88,0.8,0.78,0.8,0.85,0.9,1.0,1.1,1.15,1.22,1.28,1.25,1.15,1.05,1.0];
+
+new Chart(document.getElementById('chartCircadian'), {
+  type: 'line',
+  data: {
+    labels: circLabel,
+    datasets: [
+      { label: 'IL-6 (Patient A)', data: circ_il6_a,  borderColor: COLORS.il6,  backgroundColor: 'rgba(232,145,58,0.06)',  tension: 0.5, borderWidth: 2, pointRadius: 0, fill: false },
+      { label: 'IL-6 (Patient B)', data: circ_il6_b,  borderColor: COLORS.il6,  backgroundColor: 'transparent', tension: 0.5, borderWidth: 1.5, pointRadius: 0, borderDash: [5,4] },
+      { label: 'TNF-α',            data: circ_tnfa,   borderColor: COLORS.tnfa, backgroundColor: 'transparent', tension: 0.5, borderWidth: 2, pointRadius: 0 },
+      { label: 'IL-1β',            data: circ_il1b,   borderColor: COLORS.il1b, backgroundColor: 'transparent', tension: 0.5, borderWidth: 2, pointRadius: 0 }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: { boxWidth: 10, boxHeight: 10, padding: 10, font: { size: 10 } }
+      }
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Time from wake (hours)', font: { size: 10 }, color: '#8BA4BA' },
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: { font: { size: 10 } }
+      },
+      y: {
+        title: { display: true, text: 'Relative concentration (fold vs. individual nadir)', font: { size: 10 }, color: '#8BA4BA' },
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: { font: { size: 10 } },
+        min: 0.6, max: 3.8
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
