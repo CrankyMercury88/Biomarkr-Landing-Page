@@ -1,0 +1,269 @@
+/* ============================================================
+   Biomarkr — site-level styles (page chrome, layout, motion).
+   Brand tokens come from the design system (_ds/.../styles.css).
+   This file only adds page-scaffold concerns: nav, footer,
+   reading rhythm, and the scroll-reveal motion.
+   ============================================================ */
+
+html { scroll-behavior: smooth; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color .4s var(--ease-out), color .4s var(--ease-out);
+}
+* { box-sizing: border-box; }
+::selection { background: var(--text-primary); color: var(--surface-page); }
+
+a { color: inherit; }
+
+/* --- Page width system --- */
+.wrap { width: 100%; max-width: 1240px; margin: 0 auto; padding-left: 8%; padding-right: 8%; }
+.column { max-width: 880px; }
+
+/* --- Floating nav --- */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 24px;
+  padding: 22px 8%;
+  background: linear-gradient(to bottom, rgba(var(--mist-rgb),1) 0%, rgba(var(--mist-rgb),0.86) 55%, rgba(var(--mist-rgb),0) 100%);
+}
+.brandmark { height: 28px; width: auto; display: block; filter: invert(var(--logo-invert,0)); }
+.navpill {
+  display: flex; gap: 2px; align-items: center;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  padding: 5px;
+}
+.navlink {
+  padding: 9px 22px; font-size: 13.5px; font-weight: 500;
+  color: var(--text-secondary); text-decoration: none;
+  border-radius: var(--radius-pill);
+  transition: background-color .2s var(--ease-out), color .2s var(--ease-out);
+  white-space: nowrap;
+}
+.navlink:hover { background: var(--surface-raised); color: var(--text-primary); }
+.navlink.active { color: var(--text-primary); background: var(--surface-raised); }
+.nav-right { display: flex; align-items: center; gap: 14px; }
+.mobile-toggle { display: none; }
+
+@media (max-width: 940px) {
+  .navpill.center { display: none; }
+  .mobile-toggle { display: inline-flex; }
+  .nav-email { display: none; }
+}
+
+/* mobile sheet */
+.mobile-sheet {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--surface-page);
+  display: flex; flex-direction: column; padding: 28px 8%;
+  opacity: 0; pointer-events: none; transition: opacity .25s var(--ease-out);
+}
+.mobile-sheet.open { opacity: 1; pointer-events: auto; }
+.mobile-sheet a {
+  font-size: 28px; font-weight: 300; letter-spacing: -0.02em;
+  color: var(--text-primary); text-decoration: none; padding: 14px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* --- Eyebrow + rule lockup --- */
+.eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--text-tertiary);
+}
+.rule { display: block; width: 60px; height: 2px; background: var(--text-primary); border: 0; }
+
+/* --- Body type helpers --- */
+.lead { font-size: 21px; line-height: 1.55; font-weight: 300; letter-spacing: -0.01em; color: var(--text-primary); }
+.prose { font-size: 16px; line-height: 1.85; color: var(--text-secondary); }
+.prose p { margin: 0 0 1.1em; }
+.prose strong { color: var(--text-primary); font-weight: 600; }
+.serif { font-family: var(--font-serif); font-weight: 300; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* --- Section divider --- */
+.hairline-top { border-top: 1px solid var(--border-subtle); }
+
+/* --- Footer --- */
+.site-footer { background: var(--surface-inverse); color: var(--grey-250); padding: 88px 8% 40px; }
+.site-footer h4 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--white); margin: 0 0 16px; }
+.site-footer a { color: var(--grey-350); text-decoration: none; font-size: 14px; display: block; padding: 5px 0; transition: color .2s var(--ease-out); }
+.site-footer a:hover { color: var(--white); }
+[data-theme="dark"] .site-footer { border-top: 1px solid var(--border-default); }
+
+/* --- Buttons (link styled as DS button when not React) --- */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px; border-radius: var(--radius-pill);
+  font-size: 14px; font-weight: 500; text-decoration: none; cursor: pointer;
+  border: 1px solid transparent; transition: opacity .2s var(--ease-out), background-color .2s var(--ease-out), border-color .2s var(--ease-out);
+  white-space: nowrap;
+}
+.btn-primary { background: var(--text-primary); color: var(--surface-page); }
+.btn-primary:hover { opacity: .82; }
+.btn-ghost { background: transparent; color: var(--text-primary); border-color: var(--border-default); }
+.btn-ghost:hover { background: var(--surface-raised); border-color: var(--border-strong); }
+
+/* --- Scroll reveal --- */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease-out), transform .8s var(--ease-out); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* --- Theme variables that depend on mode --- */
+:root { --nav-bg: rgba(255,255,255,0.55); }
+[data-theme="dark"] { --nav-bg: rgba(20,20,20,0.5); }
+
+/* --- Hero entrance (translate only — never hides content if animation is frozen) --- */
+@keyframes heroRise { from { transform: translateY(40px); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { [style*="heroRise"] { animation: none !important; } }
+
+/* ============================================================
+   Responsive grid system
+   Inline grid-template-columns were causing overflow + orphaned
+   items on small screens. These classes collapse cleanly at
+   tablet/mobile breakpoints. Apply via className (never inline
+   grid-template-columns, which would override the media queries).
+   ============================================================ */
+.r-split { display: grid; grid-template-columns: 1fr 1fr; }
+.r-hero  { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); }
+.r-wide  { display: grid; grid-template-columns: 1.3fr 1fr; }
+.r-cta   { display: grid; grid-template-columns: 1.2fr 1fr; }
+.r-faq   { display: grid; grid-template-columns: 0.6fr 1.4fr; }
+.r-2     { display: grid; grid-template-columns: 1fr 1fr; }
+.r-3     { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
+.r-4     { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); }
+.r-cards { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
+
+@media (max-width: 1024px) {
+  .r-cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 980px) {
+  .r-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 880px) {
+  .r-split, .r-hero, .r-wide, .r-cta, .r-faq, .r-3 { grid-template-columns: 1fr; }
+  .faq-sticky { position: static !important; top: auto !important; }
+}
+@media (max-width: 640px) {
+  .r-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .r-4 { grid-template-columns: 1fr; }
+  .r-2 { grid-template-columns: 1fr; }
+}
+
+/* Media never overflows its column */
+img, svg, table { max-width: 100%; }
+
+/* ============================================================
+   Scroll-spy section indicator (fixed dot rail, left edge)
+   ============================================================ */
+.scrollspy {
+  position: fixed; left: 30px; top: 50%; transform: translateY(-50%);
+  z-index: 90; display: flex; flex-direction: column; gap: 4px;
+  transition: opacity .35s var(--ease-out);
+}
+.scrollspy-dot {
+  display: flex; align-items: center; gap: 13px;
+  background: none; border: 0; padding: 7px 0; cursor: pointer;
+  color: var(--text-secondary);
+}
+.scrollspy-mark {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  background: var(--text-tertiary); opacity: 0.5;
+  transition: opacity .25s var(--ease-out), background-color .25s var(--ease-out), transform .25s var(--ease-out);
+}
+.scrollspy-label {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-tertiary); white-space: nowrap;
+  opacity: 0; transform: translateX(-6px); pointer-events: none;
+  transition: opacity .25s var(--ease-out), transform .25s var(--ease-out);
+}
+.scrollspy-dot:hover .scrollspy-mark { opacity: 0.85; }
+.scrollspy-dot:hover .scrollspy-label { opacity: 1; transform: none; }
+.scrollspy-dot.active .scrollspy-mark {
+  background: var(--text-secondary); opacity: 1; transform: scale(1.25);
+}
+.scrollspy-dot.active .scrollspy-label { opacity: 1; transform: none; color: var(--text-secondary); }
+@media (max-width: 1180px) { .scrollspy { left: 16px; } }
+@media (max-width: 980px) { .scrollspy { display: none; } }
+
+/* ============================================================
+   Contact modal (Get in touch)
+   ============================================================ */
+.contact-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+  background: rgba(10,10,10,0.42);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  animation: contactFade .2s var(--ease-out);
+}
+@keyframes contactFade { from { opacity: 0; } to { opacity: 1; } }
+.contact-card {
+  position: relative; width: 100%; max-width: 440px;
+  background: var(--surface-page); color: var(--text-primary);
+  border: 1px solid var(--border-default); border-radius: 16px;
+  padding: 38px 34px 30px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.22);
+  animation: contactRise .28s var(--ease-out);
+}
+@keyframes contactRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.contact-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border-default); background: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  transition: background-color .2s var(--ease-out), border-color .2s var(--ease-out), color .2s var(--ease-out);
+}
+.contact-close:hover { background: var(--surface-raised); border-color: var(--border-strong); color: var(--text-primary); }
+.contact-close svg { width: 18px; height: 18px; }
+.contact-title { margin: 0; font-size: 26px; font-weight: 300; letter-spacing: -0.02em; }
+.contact-sub { margin: 10px 0 0; font-size: 14px; line-height: 1.6; color: var(--text-secondary); max-width: 330px; }
+.contact-rows { margin-top: 26px; display: flex; flex-direction: column; gap: 4px; }
+.contact-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 12px; margin: 0 -12px; border-radius: 12px;
+  text-decoration: none; color: inherit;
+  transition: background-color .2s var(--ease-out);
+}
+.contact-row:hover { background: var(--surface-raised); }
+.contact-ic {
+  flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-default); color: var(--text-primary);
+}
+.contact-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.contact-label {
+  font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.contact-value { font-size: 15px; color: var(--text-primary); line-height: 1.4; }
+
+/* Mobile polish */
+@media (max-width: 700px) {
+  .lead { font-size: 18px; }
+  .wrap { padding-left: 6.5%; padding-right: 6.5%; }
+  .site-header { padding: 16px 6.5%; }
+  .site-footer { padding: 64px 6.5% 36px; }
+}
+
+/* --- Misc --- */
+.pill-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  padding: 6px 13px; border-radius: var(--radius-pill);
+  border: 1px solid var(--border-default); color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
