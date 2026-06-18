@@ -7,6 +7,7 @@
 <link rel="icon" href="assets/favicon-32x32.png">
 <link rel="stylesheet" href="_ds/biomarkr-design-system-734cca28-9b8d-4e82-b0ce-5183cb813765/styles.css">
 <link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="inflammation-v2.css">
 <script>
   (function () {
     try { var t = localStorage.getItem('bm-theme') || 'light'; document.documentElement.setAttribute('data-theme', t); document.documentElement.style.setProperty('--logo-invert', t === 'dark' ? 1 : 0); } catch (e) {}
@@ -20,11 +21,12 @@
 <body class="bm-root">
   <div id="root"></div>
   <script type="text/babel" src="chrome.jsx" data-presets="react"></script>
-  <script type="text/babel" src="inflammation.jsx" data-presets="react"></script>
+  <script type="text/babel" src="inflammation-v2-charts.jsx" data-presets="react"></script>
+  <script type="text/babel" src="inflammation-v2.jsx" data-presets="react"></script>
   <script type="text/babel" data-presets="react">
     const mount = () => {
-      if (!window.BiomarkrDesignSystem_734cca || !window.SiteHeader || !window.InflammationPage) { return setTimeout(mount, 30); }
-      ReactDOM.createRoot(document.getElementById('root')).render(<window.InflammationPage />);
+      if (!window.BiomarkrDesignSystem_734cca || !window.SiteHeader || !window.InflammationV2Page || !window.IV2_AcuteChronic) { return setTimeout(mount, 30); }
+      ReactDOM.createRoot(document.getElementById('root')).render(<window.InflammationV2Page />);
     };
     mount();
   </script>
