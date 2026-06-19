@@ -19,14 +19,14 @@ const TRAJ_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 const RHYTHM_PAD = { compact: '4.5rem', regular: '7rem', spacious: '9.5rem' };
 
 const SPY_SECTIONS = [
-  { id: 'sec-hero', label: 'Overview' },
-  { id: 'sec-problem', label: 'The problem' },
-  { id: 'sec-platform', label: 'The platform' },
-  { id: 'sec-signal', label: 'The signal' },
-  { id: 'sec-confound', label: 'Circadian' },
-  { id: 'sec-usecases', label: 'Use cases' },
-  { id: 'sec-team', label: 'Team' },
-];
+{ id: 'sec-hero', label: 'Overview' },
+{ id: 'sec-problem', label: 'The problem' },
+{ id: 'sec-platform', label: 'The platform' },
+{ id: 'sec-signal', label: 'The signal' },
+{ id: 'sec-confound', label: 'Circadian' },
+{ id: 'sec-usecases', label: 'Use cases' },
+{ id: 'sec-team', label: 'Team' }];
+
 
 /* Numbered section opener in brand style (rule + eyebrow + light title). */
 function SectionOpen({ num, eyebrow, title, sub, align = 'left', style = {} }) {
@@ -43,13 +43,13 @@ function SectionOpen({ num, eyebrow, title, sub, align = 'left', style = {} }) {
 function HeroTrajectory({ heroFace }) {
   return (
     <section id="sec-hero" style={{ position: 'relative', minHeight: '88vh', display: 'flex', alignItems: 'center', padding: '14vh 0 8vh' }}>
-      <div className="wrap r-hero" style={{ gap: 'clamp(40px,6vw,88px)', alignItems: 'center' }}>
+      <div className="wrap r-hero" style={{ gap: 'clamp(40px,6vw,88px)', alignItems: 'center', gridTemplateColumns: 'minmax(0,1.18fr) minmax(0,0.92fr)' }}>
         <Reveal>
-          <div className="eyebrow" style={{ marginBottom: 24 }}>Immune trajectory monitoring</div>
+          <div className="eyebrow" style={{ marginBottom: 24 }}>INFLAMMATION MONITORING</div>
           <h1 style={{ margin: 0, fontFamily: heroFace === 'serif' ? 'var(--font-serif)' : 'var(--font-sans)', fontSize: 'clamp(40px,5.4vw,72px)', fontWeight: 300, letterSpacing: heroFace === 'serif' ? '-0.02em' : '-0.035em', lineHeight: 1.02 }}>
-            Medicine reads one snapshot at a time. <span style={{ color: 'var(--text-tertiary)', fontFamily: "Inter" }}>We read the trajectory.</span>
+            Medicine reads one snapshot at a time. <br /><span style={{ color: 'var(--text-tertiary)', fontFamily: "Inter" }}>We see the entire&nbsp;story.</span>
           </h1>
-          <p className="lead" style={{ maxWidth: 500, marginTop: 28, color: 'var(--text-secondary)' }}>A single measurement means nothing on its own, not unless you know whether it rose from 5 in six hours or has held steady for two weeks. Biomarkr measures five cytokines from a fingerstick, again and again, against your own baseline.
+          <p className="lead" style={{ maxWidth: 500, marginTop: 28, color: 'var(--text-secondary)' }}>A single measurement means nothing on its own, not unless you know whether it rose in six hours or has held steady for two weeks. Biomarkr measures five cytokines from a fingerstick, again and again, against your own baseline.
 
           </p>
           <div style={{ display: 'flex', gap: 12, marginTop: 34, flexWrap: 'wrap' }}>
@@ -77,31 +77,31 @@ function HeroTrajectory({ heroFace }) {
    ============================================================ */
 function HomeTeam() {
   const { LinkedIn } = window.BM_Icons;
-  const LI = ({ href, label }) => (
-    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-      style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--text-tertiary)', textDecoration: 'none', transition: 'color .2s var(--ease-out)' }}
-      onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--text-primary)'; }}
-      onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-tertiary)'; }}>
+  const LI = ({ href, label }) =>
+  <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
+  style={{ display: 'inline-flex', alignItems: 'center', color: 'var(--text-tertiary)', textDecoration: 'none', transition: 'color .2s var(--ease-out)' }}
+  onMouseEnter={(e) => {e.currentTarget.style.color = 'var(--text-primary)';}}
+  onMouseLeave={(e) => {e.currentTarget.style.color = 'var(--text-tertiary)';}}>
       <LinkedIn size={15} />
-    </a>
-  );
+    </a>;
+
   const team = [
-    { src: 'assets/team-dylan.jpg', name: 'Dylan Brownstein', title: 'Chief Executive Officer', bio: 'Serial entrepreneur. Previously founded a VC-backed, AI-driven SaaS company. Former investor at Karcher Ventures.', li: 'https://www.linkedin.com/in/dylan-brownstein/' },
-    { src: 'assets/team-reuven.jpg', name: 'Dr. Reuven Duer, PhD', title: 'Chief Science Officer', bio: 'Inventor of the Q-SENS platform. PhD in Physics, Technion. 22 issued US patents. Led BARDA-funded prototype development.', li: 'https://www.linkedin.com/in/reuvenduer/' },
-    { src: 'assets/team-aren.jpg', name: 'Dr. Aren Giske, MD', title: 'Chief Operating Officer', bio: 'Twice-appointed medical director. Board member, Kadlec Medical Center. Occupational and Environmental Medicine specialist.', li: 'https://www.linkedin.com/in/arengiske/' },
-  ];
+  { src: 'assets/team-dylan.jpg', name: 'Dylan Brownstein', title: 'Chief Executive Officer', bio: 'Serial entrepreneur. Previously founded a VC-backed, AI-driven SaaS company. Former investor at Karcher Ventures.', li: 'https://www.linkedin.com/in/dylan-brownstein/' },
+  { src: 'assets/team-reuven.jpg', name: 'Dr. Reuven Duer, PhD', title: 'Chief Science Officer', bio: 'Inventor of the Q-SENS platform. PhD in Physics, Technion. 22 issued US patents. Led BARDA-funded prototype development.', li: 'https://www.linkedin.com/in/reuvenduer/' },
+  { src: 'assets/team-aren.jpg', name: 'Dr. Aren Giske, MD', title: 'Chief Operating Officer', bio: 'Twice-appointed medical director. Board member, Kadlec Medical Center. Occupational and Environmental Medicine specialist.', li: 'https://www.linkedin.com/in/arengiske/' }];
+
   const advisors = [
-    { src: 'assets/advisor-torsten.jpg', name: 'Torsten Fiebig', bio: 'Senior R&D leader and applied biophysical chemist. Postdoctoral fellow at Caltech; acting VP for Assay Development at Proactive Dx, with experience across diagnostics and life sciences.', li: 'https://www.linkedin.com/in/torsten-fiebig-78461935/' },
-    { src: 'assets/advisor-ilhui.jpg', name: 'Ilhui Hernandez', bio: 'Biologist with an MSc in Chemical Engineering. EU Erasmus Mundus scholar; specializes in bioactive compounds, longevity science, and preventive health innovation.', li: 'https://www.linkedin.com/in/ilhui-hernandez-021b1417a/' },
-    { src: 'assets/advisor-larry.jpg', name: 'Larry Zulch', bio: 'Serial entrepreneur and former CEO of Photometics and PLC Diagnostics. Officer at EMC Corporation following the acquisition of Dantz Development, the company he co-founded.', li: 'https://www.linkedin.com/in/larryzulch/' },
-  ];
+  { src: 'assets/advisor-torsten.jpg', name: 'Torsten Fiebig', bio: 'Senior R&D leader and applied biophysical chemist. Postdoctoral fellow at Caltech; acting VP for Assay Development at Proactive Dx, with experience across diagnostics and life sciences.', li: 'https://www.linkedin.com/in/torsten-fiebig-78461935/' },
+  { src: 'assets/advisor-ilhui.jpg', name: 'Ilhui Hernandez', bio: 'Biologist with an MSc in Chemical Engineering. EU Erasmus Mundus scholar; specializes in bioactive compounds, longevity science, and preventive health innovation.', li: 'https://www.linkedin.com/in/ilhui-hernandez-021b1417a/' },
+  { src: 'assets/advisor-larry.jpg', name: 'Larry Zulch', bio: 'Serial entrepreneur and former CEO of Photometics and PLC Diagnostics. Officer at EMC Corporation following the acquisition of Dantz Development, the company he co-founded.', li: 'https://www.linkedin.com/in/larryzulch/' }];
+
   return (
     <section id="sec-team" className="hairline-top" style={{ padding: 'var(--sec-pad) 0' }}>
       <div className="wrap">
         <Reveal><SectionOpen num="06" eyebrow="The team" title="A founder team built for this problem." sub="Spanning silicon photonics, medicine, and company building, backed by an ISO 13485 manufacturing partner and an IQVIA regulatory team." /></Reveal>
         <div className="r-3" style={{ gap: '40px 36px', marginTop: 52 }}>
-          {team.map((m, i) => (
-            <Reveal key={m.name} delay={i * 90}>
+          {team.map((m, i) =>
+          <Reveal key={m.name} delay={i * 90}>
               <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start' }}>
                 <Avatar src={m.src} name={m.name} size="lg" />
                 <div>
@@ -114,7 +114,7 @@ function HomeTeam() {
                 </div>
               </div>
             </Reveal>
-          ))}
+          )}
         </div>
         <div className="hairline-top" style={{ marginTop: 64, paddingTop: 56 }}>
           <Reveal>
@@ -122,8 +122,8 @@ function HomeTeam() {
             <span className="eyebrow">Advisors</span>
           </Reveal>
           <div className="r-3" style={{ gap: '36px 36px', marginTop: 30 }}>
-            {advisors.map((a, i) => (
-              <Reveal key={a.name} delay={i * 80}>
+            {advisors.map((a, i) =>
+            <Reveal key={a.name} delay={i * 80}>
                 <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start' }}>
                   <Avatar src={a.src} name={a.name} size="lg" />
                   <div>
@@ -135,7 +135,7 @@ function HomeTeam() {
                   </div>
                 </div>
               </Reveal>
-            ))}
+            )}
           </div>
         </div>
       </div>
@@ -235,7 +235,7 @@ function HomeTrajectory() {
       <HomeTeam />
       <CTABand
         title="The CGM transformed diabetes by turning a snapshot into a trajectory. Biomarkr does the same for the immune system."
-        body="We're partnering with pharma and biotech for research programs, and meeting investors for our seed round. If immune trajectory is the missing layer, let's talk."
+        body="We're partnering with pharma and biotech for research programs. If immune trajectory is the missing layer, let's talk."
         primary="Request a conversation" primaryHref="mailto:dylan@biomarkr.health"
         secondary="See it in practice" secondaryHref="practice.html" />
       <SiteFooter />
