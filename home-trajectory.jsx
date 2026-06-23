@@ -186,7 +186,7 @@ function HomeTrajectory() {
             <Reveal><SectionOpen num="02" eyebrow="The platform" title="Biomarkr turns a snapshot into a trajectory." sub="A handheld silicon photonic biosensor, 22 issued patents, no moving parts, that runs a quantitative five-cytokine immunoassay from a 10 µL fingerstick in under ten minutes. The cytokine equivalent of continuous glucose monitoring." /></Reveal>
             {t.showDevice &&
             <Reveal delay={120}>
-              <img src="assets/device-reader.png" alt="The Biomarkr reader" style={{ width: '100%', maxWidth: 380, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))' }} />
+              <img src="/assets/device-reader.png" alt="The Biomarkr reader" style={{ width: '100%', maxWidth: 380, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))' }} />
             </Reveal>
             }
           </div>

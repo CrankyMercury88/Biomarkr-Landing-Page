@@ -36,7 +36,7 @@ function HeroPlatform() {
           </div>
         </Reveal>
         <Reveal delay={140} style={{ position: 'relative' }}>
-          <img src="assets/device-reader.png" alt="Q-SENS reader" style={{ width: '100%', maxWidth: 460, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))', animation: 'heroRise 1.3s var(--ease-out) both' }} />
+          <img src="/assets/device-reader.png" alt="Q-SENS reader" style={{ width: '100%', maxWidth: 460, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))', animation: 'heroRise 1.3s var(--ease-out) both' }} />
         </Reveal>
       </div>
     </section>
