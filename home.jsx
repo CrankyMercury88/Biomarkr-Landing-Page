@@ -71,7 +71,7 @@ function HeroHand() {
   return (
     <section style={{ position: 'relative', minHeight: '90vh', overflow: 'hidden', paddingBottom: '14vh' }}>
       <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', height: '80vh', display: 'flex', alignItems: 'flex-end', zIndex: 1 }}>
-        <img src="assets/website-hand.png" alt="" style={{ height: '100%', width: 'auto', objectFit: 'contain', objectPosition: 'bottom center', filter: 'drop-shadow(0 24px 60px rgba(0,0,0,0.12))', animation: 'heroRise 1.4s var(--ease-out) both' }} />
+        <img src="/assets/website-hand.png" alt="" style={{ height: '100%', width: 'auto', objectFit: 'contain', objectPosition: 'bottom center', filter: 'drop-shadow(0 24px 60px rgba(0,0,0,0.12))', animation: 'heroRise 1.4s var(--ease-out) both' }} />
       </div>
       <div className="bm-mist" style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: '50vh', zIndex: 3, pointerEvents: 'none' }} />
       <div className="wrap" style={{ position: 'absolute', left: 0, right: 0, top: '64vh', zIndex: 10, display: 'flex', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap' }}>
@@ -113,7 +113,7 @@ function HeroStatement() {
           <a className="btn btn-ghost" href="inflammation.html">Why inflammation</a>
         </div>
       </div>
-      <img src="assets/device-reader.png" alt="Q-SENS reader" style={{ position: 'relative', zIndex: 2, width: 'min(560px,80%)', marginTop: 'clamp(24px,5vh,64px)', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))', animation: 'heroRise 1.3s var(--ease-out) both' }} />
+      <img src="/assets/device-reader.png" alt="Q-SENS reader" style={{ position: 'relative', zIndex: 2, width: 'min(560px,80%)', marginTop: 'clamp(24px,5vh,64px)', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))', animation: 'heroRise 1.3s var(--ease-out) both' }} />
     </section>
   );
 }
@@ -287,7 +287,7 @@ function DeviceShowcase() {
   return (
     <section style={{ position: 'relative', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '6rem 8%', background: 'var(--surface-page)' }}>
       <h2 style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', fontSize: 'clamp(4rem,12vw,11rem)', fontWeight: 300, opacity: 0.1, textAlign: 'center', lineHeight: 1.1, letterSpacing: '-0.03em', margin: 0, zIndex: 1, pointerEvents: 'none', whiteSpace: 'nowrap' }}>From Reactive<br/>to Proactive</h2>
-      <img src="assets/device-reader.png" alt="Q-SENS reader" style={{ position: 'relative', zIndex: 2, maxWidth: 720, width: '100%' }} />
+      <img src="/assets/device-reader.png" alt="Q-SENS reader" style={{ position: 'relative', zIndex: 2, maxWidth: 720, width: '100%' }} />
     </section>
   );
 }
@@ -347,7 +347,7 @@ function HomePage() {
       </section>
       <Teaser eyebrow="Technology" title="Hardware" href="technology.html" cta="Inside the chip"
         body={<React.Fragment><p style={{ marginTop: 0 }}>We miniaturized a laboratory-grade immunoassay onto a silicon photonic chip the size of a fingernail, <strong>ELISA on a chip</strong>, manufactured at semiconductor scale.</p><p>Single pg/mL sensitivity in whole blood, no centrifuge, no cold chain, no lab.</p></React.Fragment>}>
-        <img src="assets/device-reader.png" alt="Q-SENS reader" style={{ width: '100%', maxWidth: 460, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 24px 50px rgba(0,0,0,0.12))' }} />
+        <img src="/assets/device-reader.png" alt="Q-SENS reader" style={{ width: '100%', maxWidth: 460, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 24px 50px rgba(0,0,0,0.12))' }} />
       </Teaser>
       <Teaser flip eyebrow="Technology" title="Software" href="cytokine.html" cta="Open the model"
         body={<React.Fragment><p style={{ marginTop: 0 }}><strong>AI that gets smarter with every test.</strong> A single cytokine value is meaningless without context, it depends on your baseline, age, stress, and time of day.</p><p>We build personalized immune intelligence from high-frequency longitudinal data, measured against your unique baseline.</p></React.Fragment>}>

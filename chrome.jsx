@@ -18,10 +18,10 @@ const Phone = (p) => (<svg width={p.size||20} height={p.size||20} viewBox="0 0 2
 const MapPin = (p) => (<svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>);
 
 const NAV = [
-  { key: 'home', label: 'Home', href: 'index.html' },
-  { key: 'technology', label: 'Technology', href: 'technology.html' },
-  { key: 'inflammation', label: 'Why inflammation', href: 'inflammation.html' },
-  { key: 'practice', label: 'Use cases', href: 'practice.html' },
+  { key: 'home', label: 'Home', href: '/' },
+  { key: 'technology', label: 'Technology', href: '/technology' },
+  { key: 'inflammation', label: 'Why inflammation', href: '/inflammation' },
+  { key: 'practice', label: 'Use cases', href: '/use-cases' },
 ];
 
 /* ---------- Theme hook (persisted, no flash) ---------- */
@@ -131,8 +131,8 @@ function SiteHeader({ active }) {
   return (
     <React.Fragment>
       <header className="site-header">
-        <a href="index.html" aria-label="Biomarkr home" style={{ display: 'flex', alignItems: 'center' }}>
-          <img className="brandmark" src="assets/logo-wordmark-black.png" alt="biomarkr" />
+        <a href="/" aria-label="Biomarkr home" style={{ display: 'flex', alignItems: 'center' }}>
+          <img className="brandmark" src="/assets/logo-wordmark-black.png" alt="biomarkr" />
         </a>
         <nav className="navpill center">
           {NAV.map((n) => (
@@ -146,12 +146,12 @@ function SiteHeader({ active }) {
       </header>
       <div className={'mobile-sheet' + (open ? ' open' : '')}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <img className="brandmark" src="assets/logo-wordmark-black.png" alt="biomarkr" />
+          <img className="brandmark" src="/assets/logo-wordmark-black.png" alt="biomarkr" />
           <button className="btn btn-ghost" style={{ padding: 10 }} aria-label="Close" onClick={() => setOpen(false)}><Close/></button>
         </div>
         {NAV.map((n) => <a key={n.key} href={n.href}>{n.label}</a>)}
-        <a href="cytokine.html">Cytokine model</a>
-        <a href="faq.html">FAQ</a>
+        <a href="/cytokines">Cytokine model</a>
+        <a href="/faq">FAQ</a>
         <button onClick={() => { setOpen(false); setContactOpen(true); }} style={{ border: 'none', background: 'none', padding: 0, marginTop: 20, textAlign: 'left', cursor: 'pointer' }}>
           <span className="btn btn-primary">Get in touch</span>
         </button>
@@ -164,15 +164,15 @@ function SiteHeader({ active }) {
 /* ---------- Footer ---------- */
 function SiteFooter() {
   const cols = [
-    { h: 'Explore', items: [['Technology', 'technology.html'], ['Why inflammation', 'inflammation.html'], ['Use cases', 'practice.html'], ['Cytokine model', 'cytokine.html']] },
-    { h: 'Company', items: [['FAQ', 'faq.html'], ['Contact', 'mailto:dylan@biomarkr.health']] },
+    { h: 'Explore', items: [['Technology', '/technology'], ['Why inflammation', '/inflammation'], ['Use cases', '/use-cases'], ['Cytokine model', '/cytokines']] },
+    { h: 'Company', items: [['FAQ', '/faq'], ['Contact', 'mailto:dylan@biomarkr.health']] },
     { h: 'Contact', items: [['dylan@biomarkr.health', 'mailto:dylan@biomarkr.health'], ['Thousand Oaks, California', '#'], ['LinkedIn', '#']] },
   ];
   return (
     <footer className="site-footer">
       <div style={{ maxWidth: 1240, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '64px 48px', justifyContent: 'space-between' }}>
         <div style={{ flex: '1 1 280px', minWidth: 240 }}>
-          <img src="assets/logo-wordmark-white.png" alt="biomarkr" style={{ height: 26 }} />
+          <img src="/assets/logo-wordmark-white.png" alt="biomarkr" style={{ height: 26 }} />
           <p className="serif" style={{ fontSize: 22, lineHeight: 1.4, color: 'var(--grey-250)', margin: '26px 0 0', maxWidth: 320 }}>Monitor, detect, prevent.</p>
           <p style={{ fontSize: 13.5, color: 'var(--grey-400)', lineHeight: 1.7, marginTop: 18, maxWidth: 340 }}>Silicon photonic biosensors making blood testing roughly 25× faster and cheaper, building a personal immune baseline that catches disease before symptoms appear.</p>
         </div>

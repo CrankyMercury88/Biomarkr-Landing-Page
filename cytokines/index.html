@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biomarkr — Cytokine Intelligence Model</title>
+<link rel="icon" href="/assets/favicon-32x32.png">
+<script>
+  (function () {
+    try { var t = localStorage.getItem('bm-theme') || 'light'; document.documentElement.setAttribute('data-theme', t); document.documentElement.style.setProperty('--logo-invert', t === 'dark' ? 1 : 0); } catch (e) {}
+  })();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/_ds/biomarkr-design-system-734cca28-9b8d-4e82-b0ce-5183cb813765/styles.css">
+<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/cytokine.css">
+</head>
+<body class="bm-root">
+
+<div class="disclaimer-banner">
+  <strong>Research model, not device output.</strong> Trajectories are modeled from published immunopathology literature using biologically-informed priors — not Q-SENS measurements, clinical trials, or patient data. Not for clinical, diagnostic, or research use.
+</div>
+
+<!-- Header -->
+<header class="site-header">
+  <a href="/index.html" aria-label="Biomarkr home" style="display:flex;align-items:center">
+    <img class="brandmark" src="/assets/logo-wordmark-black.png" alt="biomarkr">
+  </a>
+  <nav class="navpill center">
+    <a href="/technology.html" class="navlink">Technology</a>
+    <a href="/inflammation.html" class="navlink">Why inflammation</a>
+    <a href="/practice.html" class="navlink">In practice</a>
+    <a href="/notes.html" class="navlink">Founder's notes</a>
+  </nav>
+  <div class="nav-right">
+    <button class="btn btn-ghost" id="themeToggle" aria-label="Toggle theme" style="padding:10px;width:42px;height:42px;justify-content:center"></button>
+    <a class="btn btn-primary nav-email" href="mailto:dylan@biomarkr.health">Get in touch</a>
+  </div>
+</header>
+
+<div class="tool-wrap">
+
+  <!-- Hero -->
+  <section class="tool-hero" style="border-top:none">
+    <span class="rule" style="margin-bottom:24px"></span>
+    <div class="eyebrow">Interactive model</div>
+    <h1>Cytokine intelligence, simulated.</h1>
+    <p class="lead">The Q-SENS panel measures five cytokines from a finger-prick in under ten minutes. This model shows how those readings move across disease states, patient profiles, and time — the immune signatures the platform is built to detect.</p>
+    <div class="panel-badges">
+      <span class="panel-badge" style="color:var(--il6)" title="IL-6 — acute phase initiator. Rises within hours of infection, trauma, or inflammatory flare.">IL-6</span>
+      <span class="panel-badge" style="color:var(--il10)" title="IL-10 — compensatory regulator. Sustained high levels signal immunoparalysis.">IL-10</span>
+      <span class="panel-badge" style="color:var(--tnfa)" title="TNF-α — vascular alarm. Primary target of RA and IBD biologic therapies.">TNF-α</span>
+      <span class="panel-badge" style="color:var(--ifng)" title="IFN-γ — pathogen discriminator. Elevated in viral and intracellular bacterial infections; suppressed in cancer.">IFN-γ</span>
+      <span class="panel-badge" style="color:var(--il1b)" title="IL-1β — inflammasome sensor. Rises early in radiation exposure, infection, and metabolic inflammation.">IL-1β</span>
+      <span class="panel-badge" style="color:var(--pct)" title="Procalcitonin — available panel expansion. Not in the standard 5-plex cytokine panel.">PCT*</span>
+    </div>
+  </section>
+
+  <!-- Patient profile -->
+  <section id="s-vars">
+    <div class="sec-head">
+      <span class="rule"></span>
+      <div class="eyebrow" style="margin-bottom:12px">Modifying factors</div>
+      <div class="sec-title">Patient profile</div>
+      <div class="sec-desc">Adjust demographics and clinical status. These modify peak amplitude, kinetics, and marker ratios using published immunological priors, and update every view below in real time.</div>
+    </div>
+    <div class="card vars-grid">
+      <div class="var-block">
+        <div class="var-lbl"><span>Age</span><span class="var-val" id="ageVal">35 yr</span></div>
+        <input type="range" id="ageSlider" min="18" max="80" value="35">
+      </div>
+      <div class="var-block">
+        <div class="var-lbl"><span>BMI</span><span class="var-val" id="bmiVal">24</span></div>
+        <input type="range" id="bmiSlider" min="17" max="45" value="24">
+      </div>
+      <div class="var-block">
+        <div class="var-lbl" style="margin-bottom:4px"><span>Biological sex</span></div>
+        <div class="tgl">
+          <button class="tgl-btn active" id="sexM" onclick="setSex('M')">Male</button>
+          <button class="tgl-btn" id="sexF" onclick="setSex('F')">Female</button>
+        </div>
+      </div>
+      <div class="var-block">
+        <div class="var-lbl" style="margin-bottom:4px"><span>Immunosuppressed</span></div>
+        <div class="tgl">
+          <button class="tgl-btn active" id="imsN" onclick="setIms(false)">No</button>
+          <button class="tgl-btn" id="imsY" onclick="setIms(true)">Yes</button>
+        </div>
+      </div>
+      <div class="var-block">
+        <div class="var-lbl" style="margin-bottom:4px"><span>Vaccinated (bio threats)</span></div>
+        <div class="tgl">
+          <button class="tgl-btn active" id="vacN" onclick="setVac(false)">No</button>
+          <button class="tgl-btn" id="vacY" onclick="setVac(true)">Yes</button>
+        </div>
+      </div>
+      <div class="var-block">
+        <div class="var-lbl" style="margin-bottom:4px"><span>Disease severity / activity</span></div>
+        <div class="sev-btns">
+          <button class="sev-btn" data-sev="mild" onclick="setSev('mild')" id="sevMild">Mild</button>
+          <button class="sev-btn active" data-sev="moderate" onclick="setSev('moderate')" id="sevMod">Moderate</button>
+          <button class="sev-btn" data-sev="severe" onclick="setSev('severe')" id="sevSev">Severe</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- View toggle -->
+  <section style="border-top:none;padding-top:8px;padding-bottom:8px">
+    <div class="view-toggle-bar">
+      <div class="view-switch">
+        <button class="view-btn hlth-btn active" id="btnViewHlth" onclick="setView('health')">Inflammatory &amp; oncologic</button>
+        <button class="view-btn cbrn-btn" id="btnViewCBRN" onclick="setView('cbrn')">CBRN threat conditions</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HEALTH VIEW ===================== -->
+  <div id="hlthHalf">
+
+    <section id="s-hlth-conditions" style="border-top:none;padding-top:8px">
+      <div class="sec-head">
+        <span class="rule"></span>
+        <div class="eyebrow" style="margin-bottom:12px">Inflammatory &amp; oncologic</div>
+        <div class="sec-title">Select a condition</div>
+        <div class="sec-desc">Chronic inflammatory and oncologic conditions where cytokine profiling supports diagnosis, therapy-target identification, biologic monitoring, and detection of complications.</div>
+      </div>
+      <div class="cond-cards" id="condCardsHealth"></div>
+    </section>
+
+    <div class="card time-bar-section" id="hlthTimeBar">
+      <span class="time-lbl">Time</span>
+      <span class="time-val" id="timeValHealth">2w</span>
+      <input type="range" id="timeSliderHealth" min="0" max="90" value="14" step="1">
+      <span class="time-phase" id="timePhaseHealth" style="visibility:hidden">—</span>
+    </div>
+
+    <section id="s-hlth-chart">
+      <div class="sec-head">
+        <span class="rule"></span>
+        <div class="sec-title">Time-course immune response</div>
+        <div class="sec-desc">Modeled trajectories from published immunopathology. Each marker is shown as fold-elevation above its upper limit of normal (ULN). Drag the time control to move the cursor.</div>
+      </div>
+      <div class="chart-meta">
+        <div class="cond-tag" id="condTagHealth">—</div>
+        <div class="chart-summary" id="chartSummaryHealth">Select a condition above.</div>
+      </div>
+      <div class="chart-legend" id="chartLegendHealth"></div>
+      <div class="card chart-container">
+        <canvas id="mainChartHealth" role="img" aria-label="Cytokine trajectory chart for selected inflammatory condition"></canvas>
+      </div>
+      <div style="margin-top:22px">
+        <span style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.12em">Pattern flags at selected time point</span>
+        <div class="disc-tags" id="discTagsHealth"></div>
+      </div>
+    </section>
+
+    <section id="s-hlth-rationale">
+      <div class="sec-head">
+        <span class="rule"></span>
+        <div class="sec-title">Clinical rationale</div>
+        <div class="sec-desc">The biological basis for the observed cytokine pattern, its diagnostic implications, and how Q-SENS supports decision-making for the selected condition.</div>
+      </div>
+      <div class="card rationale-card">
+        <div class="rat-header">
+          <div class="rat-dot" id="ratDotHealth"></div>
+          <div class="rat-name" id="ratNameHealth">—</div>
+          <div class="rat-cat" id="ratCatHealth">—</div>
+        </div>
+        <div class="rat-body">
+          <div class="rat-text" id="ratTextHealth"></div>
+          <div class="rat-right" id="ratRightHealth"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-heatmap-health">
+      <div class="hmap-title-row">
+        <div class="sec-title">Comparative snapshot</div>
+        <div class="hmap-slider-inline">
+          <span style="font-size:13px;font-weight:500;color:var(--text-tertiary)">at</span>
+          <span class="hmap-time-val" id="hmapHealthLabel">2w</span>
+          <input type="range" id="hmapHealthSlider" min="0" max="90" value="14" step="1" style="flex:1">
+        </div>
+      </div>
+      <div class="sec-desc" style="margin-bottom:24px">Literature-derived cytokine patterns for all inflammatory and oncologic conditions at the selected time point. Click any row to select that condition above.</div>
+      <div class="card hmap-outer">
+        <table class="hmap">
+          <thead>
+            <tr>
+              <th class="th-cond">Condition</th>
+              <th class="th-cat">Category</th>
+              <th style="color:var(--il6)">IL-6</th>
+              <th style="color:var(--il10)">IL-10</th>
+              <th style="color:var(--tnfa)">TNF-α</th>
+              <th style="color:var(--ifng)">IFN-γ</th>
+              <th style="color:var(--il1b)">IL-1β</th>
+              <th style="color:var(--pct)">PCT*</th>
+            </tr>
+          </thead>
+          <tbody id="hmapBodyHealth"></tbody>
+        </table>
+        <div class="scale-wrapper">
+          <div class="scale-track"></div>
+          <div class="scale-ticks">
+            <span>1× (ULN)</span><span>5×</span><span>20×</span><span>50×</span><span>100×</span><span>200×+</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-hlth-values">
+      <div class="sec-head">
+        <span class="rule"></span>
+        <div class="sec-title">Panel readout at <span id="valTimeLabelHealth">2w</span></div>
+        <div class="sec-desc">Absolute concentrations and fold-elevation at the selected time point for the active condition and current patient profile.</div>
+      </div>
+      <div class="marker-grid" id="markerGridHealth"></div>
+    </section>
+
+  </div>
+
+  <!-- ===================== CBRN VIEW ===================== -->
+  <div id="cbrnHalf" style="display:none">
+
+    <section id="s-cbrn-conditions" style="border-top:none;padding-top:8px">
+      <div class="sec-head">
+        <span class="rule"></span>
+        <div class="eyebrow" style="margin-bottom:12px">CBRN threat conditions</div>
+        <div class="sec-title">Select a condition</div>
+        <div class="sec-desc">Conditions encountered in chemical, biological, radiological, and nuclear threat scenarios. The Q-SENS panel provides a threat-agnostic host-response signature that guides triage before agent identification.</div>
+      </div>
+      <div class="cond-cards" id="condCardsCBRN"></div>
+    </section>
+
+    <div class="card time-bar-section" id="cbrnTimeBar">
+      <span class="time-lbl">Time</span>
+      <span class="time-val" id="timeValCBRN">24 h</span>
+      <input type="range" id="timeSliderCBRN" min="0" max="72" value="24" step="1">
+      <span class="time-phase" id="timePhaseCBRN">Established</span>
+    </div>
+
+    <section id="s-cbrn-chart">
+      <div class="sec-head">
+        <span class="rule"></span>
+        <div class="sec-title">Time-course immune response</div>
+        <div class="sec-desc">Modeled trajectories from published immunopathology. Each marker is shown as fold-elevation above its upper limit of normal (ULN). Drag the time control to move the cursor.</div>
+      </div>
+      <div class="chart-meta">
+        <div class="cond-tag" id="condTagCBRN">—</div>
+        <div class="chart-summary" id="chartSummaryCBRN">Select a condition above.</div>
+      </div>
+      <div class="chart-legend" id="chartLegendCBRN"></div>
+      <div class="card chart-container">
+        <canvas id="mainChartCBRN" role="img" aria-label="Cytokine trajectory chart for selected CBRN condition"></canvas>
+      </div>
+      <div class="phase-row" id="phaseRowCBRN">
+        <span style="flex:1;text-align:center;border-right:1px solid var(--border-subtle);padding-right:8px">◂ Prodromal ▸</span>
+        <span style="flex:2;text-align:center;padding-left:8px">◂ Established / Progressive Phase ▸</span>
+      </div>
+      <div style="margin-top:22px">
+        <span style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.12em">Pattern flags at selected time point</span>
+        <div class="disc-tags" id="discTagsCBRN"></div>
+      </div>
+    </section>
+
+    <section id="s-cbrn-rationale">
+      <div class="sec-head">
+        <span class="rule"></span>
+        <div class="sec-title">Clinical rationale</div>
+        <div class="sec-desc">The biological basis for the observed cytokine pattern, its diagnostic implications, and how Q-SENS supports decision-making for the selected CBRN condition.</div>
+      </div>
+      <div class="card rationale-card">
+        <div class="rat-header">
+          <div class="rat-dot" id="ratDotCBRN"></div>
+          <div class="rat-name" id="ratNameCBRN">—</div>
+          <div class="rat-cat" id="ratCatCBRN">—</div>
+        </div>
+        <div class="rat-body">
+          <div class="rat-text" id="ratTextCBRN"></div>
+          <div class="rat-right" id="ratRightCBRN"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-heatmap-cbrn">
+      <div class="hmap-title-row">
+        <div class="sec-title">Comparative snapshot</div>
+        <div class="hmap-slider-inline">
+          <span style="font-size:13px;font-weight:500;color:var(--text-tertiary)">at</span>
+          <span class="hmap-time-val" id="hmapCBRNLabel">24 h</span>
+          <input type="range" id="hmapCBRNSlider" min="0" max="72" value="24" step="1" style="flex:1">
+        </div>
+      </div>
+      <div class="sec-desc" style="margin-bottom:24px">Literature-derived cytokine patterns for all CBRN threat conditions at the selected time point (hours post symptom onset). Click any row to select that condition above.</div>
+      <div class="card hmap-outer">
+        <table class="hmap">
+          <thead>
+            <tr>
+              <th class="th-cond">Condition</th>
+              <th class="th-cat">Category</th>
+              <th style="color:var(--il6)">IL-6</th>
+              <th style="color:var(--il10)">IL-10</th>
+              <th style="color:var(--tnfa)">TNF-α</th>
+              <th style="color:var(--ifng)">IFN-γ</th>
+              <th style="color:var(--il1b)">IL-1β</th>
+              <th style="color:var(--pct)">PCT*</th>
+            </tr>
+          </thead>
+          <tbody id="hmapBodyCBRN"></tbody>
+        </table>
+        <div class="scale-wrapper">
+          <div class="scale-track"></div>
+          <div class="scale-ticks">
+            <span>1× (ULN)</span><span>5×</span><span>20×</span><span>50×</span><span>100×</span><span>200×+</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-cbrn-values">
+      <div class="sec-head">
+        <span class="rule"></span>
+        <div class="sec-title">Panel readout at <span id="valTimeLabelCBRN">24</span> hours</div>
+        <div class="sec-desc">Absolute concentrations and fold-elevation at the selected time point for the active CBRN condition and current patient profile.</div>
+      </div>
+      <div class="marker-grid" id="markerGridCBRN"></div>
+    </section>
+
+  </div>
+
+  <!-- Marker rationale -->
+  <section id="s-panel">
+    <div class="sec-head">
+      <span class="rule"></span>
+      <div class="eyebrow" style="margin-bottom:12px">The panel</div>
+      <div class="sec-title">Marker selection rationale</div>
+      <div class="sec-desc">Each marker in the panel was selected for its distinct biological role, broad relevance across threat categories, and measurability at clinically meaningful concentrations from capillary blood.</div>
+    </div>
+    <div class="markers-grid" id="markersGrid"></div>
+  </section>
+
+</div>
+
+<!-- CTA -->
+<section style="background:var(--surface-inverse);color:var(--text-inverse);padding:clamp(64px,9vh,104px) 8%">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center" class="cta-grid">
+    <div>
+      <span class="rule" style="background:var(--white);margin-bottom:22px"></span>
+      <h2 style="margin:0;font-size:clamp(30px,4vw,46px);font-weight:300;letter-spacing:-0.025em;line-height:1.1;color:var(--white)">Interested in Q-SENS?</h2>
+    </div>
+    <div>
+      <p style="font-size:16px;line-height:1.8;color:var(--grey-250);margin-top:0">We're partnering with pharma and biotech organizations for RUO research programs, and meeting investors for our seed round.</p>
+      <div style="display:flex;gap:12px;margin-top:26px;flex-wrap:wrap">
+        <a class="btn" href="mailto:dylan@biomarkr.health" style="background:var(--white);color:var(--black)">Request a conversation →</a>
+        <a class="btn" href="/technology.html" style="border:1px solid var(--paper-a12);color:var(--white)">The technology</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div style="max-width:1280px;margin:0 auto;text-align:center">
+    <img src="/assets/logo-wordmark-white.png" alt="biomarkr" style="height:24px;opacity:.9">
+    <p style="font-size:12.5px;color:var(--grey-400);line-height:1.7;max-width:780px;margin:22px auto 0">Illustrative simulation based on published immunopathology literature. Trajectories are modeled using biologically-informed priors and are not derived from Q-SENS device measurements, clinical trials, or patient data. Values reflect moderate severity defaults unless modified above. Not for clinical, diagnostic, or research use.</p>
+    <div style="margin-top:24px;font-family:var(--font-mono);font-size:12px;color:var(--grey-400);letter-spacing:.05em">Q-SENS · Biomarkr · CAGE 97WV1 · Monitor, detect, prevent.</div>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle (vanilla — this page is not React)
+  (function () {
+    const sun = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    const moon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    const btn = document.getElementById('themeToggle');
+    const sync = () => { const d = document.documentElement.getAttribute('data-theme') === 'dark'; btn.innerHTML = d ? sun : moon; };
+    sync();
+    btn.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      document.documentElement.style.setProperty('--logo-invert', next === 'dark' ? 1 : 0);
+      try { localStorage.setItem('bm-theme', next); } catch (e) {}
+      sync();
+    });
+  })();
+</script>
+<script src="/cytokine-engine.js"></script>
+</body>
+</html>
