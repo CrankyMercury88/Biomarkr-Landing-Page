@@ -124,7 +124,7 @@ function PracticePage() {
         lead="Two illustrative scenarios, built from published immunopathology, not real patients, that show how a cytokine trajectory changes a decision. One at 2 AM in an emergency department, one on a Monday morning at home." />
       <EbolaVignette />
       <IbdVignette />
-      <CTABand title="Explore the signatures behind the scenarios." body="The interactive model shows the modeled cytokine trajectories for these conditions and many more, adjustable by patient profile and time." primary="Open the model" primaryHref="cytokine.html" secondary="Why inflammation" secondaryHref="inflammation.html" />
+      <CTABand title="Explore the signatures behind the scenarios." body="The interactive model shows the modeled cytokine trajectories for these conditions and many more, adjustable by patient profile and time." primary="Open the model" primaryHref="/cytokines" secondary="Why inflammation" secondaryHref="/inflammation" />
       <SiteFooter />
     </div>
   );

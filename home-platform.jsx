@@ -31,8 +31,8 @@ function HeroPlatform() {
             Q-SENS reads five cytokines from 10 µL of whole blood in under ten minutes — at home or at the point of care. Longitudinal immune monitoring, built on 22 issued silicon-photonic patents.
           </p>
           <div style={{ display: 'flex', gap: 12, marginTop: 34, flexWrap: 'wrap' }}>
-            <a className="btn btn-primary" href="technology.html">Inside the platform <ArrowRight/></a>
-            <a className="btn btn-ghost" href="cytokine.html">See the model</a>
+            <a className="btn btn-primary" href="/technology">Inside the platform <ArrowRight/></a>
+            <a className="btn btn-ghost" href="/cytokines">See the model</a>
           </div>
         </Reveal>
         <Reveal delay={140} style={{ position: 'relative' }}>
@@ -146,7 +146,7 @@ function HomePlatform() {
         title="A platform bet, not a product bet. The cytokine panel validated here is the template for everything that follows."
         body="We're partnering with pharma and biotech for research programs, and meeting investors for our seed round. If immune trajectory is the missing layer, let's talk."
         primary="Request a conversation" primaryHref="mailto:dylan@biomarkr.health"
-        secondary="See it in practice" secondaryHref="practice.html" />
+        secondary="See it in practice" secondaryHref="/use-cases" />
       <div style={{ padding: '20px 8%', textAlign: 'center', borderTop: '1px solid var(--border-subtle)' }}>
         <a href="Home — Trajectory.html" className="eyebrow" style={{ textDecoration: 'none', color: 'var(--text-tertiary)' }}>← Compare · Variation A — Trajectory</a>
       </div>

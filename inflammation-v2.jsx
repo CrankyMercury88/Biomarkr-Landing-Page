@@ -53,8 +53,8 @@ function Hero() {
           </h1>
           <p className="lead" style={{ maxWidth: 520, marginTop: 28, color: 'var(--text-secondary)' }}>The same biological process that protects us from infection and injury becomes the quiet driver of the conditions that cause most death and disability — once it stops switching off. We can treat it. We barely measure it.</p>
           <div style={{ display: 'flex', gap: 12, marginTop: 34, flexWrap: 'wrap' }}>
-            <a className="btn btn-primary" href="cytokine.html">See the model <ArrowRight /></a>
-            <a className="btn btn-ghost" href="technology.html">How Biomarkr works</a>
+            <a className="btn btn-primary" href="/cytokines">See the model <ArrowRight /></a>
+            <a className="btn btn-ghost" href="/technology">How Biomarkr works</a>
           </div>
         </Reveal>
         <Reveal delay={140}>
@@ -366,7 +366,7 @@ function InflammationV2Page() {
       <Closing />
       <Matters />
       <References />
-      <CTABand title="See what the immune signature looks like." body="Explore modeled cytokine trajectories across inflammatory, oncologic, and acute-threat conditions in the interactive model." primary="Open the model" primaryHref="cytokine.html" secondary="How the technology works" secondaryHref="technology.html" />
+      <CTABand title="See what the immune signature looks like." body="Explore modeled cytokine trajectories across inflammatory, oncologic, and acute-threat conditions in the interactive model." primary="Open the model" primaryHref="/cytokines" secondary="How the technology works" secondaryHref="/technology" />
       <SiteFooter />
     </div>
   );

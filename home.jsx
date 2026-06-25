@@ -109,8 +109,8 @@ function HeroStatement() {
           A laboratory-grade immunoassay on a chip the size of a fingernail. A five-cytokine panel from a finger-prick, in under ten minutes.
         </p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 34, flexWrap: 'wrap' }}>
-          <a className="btn btn-primary" href="technology.html">Explore the technology <ArrowRight/></a>
-          <a className="btn btn-ghost" href="inflammation.html">Why inflammation</a>
+          <a className="btn btn-primary" href="/technology">Explore the technology <ArrowRight/></a>
+          <a className="btn btn-ghost" href="/inflammation">Why inflammation</a>
         </div>
       </div>
       <img src="/assets/device-reader.png" alt="Q-SENS reader" style={{ position: 'relative', zIndex: 2, width: 'min(560px,80%)', marginTop: 'clamp(24px,5vh,64px)', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))', animation: 'heroRise 1.3s var(--ease-out) both' }} />
@@ -134,8 +134,8 @@ function HeroSignal() {
             Biomarkr reads a five-cytokine inflammation panel from a finger-prick in under ten minutes, turning a single snapshot into a personal immune trajectory, measured against your own baseline.
           </p>
           <div style={{ display: 'flex', gap: 12, marginTop: 32, flexWrap: 'wrap' }}>
-            <a className="btn btn-primary" href="cytokine.html">See the model <ArrowRight/></a>
-            <a className="btn btn-ghost" href="inflammation.html">Why inflammation</a>
+            <a className="btn btn-primary" href="/cytokines">See the model <ArrowRight/></a>
+            <a className="btn btn-ghost" href="/inflammation">Why inflammation</a>
           </div>
         </div>
         <Card padding="lg" elevation="float" style={{ background: 'var(--surface-page)' }}>
@@ -305,7 +305,7 @@ function CTA() {
           <p style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--grey-250)', marginTop: 0 }}>We're partnering with pharma and biotech for research programs, and meeting investors for our seed round. If immune trajectory is the missing layer, let's talk.</p>
           <div style={{ display: 'flex', gap: 12, marginTop: 26, flexWrap: 'wrap' }}>
             <a className="btn" href="mailto:dylan@biomarkr.health" style={{ background: 'var(--white)', color: 'var(--black)' }}>Request a conversation <ArrowRight/></a>
-            <a className="btn" href="practice.html" style={{ border: '1px solid var(--paper-a12)', color: 'var(--white)' }}>See it in practice</a>
+            <a className="btn" href="/use-cases" style={{ border: '1px solid var(--paper-a12)', color: 'var(--white)' }}>See it in practice</a>
           </div>
         </div>
       </div>
@@ -345,11 +345,11 @@ function HomePage() {
           </div>
         </div>
       </section>
-      <Teaser eyebrow="Technology" title="Hardware" href="technology.html" cta="Inside the chip"
+      <Teaser eyebrow="Technology" title="Hardware" href="/technology" cta="Inside the chip"
         body={<React.Fragment><p style={{ marginTop: 0 }}>We miniaturized a laboratory-grade immunoassay onto a silicon photonic chip the size of a fingernail, <strong>ELISA on a chip</strong>, manufactured at semiconductor scale.</p><p>Single pg/mL sensitivity in whole blood, no centrifuge, no cold chain, no lab.</p></React.Fragment>}>
         <img src="/assets/device-reader.png" alt="Q-SENS reader" style={{ width: '100%', maxWidth: 460, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 24px 50px rgba(0,0,0,0.12))' }} />
       </Teaser>
-      <Teaser flip eyebrow="Technology" title="Software" href="cytokine.html" cta="Open the model"
+      <Teaser flip eyebrow="Technology" title="Software" href="/cytokines" cta="Open the model"
         body={<React.Fragment><p style={{ marginTop: 0 }}><strong>AI that gets smarter with every test.</strong> A single cytokine value is meaningless without context, it depends on your baseline, age, stress, and time of day.</p><p>We build personalized immune intelligence from high-frequency longitudinal data, measured against your unique baseline.</p></React.Fragment>}>
         <div style={{ display: 'grid', gap: 14 }}>
           <BiomarkerReadout marker="IL-6" name="Interleukin-6" value="22" status="elevated" series={[8, 9, 7, 10, 12, 18, 22]} />
@@ -364,8 +364,8 @@ function HomePage() {
           <Reveal><Lockup eyebrow="Use cases" title="What it looks like" sub="Illustrative scenarios that show how a cytokine trajectory changes a decision, at 2 AM in an ED, and on a Monday morning at home." /></Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: 24, marginTop: 52 }}>
             {[
-              { tag: 'Emergency · biothreat', title: 'The hour that mattered', body: 'A returning traveler with hours-old fever. PCR is days from reliable, but a cytokine trajectory paired with a flat procalcitonin rules out bacterial sepsis and triggers isolation 18 hours early.', href: 'practice.html#ebola' },
-              { tag: 'Chronic · at home', title: 'The space between flares', body: "A 23-year-old managing Crohn's switches biologics. Four weeks in, her weekly read shows TNF-α falling and IL-10 rising, her doctor calls it working, three months before symptoms would.", href: 'practice.html#ibd' },
+              { tag: 'Emergency · biothreat', title: 'The hour that mattered', body: 'A returning traveler with hours-old fever. PCR is days from reliable, but a cytokine trajectory paired with a flat procalcitonin rules out bacterial sepsis and triggers isolation 18 hours early.', href: '/use-cases#ebola' },
+              { tag: 'Chronic · at home', title: 'The space between flares', body: "A 23-year-old managing Crohn's switches biologics. Four weeks in, her weekly read shows TNF-α falling and IL-10 rising, her doctor calls it working, three months before symptoms would.", href: '/use-cases#ibd' },
             ].map((c, i) => (
               <Reveal key={c.title} delay={i * 100}>
                 <a href={c.href} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>

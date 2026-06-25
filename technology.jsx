@@ -296,7 +296,7 @@ function TechnologyPage() {
       <Attributes />
       <CloudAI />
       <Validation />
-      <CTABand title="See the immune signatures the platform is built to read." body="An interactive simulator of the cytokine trajectories Biomarkr detects, across inflammatory, oncologic, and acute-threat conditions." primary="Open the model" primaryHref="cytokine.html" secondary="Why inflammation" secondaryHref="inflammation.html" />
+      <CTABand title="See the immune signatures the platform is built to read." body="An interactive simulator of the cytokine trajectories Biomarkr detects, across inflammatory, oncologic, and acute-threat conditions." primary="Open the model" primaryHref="/cytokines" secondary="Why inflammation" secondaryHref="/inflammation" />
       <SiteFooter />
     </div>
   );
