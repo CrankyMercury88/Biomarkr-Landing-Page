@@ -449,8 +449,8 @@ function PracticePage() {
               <p className="prose" style={{ fontSize: 17, lineHeight: 1.8, marginTop: 28, maxWidth: 780 }}>Both use cases rest on the same testable claim: the cytokines that drive RA and Crohn's flares, and that their biologics target, move measurably before symptoms do, and a fingerstick can read that movement often enough to matter. The next step is prospective validation against longitudinal patient data, pairing serial Q-SENS readings with established measures (DAS28-CRP and fecal calprotectin) and clinical flare endpoints.</p>
               <p className="serif" style={{ fontSize: 'clamp(20px,2.4vw,27px)', lineHeight: 1.5, marginTop: 36, color: 'var(--text-primary)', maxWidth: 720 }}>The goal is not another snapshot. It is a continuous, personal inflammatory trajectory, read early enough that a clinician can adjust therapy while a flare is still a number, not yet a symptom.</p>
               <div style={{ display: 'flex', gap: 12, marginTop: 40, flexWrap: 'wrap' }}>
-                <a className="btn btn-primary" href="cytokine.html">Open the model <ArrowRight /></a>
-                <a className="btn btn-ghost" href="inflammation.html">Why inflammation</a>
+                <a className="btn btn-primary" href="/cytokines">Open the model <ArrowRight /></a>
+                <a className="btn btn-ghost" href="/inflammation">Why inflammation</a>
               </div>
             </div>
           </Reveal>
