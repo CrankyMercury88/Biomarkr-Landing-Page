@@ -46,15 +46,15 @@ function HeroTrajectory({ heroFace }) {
       <div className="wrap r-hero" style={{ gap: 'clamp(40px,6vw,88px)', alignItems: 'center', gridTemplateColumns: 'minmax(0,1.18fr) minmax(0,0.92fr)' }}>
         <Reveal>
           <div className="eyebrow" style={{ marginBottom: 24 }}>INFLAMMATION MONITORING</div>
-          <h1 style={{ margin: 0, fontFamily: heroFace === 'serif' ? 'var(--font-serif)' : 'var(--font-sans)', fontSize: 'clamp(40px,5.4vw,72px)', fontWeight: 300, letterSpacing: heroFace === 'serif' ? '-0.02em' : '-0.035em', lineHeight: 1.02 }}>
-            Medicine reads one snapshot at a time. <br /><span style={{ color: 'var(--text-tertiary)', fontFamily: "Inter" }}>We see the entire&nbsp;story.</span>
+          <h1 style={{ margin: 0, fontFamily: heroFace === 'serif' ? 'var(--font-serif)' : 'var(--font-sans)', fontSize: 'clamp(38px,4.7vw,60px)', fontWeight: 300, letterSpacing: heroFace === 'serif' ? '-0.02em' : '-0.035em', lineHeight: 1.06, textWrap: 'balance', maxWidth: 600 }}>
+            Medicine reads one snapshot at a time. <span style={{ color: 'var(--text-tertiary)', fontFamily: "Inter" }}>We see the entire&nbsp;story.</span>
           </h1>
           <p className="lead" style={{ maxWidth: 500, marginTop: 28, color: 'var(--text-secondary)' }}>A single measurement means nothing on its own, not unless you know whether it rose in six hours or has held steady for two weeks. Biomarkr measures five cytokines from a fingerstick, again and again, against your own baseline.
 
           </p>
           <div style={{ display: 'flex', gap: 12, marginTop: 34, flexWrap: 'wrap' }}>
-            <a className="btn btn-primary" href="/cytokines">See the model <ArrowRight /></a>
-            <a className="btn btn-ghost" href="/technology">How Biomarkr works</a>
+            <a className="btn btn-primary" href="cytokine.html">See the model <ArrowRight /></a>
+            <a className="btn btn-ghost" href="technology.html">How Biomarkr works</a>
           </div>
         </Reveal>
         <Reveal delay={140}>
@@ -186,7 +186,7 @@ function HomeTrajectory() {
             <Reveal><SectionOpen num="02" eyebrow="The platform" title="Biomarkr turns a snapshot into a trajectory." sub="A handheld silicon photonic biosensor, 22 issued patents, no moving parts, that runs a quantitative five-cytokine immunoassay from a 10 µL fingerstick in under ten minutes. The cytokine equivalent of continuous glucose monitoring." /></Reveal>
             {t.showDevice &&
             <Reveal delay={120}>
-              <img src="/assets/device-reader.png" alt="The Biomarkr reader" style={{ width: '100%', maxWidth: 380, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))' }} />
+              <img src="assets/device-reader.png" alt="The Biomarkr reader" style={{ width: '100%', maxWidth: 380, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))' }} />
             </Reveal>
             }
           </div>
@@ -227,7 +227,7 @@ function HomeTrajectory() {
           <Reveal><SectionOpen num="05" eyebrow="Where it changes outcomes" title="One platform, many trajectories." sub="Biomarkr is horizontal. These are the highest-priority applications, each with an established unmet need and a clear cytokine rationale." /></Reveal>
           <div style={{ marginTop: 52 }}><ARPA_UseCaseGrid /></div>
           <Reveal delay={120} style={{ marginTop: 48 }}>
-            <a className="btn btn-primary" href="/use-cases">See it in practice <ArrowRight /></a>
+            <a className="btn btn-primary" href="practice.html">See it in practice <ArrowRight /></a>
           </Reveal>
         </div>
       </section>
@@ -237,7 +237,7 @@ function HomeTrajectory() {
         title="The CGM transformed diabetes by turning a snapshot into a trajectory. Biomarkr does the same for the immune system."
         body="We're partnering with pharma and biotech for research programs. If immune trajectory is the missing layer, let's talk."
         primary="Request a conversation" primaryHref="mailto:dylan@biomarkr.health"
-        secondary="See it in practice" secondaryHref="/use-cases" />
+        secondary="See it in practice" secondaryHref="practice.html" />
       <SiteFooter />
       <TweaksPanel>
         <TweakSection label="Hero" />
