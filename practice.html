@@ -20,12 +20,31 @@
 <body class="bm-root">
   <div id="root"></div>
   <script type="text/babel" src="chrome.jsx" data-presets="react"></script>
-  <script type="text/babel" src="practice-charts.jsx" data-presets="react"></script>
   <script type="text/babel" src="practice.jsx" data-presets="react"></script>
   <script type="text/babel" data-presets="react">
+    const NEED = ['BiomarkrDesignSystem_734cca', 'SiteHeader', 'PracticePage'];
+    const t0 = Date.now();
     const mount = () => {
-      if (!window.BiomarkrDesignSystem_734cca || !window.SiteHeader || !window.UC_CipPanel || !window.PracticePage) { return setTimeout(mount, 30); }
-      ReactDOM.createRoot(document.getElementById('root')).render(<window.PracticePage />);
+      const missing = NEED.filter((k) => !window[k]);
+      if (missing.length) {
+        if (Date.now() - t0 > 6000) {
+          document.getElementById('root').innerHTML =
+            '<div style="max-width:680px;margin:96px auto;padding:0 24px;font-family:Inter,system-ui,sans-serif;color:#111">'
+            + '<p style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#999;margin:0 0 14px">Load error</p>'
+            + '<h1 style="font-weight:300;font-size:30px;letter-spacing:-.02em;margin:0 0 16px">This page didn\u2019t finish loading.</h1>'
+            + '<p style="color:#666;line-height:1.8;font-size:15px">A required script never loaded: <code style="font-family:ui-monospace,monospace">'
+            + missing.join(', ') + '</code>.</p>'
+            + '<p style="color:#666;line-height:1.8;font-size:15px">If you just deployed, hard-refresh (Cmd/Ctrl + Shift + R). Otherwise confirm these files sit at the site root next to this page: '
+            + '<code style="font-family:ui-monospace,monospace">chrome.jsx</code>, <code style="font-family:ui-monospace,monospace">practice.jsx</code>, and the <code style="font-family:ui-monospace,monospace">_ds/</code> folder.</p></div>';
+          return;
+        }
+        return setTimeout(mount, 30);
+      }
+      try {
+        ReactDOM.createRoot(document.getElementById('root')).render(<window.PracticePage />);
+      } catch (e) {
+        document.getElementById('root').innerHTML = '<div style="max-width:680px;margin:96px auto;padding:0 24px;font-family:Inter,system-ui,sans-serif;color:#111"><p style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#999">Render error</p><pre style="white-space:pre-wrap;color:#a23b32">' + (e && e.message ? e.message : e) + '</pre></div>';
+      }
     };
     mount();
   </script>
