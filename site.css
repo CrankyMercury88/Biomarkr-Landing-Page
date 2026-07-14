@@ -42,7 +42,7 @@ a { color: inherit; }
   padding: 5px;
 }
 .navlink {
-  padding: 9px 22px; font-size: 13.5px; font-weight: 500;
+  padding: 9px 22px; font-size: 14px; font-weight: 500;
   color: var(--text-secondary); text-decoration: none;
   border-radius: var(--radius-pill);
   transition: background-color .2s var(--ease-out), color .2s var(--ease-out);
@@ -68,7 +68,7 @@ a { color: inherit; }
 }
 .mobile-sheet.open { opacity: 1; pointer-events: auto; }
 .mobile-sheet a {
-  font-size: 28px; font-weight: 300; letter-spacing: -0.02em;
+  font-size: 24px; font-weight: 300; letter-spacing: -0.02em;
   color: var(--text-primary); text-decoration: none; padding: 14px 0;
   border-bottom: 1px solid var(--border-subtle);
 }
@@ -81,7 +81,7 @@ a { color: inherit; }
 .rule { display: block; width: 60px; height: 2px; background: var(--text-primary); border: 0; }
 
 /* --- Body type helpers --- */
-.lead { font-size: 21px; line-height: 1.55; font-weight: 300; letter-spacing: -0.01em; color: var(--text-primary); }
+.lead { font-size: 20px; line-height: 1.55; font-weight: 300; letter-spacing: -0.01em; color: var(--text-primary); }
 .prose { font-size: 16px; line-height: 1.85; color: var(--text-secondary); }
 .prose p { margin: 0 0 1.1em; }
 .prose strong { color: var(--text-primary); font-weight: 600; }
@@ -228,7 +228,7 @@ img, svg, table { max-width: 100%; }
 }
 .contact-close:hover { background: var(--surface-raised); border-color: var(--border-strong); color: var(--text-primary); }
 .contact-close svg { width: 18px; height: 18px; }
-.contact-title { margin: 0; font-size: 26px; font-weight: 300; letter-spacing: -0.02em; }
+.contact-title { margin: 0; font-size: 24px; font-weight: 300; letter-spacing: -0.02em; }
 .contact-sub { margin: 10px 0 0; font-size: 14px; line-height: 1.6; color: var(--text-secondary); max-width: 330px; }
 .contact-rows { margin-top: 26px; display: flex; flex-direction: column; gap: 4px; }
 .contact-row {
@@ -245,14 +245,14 @@ img, svg, table { max-width: 100%; }
 }
 .contact-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .contact-label {
-  font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--text-tertiary);
 }
 .contact-value { font-size: 15px; color: var(--text-primary); line-height: 1.4; }
 
 /* Mobile polish */
 @media (max-width: 700px) {
-  .lead { font-size: 18px; }
+  .lead { font-size: 20px; }
   .wrap { padding-left: 6.5%; padding-right: 6.5%; }
   .site-header { padding: 16px 6.5%; }
   .site-footer { padding: 64px 6.5% 36px; }

@@ -9,9 +9,9 @@ function Figure({ title, note, children, padded = true }) {
   const { Card } = window.BiomarkrDesignSystem_734cca;
   return (
     <Card padding="lg" style={{ background: 'var(--surface-page)' }}>
-      {title && <div className="eyebrow" style={{ fontSize: 10.5, marginBottom: 18 }}>{title}</div>}
+      {title && <div className="eyebrow" style={{ fontSize: 11, marginBottom: 18 }}>{title}</div>}
       <div style={{ padding: padded ? '4px 0' : 0 }}>{children}</div>
-      {note && <p style={{ margin: '18px 0 0', fontSize: 12.5, fontStyle: 'italic', color: 'var(--text-tertiary)', lineHeight: 1.6 }}>{note}</p>}
+      {note && <p style={{ margin: '18px 0 0', fontSize: 13, fontStyle: 'italic', color: 'var(--text-tertiary)', lineHeight: 1.6 }}>{note}</p>}
     </Card>
   );
 }

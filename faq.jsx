@@ -36,10 +36,10 @@ function FaqItem({ q, a, open, onToggle }) {
   return (
     <div style={{ borderTop: '1px solid var(--border-default)' }}>
       <button onClick={onToggle} style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 20, padding: '24px 0', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', color: 'var(--text-primary)' }}>
-        <span style={{ fontSize: 18, fontWeight: 400, letterSpacing: '-0.01em', lineHeight: 1.35 }}>{q}</span>
-        <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: '50%', border: '1px solid var(--border-default)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, color: 'var(--text-secondary)' }}>{open ? '–' : '+'}</span>
+        <span style={{ fontSize: 20, fontWeight: 400, letterSpacing: '-0.01em', lineHeight: 1.35 }}>{q}</span>
+        <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: '50%', border: '1px solid var(--border-default)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, color: 'var(--text-secondary)' }}>{open ? '–' : '+'}</span>
       </button>
-      {open && <p style={{ margin: '0 0 26px', paddingRight: 48, fontSize: 15.5, lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: 760 }}>{a}</p>}
+      {open && <p style={{ margin: '0 0 26px', paddingRight: 48, fontSize: 15, lineHeight: 1.8, color: 'var(--text-secondary)', maxWidth: 760 }}>{a}</p>}
     </div>
   );
 }

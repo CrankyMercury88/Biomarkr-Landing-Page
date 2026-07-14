@@ -34,7 +34,7 @@ function SectionOpen({ num, eyebrow, title, sub, align = 'left', style = {} }) {
     <header style={{ display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, ...style }}>
       <span className="rule" style={{ marginBottom: 20 }} />
       <span className="eyebrow" style={{ marginBottom: 14 }}><span style={{ color: 'var(--text-tertiary)' }}>{num} ·</span> {eyebrow}</span>
-      <h2 style={{ margin: 0, fontSize: 'clamp(30px,4vw,46px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.1, maxWidth: 760 }}>{title}</h2>
+      <h2 style={{ margin: 0, fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.1, maxWidth: 760 }}>{title}</h2>
       {sub && <p className="prose" style={{ maxWidth: 640, marginTop: 20, marginBottom: 0, textAlign: align }}>{sub}</p>}
     </header>);
 
@@ -47,14 +47,14 @@ function HeroTrajectory({ heroFace }) {
         <Reveal>
           <div className="eyebrow" style={{ marginBottom: 24 }}>INFLAMMATION MONITORING</div>
           <h1 style={{ margin: 0, fontFamily: heroFace === 'serif' ? 'var(--font-serif)' : 'var(--font-sans)', fontSize: 'clamp(38px,4.7vw,60px)', fontWeight: 300, letterSpacing: heroFace === 'serif' ? '-0.02em' : '-0.035em', lineHeight: 1.06, textWrap: 'balance', maxWidth: 600 }}>
-            Medicine reads one snapshot at a time. <span style={{ color: 'var(--text-tertiary)', fontFamily: "Inter" }}>We see the entire&nbsp;story.</span>
+            Medicine reads one snapshot at a time. <em style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 300 }}>We see the entire&nbsp;story.</em>
           </h1>
           <p className="lead" style={{ maxWidth: 500, marginTop: 28, color: 'var(--text-secondary)' }}>A single measurement means nothing on its own, not unless you know whether it rose in six hours or has held steady for two weeks. Biomarkr measures five cytokines from a fingerstick, again and again, against your own baseline.
 
           </p>
           <div style={{ display: 'flex', gap: 12, marginTop: 34, flexWrap: 'wrap' }}>
-            <a className="btn btn-primary" href="cytokine.html">See the model <ArrowRight /></a>
-            <a className="btn btn-ghost" href="technology.html">How Biomarkr works</a>
+            <a className="btn btn-primary" href="/cytokines">See the model <ArrowRight /></a>
+            <a className="btn btn-ghost" href="/technology">How Biomarkr works</a>
           </div>
         </Reveal>
         <Reveal delay={140}>
@@ -63,7 +63,7 @@ function HeroTrajectory({ heroFace }) {
               <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.04em' }}>One reading, two truths</div>
               <Badge tone="caution" dot>Same value</Badge>
             </div>
-            <p style={{ margin: '0 0 8px', fontSize: 12.5, color: 'var(--text-tertiary)' }}>The snapshot is identical. The trajectory is the diagnosis.</p>
+            <p style={{ margin: '0 0 8px', fontSize: 13, color: 'var(--text-tertiary)' }}>The snapshot is identical. The trajectory is the diagnosis.</p>
             <ARPA_SnapshotChart width={560} height={320} />
           </Card>
         </Reveal>
@@ -109,7 +109,7 @@ function HomeTeam() {
                     <div style={{ fontSize: 16, fontWeight: 600 }}>{m.name}</div>
                     <LI href={m.li} label={m.name + ' on LinkedIn'} />
                   </div>
-                  <div style={{ fontSize: 13.5, fontWeight: 500, color: 'var(--text-secondary)', margin: '2px 0 8px' }}>{m.title}</div>
+                  <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', margin: '2px 0 8px' }}>{m.title}</div>
                   <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: 'var(--text-secondary)' }}>{m.bio}</p>
                 </div>
               </div>
@@ -170,8 +170,8 @@ function HomeTrajectory() {
             <div className="r-2" style={{ gap: 1, background: 'var(--border-subtle)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md, 12px)', overflow: 'hidden' }}>
               {ARPA_PROBLEMS.map((p, i) =>
               <Reveal key={p.label} delay={i * 80} style={{ background: 'var(--surface-page)', padding: '22px 22px' }}>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--signal-critical)', marginBottom: 10 }}>{p.label}</div>
-                  <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: 'var(--text-secondary)' }}>{p.body}</p>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--signal-critical)', marginBottom: 10 }}>{p.label}</div>
+                  <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: 'var(--text-secondary)' }}>{p.body}</p>
                 </Reveal>
               )}
             </div>
@@ -227,7 +227,7 @@ function HomeTrajectory() {
           <Reveal><SectionOpen num="05" eyebrow="Where it changes outcomes" title="One platform, many trajectories." sub="Biomarkr is horizontal. These are the highest-priority applications, each with an established unmet need and a clear cytokine rationale." /></Reveal>
           <div style={{ marginTop: 52 }}><ARPA_UseCaseGrid /></div>
           <Reveal delay={120} style={{ marginTop: 48 }}>
-            <a className="btn btn-primary" href="practice.html">See it in practice <ArrowRight /></a>
+            <a className="btn btn-primary" href="/use-cases">See it in practice <ArrowRight /></a>
           </Reveal>
         </div>
       </section>
@@ -237,7 +237,7 @@ function HomeTrajectory() {
         title="The CGM transformed diabetes by turning a snapshot into a trajectory. Biomarkr does the same for the immune system."
         body="We're partnering with pharma and biotech for research programs. If immune trajectory is the missing layer, let's talk."
         primary="Request a conversation" primaryHref="mailto:dylan@biomarkr.health"
-        secondary="See it in practice" secondaryHref="practice.html" />
+        secondary="See it in practice" secondaryHref="/use-cases" />
       <SiteFooter />
       <TweaksPanel>
         <TweakSection label="Hero" />

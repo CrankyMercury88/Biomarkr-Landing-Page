@@ -350,7 +350,7 @@ function FrequencyChart() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
-        <span className="eyebrow" style={{ fontSize: 10.5 }}>Quarterly draw</span>
+        <span className="eyebrow" style={{ fontSize: 11 }}>Quarterly draw</span>
         <span style={{ fontFamily: MONO, fontSize: 12, color: 'var(--text-tertiary)' }}>4 points / year</span>
       </div>
       <svg width="100%" viewBox="0 0 600 64" preserveAspectRatio="none" style={{ display: 'block' }} role="img" aria-label="Four isolated data points across a year — no visible trend.">
@@ -359,7 +359,7 @@ function FrequencyChart() {
       </svg>
       <div style={{ height: 1, background: 'var(--border-subtle)', margin: '22px 0' }} />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
-        <span className="eyebrow" style={{ fontSize: 10.5 }}>Continuous readout</span>
+        <span className="eyebrow" style={{ fontSize: 11 }}>Continuous readout</span>
         <span style={{ fontFamily: MONO, fontSize: 12, color: 'var(--text-tertiary)' }}>a visible slope</span>
       </div>
       <svg width="100%" viewBox="0 0 600 72" preserveAspectRatio="none" style={{ display: 'block' }} role="img" aria-label="A continuous curve that rises and falls, revealing a trend over time.">

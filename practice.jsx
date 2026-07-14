@@ -115,12 +115,12 @@ function UcLegend({ markers }) {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 18px', alignItems: 'center' }}>
       {markers.map((m) => (
-        <span key={m.key} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 11.5, color: m.lead ? 'var(--text-primary)' : 'var(--text-tertiary)', fontFamily: UC_MONO, fontWeight: m.lead ? 600 : 400 }}>
+        <span key={m.key} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 11, color: m.lead ? 'var(--text-primary)' : 'var(--text-tertiary)', fontFamily: UC_MONO, fontWeight: m.lead ? 600 : 400 }}>
           <span style={{ width: 16, height: 0, borderTop: `${m.lead ? 2.4 : 1.6}px ${m.pct ? 'dashed' : 'solid'} ${m.lead ? 'var(--text-primary)' : 'var(--text-tertiary)'}` }} />
           {m.label}
         </span>
       ))}
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 11.5, color: 'var(--signal-critical)', fontFamily: UC_MONO }}>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 11, color: 'var(--signal-critical)', fontFamily: UC_MONO }}>
         <span style={{ width: 14, height: 11, background: 'var(--signal-critical)', opacity: 0.16, border: '1px solid var(--signal-critical)' }} />
         Symptomatic flare
       </span>
@@ -133,22 +133,22 @@ function CipPanel({ heading, markers, thresholdDay, leaveDay, bandLabel, caption
   return (
     <div style={{ border: '1px solid var(--border-default)', borderRadius: 16, overflow: 'hidden', background: 'var(--surface-page)' }}>
       <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-subtle)' }}>
-        <div style={{ fontSize: 13.5, fontWeight: 600, marginBottom: 14 }}>{heading}</div>
+        <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 14 }}>{heading}</div>
         <UcLegend markers={markers} />
       </div>
       <div className="r-wide" style={{ gap: 0 }}>
         <div style={{ padding: '20px 24px', borderRight: '1px solid var(--border-subtle)' }}>
-          <div className="eyebrow" style={{ fontSize: 10.5, marginBottom: 12 }}>A · Full CIP trajectory · 0–90 days</div>
+          <div className="eyebrow" style={{ fontSize: 11, marginBottom: 12 }}>A · Full CIP trajectory · 0–90 days</div>
           <UcPlot markers={markers} tMax={90} thresholdDay={thresholdDay} leaveDay={leaveDay} bandLabel={bandLabel} />
         </div>
         <div style={{ padding: '20px 24px' }}>
-          <div className="eyebrow" style={{ fontSize: 10.5, marginBottom: 12 }}>B · Zoom · first 7 days</div>
+          <div className="eyebrow" style={{ fontSize: 11, marginBottom: 12 }}>B · Zoom · first 7 days</div>
           <UcPlot markers={markers} tMax={7} thresholdDay={thresholdDay} leaveDay={leaveDay} bandLabel="" zoom />
         </div>
       </div>
       {caption && (
         <div style={{ padding: '16px 24px', borderTop: '1px solid var(--border-subtle)', background: 'var(--surface-tint)' }}>
-          <p style={{ margin: 0, fontSize: 12.5, lineHeight: 1.65, color: 'var(--text-tertiary)' }}>{caption}</p>
+          <p style={{ margin: 0, fontSize: 13, lineHeight: 1.65, color: 'var(--text-tertiary)' }}>{caption}</p>
         </div>
       )}
     </div>
@@ -190,7 +190,7 @@ function StatRow({ items, compact }) {
     <div style={{ display: 'flex', flexWrap: 'wrap', borderTop: '1px solid var(--border-default)' }}>
       {items.map((it, i) => (
         <div key={i} style={{ flex: compact ? '1 1 130px' : '1 1 200px', minWidth: compact ? 120 : 180, padding: compact ? '16px 22px 16px 0' : '22px 28px 22px 0', borderLeft: i ? '1px solid var(--border-subtle)' : 'none', paddingLeft: i ? (compact ? 22 : 28) : 0 }}>
-          <div className="eyebrow" style={{ fontSize: 10.5, marginBottom: 9 }}>{it.label}</div>
+          <div className="eyebrow" style={{ fontSize: 11, marginBottom: 9 }}>{it.label}</div>
           <div style={{ fontSize: compact ? 14 : 15.5, color: 'var(--text-primary)', lineHeight: 1.45, fontFamily: it.mono ? 'var(--font-mono)' : 'inherit', letterSpacing: it.mono ? '-0.01em' : 0 }}>{it.value}</div>
         </div>
       ))}
@@ -201,8 +201,8 @@ function StatRow({ items, compact }) {
 function InfoCard({ title, children }) {
   return (
     <Card padding="lg">
-      <div className="eyebrow" style={{ fontSize: 10.5, marginBottom: 13 }}>{title}</div>
-      <p className="prose" style={{ fontSize: 14.5, lineHeight: 1.75, margin: 0 }}>{children}</p>
+      <div className="eyebrow" style={{ fontSize: 11, marginBottom: 13 }}>{title}</div>
+      <p className="prose" style={{ fontSize: 14, lineHeight: 1.75, margin: 0 }}>{children}</p>
     </Card>
   );
 }
@@ -210,7 +210,7 @@ function InfoCard({ title, children }) {
 function RefList({ items }) {
   return (
     <div style={{ marginTop: 44 }}>
-      <div className="eyebrow" style={{ fontSize: 10.5, marginBottom: 16 }}>References</div>
+      <div className="eyebrow" style={{ fontSize: 11, marginBottom: 16 }}>References</div>
       <ol style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 820 }}>
         {items.map((it, i) => (
           <li key={i} style={{ display: 'grid', gridTemplateColumns: '22px 1fr', gap: 10, fontSize: 13, lineHeight: 1.65, color: 'var(--text-secondary)' }}>
@@ -231,10 +231,10 @@ function Timeline({ steps }) {
         const last = i === steps.length - 1;
         return (
           <div key={i} style={{ display: 'grid', gridTemplateColumns: '74px 1fr', gap: 4 }}>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12.5, fontWeight: 600, color: 'var(--text-primary)', paddingTop: 1, whiteSpace: 'nowrap' }}>{s.day}</div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', paddingTop: 1, whiteSpace: 'nowrap' }}>{s.day}</div>
             <div style={{ position: 'relative', borderLeft: last ? '1px solid transparent' : '1px solid var(--border-default)', paddingLeft: 26, paddingBottom: last ? 0 : 26 }}>
               <span style={{ position: 'absolute', left: -4.5, top: 5, width: 8, height: 8, borderRadius: '50%', background: 'var(--text-primary)' }} />
-              <p className="prose" style={{ fontSize: 14.5, lineHeight: 1.7, margin: 0 }}>{s.body}</p>
+              <p className="prose" style={{ fontSize: 14, lineHeight: 1.7, margin: 0 }}>{s.body}</p>
             </div>
           </div>
         );
@@ -249,15 +249,15 @@ function CaseStory({ title, profile, intro, steps, outcome, disclaimer }) {
     <Card padding="lg" style={{ marginTop: 56 }}>
       <div style={{ maxWidth: 900, margin: '0 auto' }}>
         <span className="pill-tag" style={{ marginBottom: 18 }}><span className="dot" style={{ background: 'var(--signal-info)' }} /> Case story · illustrative, hypothetical patient</span>
-        <h3 style={{ fontSize: 'clamp(24px,3vw,32px)', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.15, margin: '0 0 24px' }}>{title}</h3>
+        <h3 style={{ fontSize: 'clamp(22px,2.6vw,30px)', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.15, margin: '0 0 24px' }}>{title}</h3>
         <StatRow items={profile} compact />
-        <p className="prose" style={{ fontSize: 15.5, lineHeight: 1.8, margin: '28px 0 36px', maxWidth: 760 }}>{intro}</p>
+        <p className="prose" style={{ fontSize: 15, lineHeight: 1.8, margin: '28px 0 36px', maxWidth: 760 }}>{intro}</p>
         <Timeline steps={steps} />
         <div style={{ borderTop: '1px solid var(--border-default)', marginTop: 36, paddingTop: 26 }}>
-          <div className="eyebrow" style={{ fontSize: 10.5, marginBottom: 12 }}>Outcome</div>
-          <p className="prose" style={{ fontSize: 15.5, lineHeight: 1.8, margin: 0, color: 'var(--text-primary)' }}>{outcome}</p>
+          <div className="eyebrow" style={{ fontSize: 11, marginBottom: 12 }}>Outcome</div>
+          <p className="prose" style={{ fontSize: 15, lineHeight: 1.8, margin: 0, color: 'var(--text-primary)' }}>{outcome}</p>
         </div>
-        <p style={{ fontSize: 12.5, color: 'var(--text-tertiary)', lineHeight: 1.7, marginTop: 24, fontStyle: 'italic', maxWidth: 760 }}>{disclaimer}</p>
+        <p style={{ fontSize: 13, color: 'var(--text-tertiary)', lineHeight: 1.7, marginTop: 24, fontStyle: 'italic', maxWidth: 760 }}>{disclaimer}</p>
       </div>
     </Card>
   );
@@ -273,7 +273,7 @@ function UseCase({ num, title, thesis, cards, chart, refs, story, tint }) {
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 600, color: 'var(--text-tertiary)', letterSpacing: '0.04em' }}>{num}</span>
             <span className="rule" style={{ alignSelf: 'center' }} />
           </div>
-          <h2 style={{ fontSize: 'clamp(30px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.08, margin: 0, maxWidth: 880 }}>{title}</h2>
+          <h2 style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.08, margin: 0, maxWidth: 880 }}>{title}</h2>
           <p className="prose" style={{ fontSize: 17, lineHeight: 1.75, maxWidth: 720, marginTop: 24 }}><strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Thesis. </strong>{thesis}</p>
         </Reveal>
 
@@ -420,13 +420,13 @@ function PracticePage() {
             <div className="r-wide" style={{ gap: 'clamp(32px,5vw,72px)', marginTop: 56, alignItems: 'start' }}>
               <div>
                 <span className="rule" style={{ marginBottom: 18 }} />
-                <h2 style={{ fontSize: 'clamp(24px,3vw,34px)', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.15, margin: 0 }}>The shared idea</h2>
+                <h2 style={{ fontSize: 'clamp(22px,2.6vw,30px)', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.15, margin: 0 }}>The shared idea</h2>
               </div>
               <div>
-                <p className="prose" style={{ fontSize: 16.5, lineHeight: 1.8, marginTop: 0 }}>Both diseases share a pattern: a relapsing course punctuated by flares, biologic drugs that target specific cytokines, and monitoring tools that are either too slow, too non-specific, or too invasive to catch a flare early. Each fingerstick adds a calibrated point to a personal inflammatory trajectory. The two use cases below apply that idea to RA and to IBD, first the thesis and the evidence, then an illustrative patient story of how earlier detection could change a treatment decision.</p>
+                <p className="prose" style={{ fontSize: 17, lineHeight: 1.8, marginTop: 0 }}>Both diseases share a pattern: a relapsing course punctuated by flares, biologic drugs that target specific cytokines, and monitoring tools that are either too slow, too non-specific, or too invasive to catch a flare early. Each fingerstick adds a calibrated point to a personal inflammatory trajectory. The two use cases below apply that idea to RA and to IBD, first the thesis and the evidence, then an illustrative patient story of how earlier detection could change a treatment decision.</p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 22 }}>
                   {TAGS.map((t) => (
-                    <span key={t} style={{ display: 'inline-flex', alignItems: 'center', fontSize: 12.5, fontWeight: 500, color: 'var(--text-secondary)', border: '1px solid var(--border-default)', borderRadius: 999, padding: '6px 14px' }}>{t}</span>
+                    <span key={t} style={{ display: 'inline-flex', alignItems: 'center', fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', border: '1px solid var(--border-default)', borderRadius: 999, padding: '6px 14px' }}>{t}</span>
                   ))}
                 </div>
               </div>
@@ -445,9 +445,9 @@ function PracticePage() {
             <div style={{ maxWidth: 880 }}>
               <span className="rule" style={{ marginBottom: 22 }} />
               <div className="eyebrow" style={{ marginBottom: 16 }}>From hypothesis to validation</div>
-              <h2 style={{ fontSize: 'clamp(28px,3.8vw,46px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.12, margin: 0 }}>The trajectories shown here are models, not clinical results.</h2>
+              <h2 style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.12, margin: 0 }}>The trajectories shown here are models, not clinical results.</h2>
               <p className="prose" style={{ fontSize: 17, lineHeight: 1.8, marginTop: 28, maxWidth: 780 }}>Both use cases rest on the same testable claim: the cytokines that drive RA and Crohn's flares, and that their biologics target, move measurably before symptoms do, and a fingerstick can read that movement often enough to matter. The next step is prospective validation against longitudinal patient data, pairing serial Q-SENS readings with established measures (DAS28-CRP and fecal calprotectin) and clinical flare endpoints.</p>
-              <p className="serif" style={{ fontSize: 'clamp(20px,2.4vw,27px)', lineHeight: 1.5, marginTop: 36, color: 'var(--text-primary)', maxWidth: 720 }}>The goal is not another snapshot. It is a continuous, personal inflammatory trajectory, read early enough that a clinician can adjust therapy while a flare is still a number, not yet a symptom.</p>
+              <p className="serif" style={{ fontSize: 'clamp(22px,2.6vw,30px)', lineHeight: 1.5, marginTop: 36, color: 'var(--text-primary)', maxWidth: 720 }}>The goal is not another snapshot. It is a continuous, personal inflammatory trajectory, read early enough that a clinician can adjust therapy while a flare is still a number, not yet a symptom.</p>
               <div style={{ display: 'flex', gap: 12, marginTop: 40, flexWrap: 'wrap' }}>
                 <a className="btn btn-primary" href="/cytokines">Open the model <ArrowRight /></a>
                 <a className="btn btn-ghost" href="/inflammation">Why inflammation</a>

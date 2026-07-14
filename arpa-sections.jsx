@@ -163,12 +163,12 @@ function MarkerLegend({ keys, uln = true, style = {} }) {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px', ...style }}>
       {seen.map((k) => (
-        <span key={k} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 11.5, color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+        <span key={k} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 11, color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
           <span style={{ width: 16, height: 2, background: MARKER_COLOR[k] || 'var(--text-primary)', borderRadius: 2 }} /> {k}
         </span>
       ))}
       {uln && (
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 11.5, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
           <span style={{ width: 16, height: 0, borderTop: '1px dashed var(--border-strong)' }} /> Baseline
         </span>
       )}
@@ -217,11 +217,11 @@ function SignatureCard({ sig, prefix, fill = false }) {
   const { Card } = window.BiomarkrDesignSystem_734cca;
   return (
     <Card padding="lg" style={{ background: 'var(--surface-page)', height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div className="eyebrow" style={{ fontSize: 10.5, marginBottom: 10 }}>{sig.eyebrow}</div>
+      <div className="eyebrow" style={{ fontSize: 11, marginBottom: 10 }}>{sig.eyebrow}</div>
       <div style={{ fontSize: 20, fontWeight: 300, letterSpacing: '-0.02em', marginBottom: 14 }}>{sig.title}</div>
       <LineChart width={420} height={210} series={sig.series} xTicks={sig.xTicks} yMax={sig.yMax} yTicks={sig.yTicks} prefix={prefix} fill={fill} />
       <MarkerLegend keys={sig.series.map((s) => s.key)} uln={false} style={{ margin: '14px 0 16px' }} />
-      <p style={{ margin: '0', fontSize: 13.5, lineHeight: 1.6, color: 'var(--text-secondary)' }}>{sig.note}</p>
+      <p style={{ margin: '0', fontSize: 14, lineHeight: 1.6, color: 'var(--text-secondary)' }}>{sig.note}</p>
     </Card>
   );
 }
@@ -232,7 +232,7 @@ function CircadianBlock() {
   return (
     <div className="r-wide" style={{ gap: 'clamp(32px,5vw,64px)', alignItems: 'center' }}>
       <Card padding="lg" style={{ background: 'var(--surface-page)' }}>
-        <div className="eyebrow" style={{ fontSize: 10.5, marginBottom: 12 }}>24-hour cycle · wake-normalized</div>
+        <div className="eyebrow" style={{ fontSize: 11, marginBottom: 12 }}>24-hour cycle · wake-normalized</div>
         <LineChart width={560} height={260} series={CIRCADIAN.series} xTicks={CIRCADIAN.xTicks} xLabel={CIRCADIAN.xLabel} yMax={CIRCADIAN.yMax} yMin={CIRCADIAN.yMin} yTicks={CIRCADIAN.yTicks} prefix="circ" />
         <MarkerLegend keys={CIRCADIAN.series.map((s) => s.key)} uln={false} style={{ marginTop: 14 }} />
         <p style={{ margin: '12px 0 0', fontSize: 12, fontStyle: 'italic', color: 'var(--text-tertiary)', lineHeight: 1.5 }}>Peak-to-nadir amplitude varies between individuals (solid vs. dashed), so population-level correction fails.</p>
@@ -242,12 +242,12 @@ function CircadianBlock() {
         <p className="prose">Biomarkr runs a dedicated <strong>circadian characterization phase</strong>: test every four hours for 14 days, normalized to wake time. Every later reading is phase-corrected against that personal map.</p>
         <div className="r-2" style={{ gap: '28px 28px', marginTop: 28 }}>
           <div>
-            <div className="tabular" style={{ fontSize: 'clamp(34px,3.4vw,46px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>40%</div>
-            <div className="prose" style={{ marginTop: 8, fontSize: 13.5 }}>of apparent “deviations” are circadian noise without correction</div>
+            <div className="tabular" style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>40%</div>
+            <div className="prose" style={{ marginTop: 8, fontSize: 14 }}>of apparent “deviations” are circadian noise without correction</div>
           </div>
           <div>
-            <div className="tabular" style={{ fontSize: 'clamp(34px,3.4vw,46px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>3–5×</div>
-            <div className="prose" style={{ marginTop: 8, fontSize: 13.5 }}>signal-to-noise gain once trajectories are phase-corrected</div>
+            <div className="tabular" style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>3–5×</div>
+            <div className="prose" style={{ marginTop: 8, fontSize: 14 }}>signal-to-noise gain once trajectories are phase-corrected</div>
           </div>
         </div>
       </div>
@@ -269,9 +269,9 @@ function UseCaseGrid() {
                 <div className="tabular" style={{ fontSize: 24, fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1 }}>{u.stat}</div>
               </div>
             </div>
-            <div style={{ fontSize: 10.5, color: 'var(--text-tertiary)', textAlign: 'right', marginTop: 4, letterSpacing: '0.02em' }}>{u.statLabel}</div>
-            <h3 style={{ fontSize: 19, fontWeight: 300, letterSpacing: '-0.02em', margin: '18px 0 10px' }}>{u.title}</h3>
-            <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: 'var(--text-secondary)' }}>{u.body}</p>
+            <div style={{ fontSize: 11, color: 'var(--text-tertiary)', textAlign: 'right', marginTop: 4, letterSpacing: '0.02em' }}>{u.statLabel}</div>
+            <h3 style={{ fontSize: 20, fontWeight: 300, letterSpacing: '-0.02em', margin: '18px 0 10px' }}>{u.title}</h3>
+            <p style={{ margin: 0, fontSize: 14, lineHeight: 1.65, color: 'var(--text-secondary)' }}>{u.body}</p>
           </Card>
         </Reveal>
       ))}
@@ -286,8 +286,8 @@ function CapabilityRow() {
       {CAPABILITIES.map((c, i) => (
         <Reveal key={c.n} delay={i * 90}>
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)', letterSpacing: '0.1em', marginBottom: 16 }}>{c.n}</div>
-          <h3 style={{ fontSize: 21, fontWeight: 300, letterSpacing: '-0.02em', margin: '0 0 12px' }}>{c.title}</h3>
-          <p className="prose" style={{ margin: 0, fontSize: 14.5 }}>{c.body}</p>
+          <h3 style={{ fontSize: 20, fontWeight: 300, letterSpacing: '-0.02em', margin: '0 0 12px' }}>{c.title}</h3>
+          <p className="prose" style={{ margin: 0, fontSize: 14 }}>{c.body}</p>
         </Reveal>
       ))}
     </div>
@@ -300,7 +300,7 @@ function SpecRow() {
     <div className="r-4" style={{ gap: '36px 28px' }}>
       {SPECS.map((s, i) => (
         <Reveal key={s[1]} delay={i * 70}>
-          <div className="tabular" style={{ fontSize: 'clamp(38px,4vw,56px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>{s[0]}</div>
+          <div className="tabular" style={{ fontSize: 'clamp(38px,4.7vw,60px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>{s[0]}</div>
           <div style={{ marginTop: 12, fontSize: 15, fontWeight: 500, color: 'var(--text-primary)' }}>{s[1]}</div>
           <div className="prose" style={{ marginTop: 4, fontSize: 13 }}>{s[2]}</div>
         </Reveal>

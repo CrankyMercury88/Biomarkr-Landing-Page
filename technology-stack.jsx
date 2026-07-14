@@ -79,8 +79,8 @@ function Plate({ layer, i, assembled, active }) {
         transition: 'box-shadow .35s var(--ease-out), outline-color .35s var(--ease-out)',
       }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="eyebrow" style={{ fontSize: 9.5, color: palette.sub, marginBottom: 8 }}>{layer.tag}</div>
-          <div style={{ fontSize: 16.5, fontWeight: 500, letterSpacing: '-0.01em', lineHeight: 1.25 }}>{layer.title}</div>
+          <div className="eyebrow" style={{ fontSize: 11, color: palette.sub, marginBottom: 8 }}>{layer.tag}</div>
+          <div style={{ fontSize: 17, fontWeight: 500, letterSpacing: '-0.01em', lineHeight: 1.25 }}>{layer.title}</div>
         </div>
         <div style={{ color: palette.fg, opacity: 0.85, flexShrink: 0 }}><Motif /></div>
       </div>
@@ -140,7 +140,7 @@ function TechStack() {
           <div>
             <span className="rule" style={{ marginBottom: 22 }} />
             <span className="eyebrow" style={{ marginBottom: 14, display: 'block' }}><span style={{ color: 'var(--text-tertiary)' }}>01 ·</span> The technology stack</span>
-            <h2 style={{ margin: 0, fontSize: 'clamp(30px,4vw,46px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.1, maxWidth: 520 }}>Hardware enables data. Data enables intelligence.</h2>
+            <h2 style={{ margin: 0, fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.1, maxWidth: 520 }}>Hardware enables data. Data enables intelligence.</h2>
             <p className="prose" style={{ maxWidth: 480, marginTop: 22 }}>Biomarkr is three stacked layers. The silicon photonic hardware is necessary — but the value compounds as you move up the stack, from measurement, to a personal baseline, to prediction.</p>
             <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 4 }}>
               {LAYERS.map((l, i) => {
@@ -151,8 +151,8 @@ function TechStack() {
                       <span className="tabular" style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-tertiary)' }}>{String(i + 1).padStart(2, '0')}</span>
                       <div>
                         <div style={{ fontSize: 16, fontWeight: 600 }}>{l.tag.split(' — ')[1]}</div>
-                        <div className="eyebrow" style={{ fontSize: 9.5, margin: '3px 0 0' }}>{l.role}</div>
-                        <p style={{ margin: '8px 0 0', fontSize: 13.5, lineHeight: 1.6, color: 'var(--text-secondary)', maxWidth: 420, height: on ? 'auto' : 0, overflow: 'hidden', opacity: on ? 1 : 0, transition: 'opacity .3s var(--ease-out)' }}>{l.body}</p>
+                        <div className="eyebrow" style={{ fontSize: 11, margin: '3px 0 0' }}>{l.role}</div>
+                        <p style={{ margin: '8px 0 0', fontSize: 14, lineHeight: 1.6, color: 'var(--text-secondary)', maxWidth: 420, height: on ? 'auto' : 0, overflow: 'hidden', opacity: on ? 1 : 0, transition: 'opacity .3s var(--ease-out)' }}>{l.body}</p>
                       </div>
                     </div>
                   </div>
@@ -165,7 +165,7 @@ function TechStack() {
             {LAYERS.map((l, i) => <Plate key={l.key} layer={l} i={i} assembled={reduce ? 1 : assembled[i]} active={!reduce && active === i} />)}
             {/* ground line */}
             <div style={{ position: 'absolute', bottom: 78, left: '50%', transform: 'translateX(-50%)', width: 'min(420px,82%)', height: 1, background: 'var(--border-subtle)' }} />
-            <div style={{ position: 'absolute', bottom: 54, left: 0, right: 0, textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.08em', color: 'var(--text-tertiary)' }}>FINGERSTICK → TRAJECTORY → PREDICTION</div>
+            <div style={{ position: 'absolute', bottom: 54, left: 0, right: 0, textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: 11, letterSpacing: '0.08em', color: 'var(--text-tertiary)' }}>FINGERSTICK → TRAJECTORY → PREDICTION</div>
           </div>
         </div>
       </div>

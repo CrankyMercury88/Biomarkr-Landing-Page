@@ -19,7 +19,7 @@ function SectionOpen({ num, eyebrow, title, sub, align = 'left', maxTitle = 820,
     <header className="iv2-open" style={{ display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, ...style }}>
       <span className="rule" style={{ marginBottom: 20 }} />
       <span className="eyebrow" style={{ marginBottom: 15 }}><span className="n">{num} ·</span> {eyebrow}</span>
-      <h2 style={{ margin: 0, fontSize: 'clamp(32px,4.2vw,52px)', fontWeight: 300, letterSpacing: '-0.028em', lineHeight: 1.08, maxWidth: maxTitle }}>{title}</h2>
+      <h2 style={{ margin: 0, fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.028em', lineHeight: 1.08, maxWidth: maxTitle }}>{title}</h2>
       {sub && <p className="prose" style={{ maxWidth: 660, marginTop: 22, marginBottom: 0, fontSize: 17, textAlign: align }}>{sub}</p>}
     </header>
   );
@@ -63,7 +63,7 @@ function Hero() {
               <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.04em' }}>One mechanism, two outcomes</div>
               <Badge tone="caution" dot>Chronic</Badge>
             </div>
-            <p style={{ margin: '0 0 14px', fontSize: 12.5, color: 'var(--text-tertiary)' }}>Acute resolves. Chronic never switches off.</p>
+            <p style={{ margin: '0 0 14px', fontSize: 13, color: 'var(--text-tertiary)' }}>Acute resolves. Chronic never switches off.</p>
             <IV2_AcuteChronic />
           </Card>
         </Reveal>
@@ -226,7 +226,7 @@ function Practice() {
         </Dive>
 
         <Reveal delay={60}>
-          <p className="prose" style={{ marginTop: 'clamp(48px,6vw,72px)', fontSize: 19, lineHeight: 1.6, color: 'var(--text-primary)', maxWidth: 820, fontWeight: 300 }}>The lesson repeats across all three: inflammation is the thing that matters, and we measure it too rarely, and too bluntly, to keep up with it.</p>
+          <p className="prose" style={{ marginTop: 'clamp(48px,6vw,72px)', fontSize: 20, lineHeight: 1.6, color: 'var(--text-primary)', maxWidth: 820, fontWeight: 300 }}>The lesson repeats across all three: inflammation is the thing that matters, and we measure it too rarely, and too bluntly, to keep up with it.</p>
         </Reveal>
       </div>
     </section>
@@ -268,7 +268,7 @@ function Closing() {
         <Reveal>
           <span className="rule" style={{ margin: '0 auto 24px' }} />
           <div className="eyebrow" style={{ marginBottom: 24 }}>The takeaway</div>
-          <p className="serif" style={{ fontSize: 'clamp(30px,4.4vw,54px)', fontWeight: 300, lineHeight: 1.22, letterSpacing: '-0.02em', margin: '0 auto', maxWidth: 1000 }}>
+          <p className="serif" style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, lineHeight: 1.22, letterSpacing: '-0.02em', margin: '0 auto', maxWidth: 1000 }}>
             Inflammation is measurable, treatable, and sits upstream of the diseases that define modern chronic illness. The missing piece was never the biology — it was the ability to read the immune system <span style={{ color: 'var(--text-tertiary)' }}>often enough, and personally enough, to act before the damage is done.</span>
           </p>
         </Reveal>
@@ -329,7 +329,7 @@ function References() {
         <Reveal>
           <span className="rule" style={{ marginBottom: 20 }} />
           <div className="eyebrow" style={{ marginBottom: 14 }}>References</div>
-          <h2 style={{ margin: 0, fontSize: 'clamp(24px,3vw,34px)', fontWeight: 300, letterSpacing: '-0.02em' }}>Sources</h2>
+          <h2 style={{ margin: 0, fontSize: 'clamp(22px,2.6vw,30px)', fontWeight: 300, letterSpacing: '-0.02em' }}>Sources</h2>
           <ol>
             {REFS.map((r, i) => <li key={i} id={'r' + (i + 1)}>{r[0]}<i>{r[1]}</i>{r[2]} <a href={r[3]} target="_blank" rel="noopener">{r[4]}</a></li>)}
           </ol>
