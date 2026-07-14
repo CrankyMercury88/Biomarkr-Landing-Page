@@ -166,7 +166,7 @@ function SiteFooter() {
   const cols = [
   { h: 'Explore', items: [['Technology', '/technology'], ['Why inflammation', '/inflammation'], ['Use cases', '/use-cases'], ['Cytokine model', '/cytokines']] },
   { h: 'Company', items: [['FAQ', '/faq'], ['Contact', 'mailto:dylan@biomarkr.health']] },
-  { h: 'Contact', items: [['dylan@biomarkr.health', 'mailto:dylan@biomarkr.health'], ['Thousand Oaks, California', '#'], ['LinkedIn', '#']] }];
+  { h: 'Contact', items: [['dylan@biomarkr.health', 'mailto:dylan@biomarkr.health'], ['Thousand Oaks, California', '#'], ['LinkedIn', 'https://www.linkedin.com/company/biomarkr/']] }];
 
   return (
     <footer className="site-footer">

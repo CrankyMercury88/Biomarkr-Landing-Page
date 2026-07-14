@@ -71,7 +71,7 @@ function FaqPage() {
       <PageHero eyebrow="FAQ" title="Questions, answered plainly."
         lead="What Biomarkr measures, how the science works, where it stands today, and how to get involved. Numbers do the persuading." />
       {FAQ_GROUPS.map((g) => <FaqGroup key={g.group} group={g.group} items={g.items} />)}
-      <CTABand title="Still have a question?" body="If you're an investor, a research partner, or a clinician working in inflammatory disease, we'd like to hear from you." primary="Get in touch" primaryHref="mailto:dylan@biomarkr.health" secondary="Read the founder's notes" secondaryHref="notes.html" />
+      <CTABand title="Still have a question?" body="If you're an investor, a research partner, or a clinician working in inflammatory disease, we'd like to hear from you." primary="Get in touch" primaryHref="mailto:dylan@biomarkr.health" />
       <SiteFooter />
     </div>
   );
