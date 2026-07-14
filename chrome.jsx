@@ -132,7 +132,7 @@ function SiteHeader({ active }) {
     <React.Fragment>
       <header className="site-header">
         <a href="/" aria-label="Biomarkr home" style={{ display: 'flex', alignItems: 'center' }}>
-          <img className="brandmark" src="assets/logo-wordmark-black.png" alt="biomarkr" />
+          <img className="brandmark" src="/assets/logo-wordmark-black.png" alt="biomarkr" />
         </a>
         <nav className="navpill center">
           {NAV.map((n) =>
@@ -146,7 +146,7 @@ function SiteHeader({ active }) {
       </header>
       <div className={'mobile-sheet' + (open ? ' open' : '')}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <img className="brandmark" src="assets/logo-wordmark-black.png" alt="biomarkr" />
+          <img className="brandmark" src="/assets/logo-wordmark-black.png" alt="biomarkr" />
           <button className="btn btn-ghost" style={{ padding: 10 }} aria-label="Close" onClick={() => setOpen(false)}><Close /></button>
         </div>
         {NAV.map((n) => <a key={n.key} href={n.href}>{n.label}</a>)}
@@ -172,7 +172,7 @@ function SiteFooter() {
     <footer className="site-footer">
       <div style={{ maxWidth: 1240, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '64px 48px', justifyContent: 'space-between' }}>
         <div style={{ flex: '1 1 280px', minWidth: 240 }}>
-          <img src="assets/logo-wordmark-white.png" alt="biomarkr" style={{ height: 26 }} />
+          <img src="/assets/logo-wordmark-white.png" alt="biomarkr" style={{ height: 26 }} />
           <p className="serif" style={{ fontSize: 20, lineHeight: 1.4, color: 'var(--grey-250)', margin: '26px 0 0', maxWidth: 320 }}>Monitor, detect, prevent.</p>
           <p style={{ fontSize: 14, color: 'var(--grey-400)', lineHeight: 1.7, marginTop: 18, maxWidth: 340 }}>Silicon photonic biosensors making blood testing roughly 25× faster and cheaper, building a personal immune baseline with the goal of catching disease before symptoms appear.</p>
         </div>
