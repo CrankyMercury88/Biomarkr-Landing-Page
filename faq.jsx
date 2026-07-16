@@ -28,7 +28,7 @@ const FAQ_GROUPS = [
   { group: 'The company', items: [
     ['Who is behind Biomarkr?', 'A founder team spanning silicon photonics, medicine, and company building: Dr. Reuven Duer (CSO, inventor of Q-SENS, 22 issued US patents), Dylan Brownstein (CEO), and Dr. Aren Giske (COO). We work with an ISO 13485 manufacturing partner (SMC Ltd.) and an IQVIA regulatory team.'],
     ['What is the funding story?', 'A prior BARDA DRIVe award validated home-based cytokine testing at prototype stage. We are pursuing ARPA-H funding for the trajectory-intelligence layer, the pre-competitive engineering and clinical feasibility work, alongside a seed round.'],
-    ['How do I get involved?', 'Reach out at dylan@biomarkr.health. We are looking to talk with investors, pharma and biotech research partners, and clinicians working in inflammatory disease, oncology, and pandemic preparedness.'],
+    ['How do I get involved?', 'Reach out at info@biomarkr.health. We are looking to talk with investors, pharma and biotech research partners, and clinicians working in inflammatory disease, oncology, and pandemic preparedness.'],
   ] },
 ];
 
@@ -71,7 +71,7 @@ function FaqPage() {
       <PageHero eyebrow="FAQ" title="Questions, answered plainly."
         lead="What Biomarkr measures, how the science works, where it stands today, and how to get involved. Numbers do the persuading." />
       {FAQ_GROUPS.map((g) => <FaqGroup key={g.group} group={g.group} items={g.items} />)}
-      <CTABand title="Still have a question?" body="If you're an investor, a research partner, or a clinician working in inflammatory disease, we'd like to hear from you." primary="Get in touch" primaryHref="mailto:dylan@biomarkr.health" />
+      <CTABand title="Still have a question?" body="If you're an investor, a research partner, or a clinician working in inflammatory disease, we'd like to hear from you." primary="Get in touch" primaryHref="mailto:info@biomarkr.health" />
       <SiteFooter />
     </div>
   );

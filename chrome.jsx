@@ -165,8 +165,8 @@ function SiteHeader({ active }) {
 function SiteFooter() {
   const cols = [
   { h: 'Explore', items: [['Technology', '/technology'], ['Why inflammation', '/inflammation'], ['Use cases', '/use-cases'], ['Cytokine model', '/cytokines']] },
-  { h: 'Company', items: [['FAQ', '/faq'], ['Contact', 'mailto:dylan@biomarkr.health']] },
-  { h: 'Contact', items: [['dylan@biomarkr.health', 'mailto:dylan@biomarkr.health'], ['Thousand Oaks, California', '#'], ['LinkedIn', 'https://www.linkedin.com/company/biomarkr/']] }];
+  { h: 'Company', items: [['FAQ', '/faq'], ['Contact', 'mailto:info@biomarkr.health']] },
+  { h: 'Contact', items: [['info@biomarkr.health', 'mailto:info@biomarkr.health'], ['1176 Tourmaline Drive, Thousand Oaks, CA 91360', null], ['LinkedIn', 'https://www.linkedin.com/company/biomarkr/']] }];
 
   return (
     <footer className="site-footer">
@@ -180,7 +180,7 @@ function SiteFooter() {
           {cols.map((c) =>
           <div key={c.h}>
               <h4>{c.h}</h4>
-              {c.items.map(([label, href]) => <a key={label} href={href}>{label}</a>)}
+              {c.items.map(([label, href]) => href ? <a key={label} href={href}>{label}</a> : <span key={label} style={{ color: 'var(--grey-350)', fontSize: 14, display: 'block', padding: '5px 0', maxWidth: 220 }}>{label}</span>)}
             </div>
           )}
         </div>

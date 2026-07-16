@@ -63,7 +63,7 @@ function Detection() {
         </Reveal>
 
         <Reveal>
-          <p className="prose" style={{ maxWidth: 720, marginTop: 40 }}>Proprietary cartridge design further directs blood cells away from the sensing surface, sharpening the signal-to-background advantage. <em>Patent pending.</em> Each sensing region carries an immobilized capture antibody specific to one analyte; the assay is a standard fluorescence sandwich, run entirely inside the cartridge.</p>
+          <p className="prose" style={{ maxWidth: 720, marginTop: 40 }}>Proprietary cartridge design further directs blood cells away from the sensing surface, sharpening the signal-to-background advantage — the subject of one of two recently filed provisional patents that extend the company's 22 issued patents. Each sensing region carries an immobilized capture antibody specific to one analyte; the assay is a standard fluorescence sandwich, run entirely inside the cartridge.</p>
         </Reveal>
 
         <div style={{ marginTop: 40, maxWidth: 880 }}>
@@ -239,7 +239,7 @@ function CloudAI() {
    ============================================================ */
 function Validation() {
   const specs = [
-  ['5-plex', 'panel validated, IL-6, IL-10, TNF-α, IFN-γ, IFN-α2'],
+  ['5-plex', 'panel validated, IL-6, TNF-α, IL-1β, IFN-γ, IL-10'],
   ['<20%', 'CV at 500 pg/mL across 5 instruments, 50 cartridges'],
   ['0', 'failures recorded across that run'],
   ['R² 0.999', 'Luminex equivalency for IL-10 (0.965 for IL-6), Stanford HIMC']];

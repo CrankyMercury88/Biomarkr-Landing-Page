@@ -236,7 +236,7 @@ function HomeTrajectory() {
       <CTABand
         title="The CGM transformed diabetes by turning a snapshot into a trajectory. Biomarkr does the same for the immune system."
         body="We're partnering with pharma and biotech for research programs. If immune trajectory is the missing layer, let's talk."
-        primary="Request a conversation" primaryHref="mailto:dylan@biomarkr.health"
+        primary="Request a conversation" primaryHref="mailto:info@biomarkr.health"
         secondary="See it in practice" secondaryHref="/use-cases" />
       <SiteFooter />
       <TweaksPanel>
