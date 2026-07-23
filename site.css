@@ -89,7 +89,7 @@ a { color: inherit; }
 
 /* Headline word-rise reveal */
 .bm-split { text-wrap: balance; }
-.bm-word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.14em; margin-bottom: -0.14em; }
+.bm-word { display: inline-block; overflow: hidden; vertical-align: top; white-space: nowrap; padding-bottom: 0.14em; margin-bottom: -0.14em; }
 .bm-word-i { display: inline-block; transition: transform .72s var(--ease-out), opacity .72s var(--ease-out); will-change: transform; }
 .bm-word-sp { display: inline-block; white-space: pre; }
 
