@@ -167,8 +167,8 @@ function SplitText({ segments, text, as = 'h2', className = '', stagger = 38, de
       nodes.push(
         <span key={si + '_' + wi} className="bm-word">
           <span className="bm-word-i" style={{ transitionDelay: delay + idx * stagger + 'ms', transform: on ? 'none' : 'translateY(115%)', opacity: on ? 1 : 0, ...s.em ? { fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 300 } : null }}>{w}</span>
-          <span className="bm-word-sp">{'\u00a0'}</span>
         </span>);
+      nodes.push(' ');
     });
   });
   return React.createElement(as, { ref, className: 'bm-split ' + className, style }, nodes);
