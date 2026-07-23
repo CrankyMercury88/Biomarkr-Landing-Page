@@ -44,13 +44,13 @@ function FaqItem({ q, a, open, onToggle }) {
   );
 }
 
-function FaqGroup({ group, items }) {
+function FaqGroup({ group, items, id }) {
   const [open, setOpen] = React.useState(null);
   return (
-    <section className="hairline-top" style={{ padding: 'clamp(48px,6vh,72px) 0' }}>
+    <section id={id} className="hairline-top" style={{ padding: 'clamp(48px,6vh,72px) 0', scrollMarginTop: 90 }}>
       <div className="wrap r-faq" style={{ gap: 'clamp(24px,4vw,64px)', alignItems: 'start' }}>
         <Reveal>
-          <h2 className="bm-title faq-sticky" style={{ position: 'sticky', top: 110, fontSize: 24, fontWeight: 300, letterSpacing: '-0.02em', margin: 0 }}>{group}</h2>
+          <window.BM_SplitText as="h2" text={group} className="bm-title faq-sticky" style={{ position: 'sticky', top: 110, fontSize: 24, fontWeight: 300, letterSpacing: '-0.02em', margin: 0 }} />
         </Reveal>
         <Reveal delay={80}>
           <div>
@@ -64,13 +64,20 @@ function FaqGroup({ group, items }) {
   );
 }
 
+const FAQ_SECTIONS = [
+  { id: 'faq-overview', label: 'Overview' },
+  ...FAQ_GROUPS.map((g, i) => ({ id: 'faq-g' + i, label: g.group })),
+];
+
 function FaqPage() {
+  const ScrollSpy = window.BM_ScrollSpy;
   return (
-    <div>
+    <div className="bm-page">
       <SiteHeader active="faq" />
-      <PageHero eyebrow="FAQ" title="Questions, answered plainly."
-        lead="What Biomarkr measures, how the science works, where it stands today, and how to get involved. Numbers do the persuading." />
-      {FAQ_GROUPS.map((g) => <FaqGroup key={g.group} group={g.group} items={g.items} />)}
+      <ScrollSpy sections={FAQ_SECTIONS} />
+      <div id="faq-overview"><PageHero eyebrow="FAQ" title="Questions, answered plainly."
+        lead="What Biomarkr measures, how the science works, where it stands today, and how to get involved. Numbers do the persuading." /></div>
+      {FAQ_GROUPS.map((g, i) => <FaqGroup key={g.group} id={'faq-g' + i} group={g.group} items={g.items} />)}
       <CTABand title="Still have a question?" body="If you're an investor, a research partner, or a clinician working in inflammatory disease, we'd like to hear from you." primary="Get in touch" primaryHref="mailto:info@biomarkr.health" />
       <SiteFooter />
     </div>

@@ -200,10 +200,12 @@ function StatRow({ items, compact }) {
 
 function InfoCard({ title, children }) {
   return (
+    <div className="bm-hoverlift">
     <Card padding="lg">
       <div className="eyebrow" style={{ fontSize: 11, marginBottom: 13 }}>{title}</div>
       <p className="prose" style={{ fontSize: 14, lineHeight: 1.75, margin: 0 }}>{children}</p>
     </Card>
+    </div>
   );
 }
 
@@ -273,7 +275,7 @@ function UseCase({ num, title, thesis, cards, chart, refs, story, tint }) {
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 600, color: 'var(--text-tertiary)', letterSpacing: '0.04em' }}>{num}</span>
             <span className="rule" style={{ alignSelf: 'center' }} />
           </div>
-          <h2 style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.08, margin: 0, maxWidth: 880 }}>{title}</h2>
+          <window.BM_SplitText as="h2" text={title} style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.08, margin: 0, maxWidth: 880 }} />
           <p className="prose" style={{ fontSize: 17, lineHeight: 1.75, maxWidth: 720, marginTop: 24 }}><strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Thesis. </strong>{thesis}</p>
         </Reveal>
 
@@ -395,14 +397,15 @@ function PracticePage() {
   };
 
   return (
-    <div>
+    <div className="bm-page">
       <SiteHeader active="practice" />
       <BM_ScrollSpy sections={SPY} />
 
       <div id="overview">
         <PageHero
           eyebrow="Use cases · Chronic inflammatory disease"
-          title={<>Reading the flare <em style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 300 }}>before the patient feels it</em></>}
+          title={undefined}
+          segments={[{ text: 'Reading the flare' }, { text: 'before the patient feels it', em: true }]}
           lead="In rheumatoid arthritis and inflammatory bowel disease, the inflammatory surge that drives a flare is measurable in blood days before symptoms appear. The Q-SENS Core Inflammation Panel turns that surge into a number a patient can track from home, and a signal a clinician can act on while there is still time to adjust therapy." />
       </div>
 
@@ -420,7 +423,7 @@ function PracticePage() {
             <div className="r-wide" style={{ gap: 'clamp(32px,5vw,72px)', marginTop: 56, alignItems: 'start' }}>
               <div>
                 <span className="rule" style={{ marginBottom: 18 }} />
-                <h2 style={{ fontSize: 'clamp(22px,2.6vw,30px)', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.15, margin: 0 }}>The shared idea</h2>
+                <window.BM_SplitText as="h2" text="The shared idea" style={{ fontSize: 'clamp(22px,2.6vw,30px)', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.15, margin: 0 }} />
               </div>
               <div>
                 <p className="prose" style={{ fontSize: 17, lineHeight: 1.8, marginTop: 0 }}>Both diseases share a pattern: a relapsing course punctuated by flares, biologic drugs that target specific cytokines, and monitoring tools that are either too slow, too non-specific, or too invasive to catch a flare early. Each fingerstick adds a calibrated point to a personal inflammatory trajectory. The two use cases below apply that idea to RA and to IBD, first the thesis and the evidence, then an illustrative patient story of how earlier detection could change a treatment decision.</p>
@@ -445,7 +448,7 @@ function PracticePage() {
             <div style={{ maxWidth: 880 }}>
               <span className="rule" style={{ marginBottom: 22 }} />
               <div className="eyebrow" style={{ marginBottom: 16 }}>From hypothesis to validation</div>
-              <h2 style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.12, margin: 0 }}>The trajectories shown here are models, not clinical results.</h2>
+              <window.BM_SplitText as="h2" text="The trajectories shown here are models, not clinical results." style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.12, margin: 0 }} />
               <p className="prose" style={{ fontSize: 17, lineHeight: 1.8, marginTop: 28, maxWidth: 780 }}>Both use cases rest on the same testable claim: the cytokines that drive RA and Crohn's flares, and that their biologics target, move measurably before symptoms do, and a fingerstick can read that movement often enough to matter. The next step is prospective validation against longitudinal patient data, pairing serial Q-SENS readings with established measures (DAS28-CRP and fecal calprotectin) and clinical flare endpoints.</p>
               <p className="serif" style={{ fontSize: 'clamp(22px,2.6vw,30px)', lineHeight: 1.5, marginTop: 36, color: 'var(--text-primary)', maxWidth: 720 }}>The goal is not another snapshot. It is a continuous, personal inflammatory trajectory, read early enough that a clinician can adjust therapy while a flare is still a number, not yet a symptom.</p>
               <div style={{ display: 'flex', gap: 12, marginTop: 40, flexWrap: 'wrap' }}>

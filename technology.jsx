@@ -15,7 +15,7 @@ function SectionOpen({ num, eyebrow, title, sub, style = {} }) {
     <header style={{ ...style }}>
       <span className="rule" style={{ marginBottom: 20 }} />
       <span className="eyebrow" style={{ marginBottom: 14, display: 'block' }}><span style={{ color: 'var(--text-tertiary)' }}>{num} ·</span> {eyebrow}</span>
-      <h2 style={{ margin: 0, fontSize: 'clamp(28px,3.6vw,42px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.12, maxWidth: 760 }}>{title}</h2>
+      {title && <window.BM_SplitText as="h2" text={typeof title === 'string' ? title : ''} style={{ margin: 0, fontSize: 'clamp(28px,3.6vw,42px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.12, maxWidth: 760 }} />}
       {sub && <p className="prose" style={{ maxWidth: 660, marginTop: 20, marginBottom: 0 }}>{sub}</p>}
     </header>);
 
@@ -34,7 +34,7 @@ const ASSAY = [
 function Detection() {
   const { TECH_Figure, TECH_EvanescentDiagram } = window;
   return (
-    <section className="hairline-top" style={{ padding: '6.5rem 0' }}>
+    <section id="tech-detection" className="hairline-top" style={{ padding: '6.5rem 0', scrollMarginTop: 90 }}>
       <div className="wrap">
         <Reveal><SectionOpen num="02" eyebrow="The core technology" title="Evanescent-wave biosensing" sub="A planar optical waveguide confines light to a thin layer on the chip. A small portion extends just beyond the surface as an evanescent field that reaches only ~50–150 nm, exciting labels bound at the surface while leaving everything deeper in the sample dark." /></Reveal>
 
@@ -91,7 +91,7 @@ function Multiplex() {
   const { TECH_Figure, TECH_MultiplexMatrix } = window;
   const specs = [['4 × 8', 'input × output waveguide matrix'], ['32', 'independent sensing sites per chip'], ['5', 'cytokines in the Core Inflammation Panel'], ['1', 'cartridge, fully self-calibrating']];
   return (
-    <section className="hairline-top" style={{ padding: '6.5rem 0' }}>
+    <section id="tech-multiplex" className="hairline-top" style={{ padding: '6.5rem 0', scrollMarginTop: 90 }}>
       <div className="wrap">
         <Reveal><SectionOpen num="03" eyebrow="Multiplex architecture" title="32 measurements on one chip" sub="The waveguide matrix crosses 4 optical inputs with 8 outputs, 4 × 8 = 32 independent sensing locations. That capacity is spent on analytes, replicates, controls, and on-chip calibration standards, so a single fingerstick returns a full panel with built-in quality control." /></Reveal>
         <Reveal delay={80} style={{ marginTop: 48 }}>
@@ -103,7 +103,7 @@ function Multiplex() {
         <div className="r-4" style={{ gap: '36px 28px', marginTop: 48 }}>
           {specs.map((s, i) =>
           <Reveal key={i} delay={i * 70}>
-              <div className="tabular" style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>{s[0]}</div>
+              <div className="tabular" style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}><window.BM_CountUp value={s[0]} /></div>
               <div className="prose" style={{ marginTop: 12, fontSize: 14, maxWidth: 200 }}>{s[1]}</div>
             </Reveal>
           )}
@@ -135,12 +135,12 @@ const COMPARE = [
 
 function Attributes() {
   return (
-    <section className="hairline-top" style={{ padding: '6.5rem 0' }}>
+    <section id="tech-attributes" className="hairline-top" style={{ padding: '6.5rem 0', scrollMarginTop: 90 }}>
       <div className="wrap">
         <Reveal><SectionOpen num="04" eyebrow="Platform attributes" title="Each choice removes a barrier" sub="Every design decision dismantles a constraint that keeps cytokine testing locked inside centralized laboratories." /></Reveal>
         <div className="r-cards" style={{ gap: 20, marginTop: 52 }}>
           {ATTRS.map((a, i) =>
-          <Reveal key={a[0]} delay={i % 3 * 80}>
+          <Reveal key={a[0]} delay={i % 3 * 80} className="bm-lift">
               <Card padding="lg" style={{ height: '100%' }}>
                 <div className="eyebrow" style={{ fontSize: 11, color: 'var(--signal-info)', marginBottom: 10 }}>{a[0]}</div>
                 <h3 style={{ fontSize: 17, fontWeight: 600, margin: '0 0 10px' }}>{a[1]}</h3>
@@ -191,13 +191,13 @@ const AI_CARDS = [
 function CloudAI() {
   const { TECH_Figure, TECH_SnapshotTrajectoryChart } = window;
   return (
-    <section style={{ background: 'var(--surface-tint)', padding: '6.5rem 0' }}>
+    <section id="tech-cloud" style={{ background: 'var(--surface-tint)', padding: '6.5rem 0', scrollMarginTop: 90 }}>
       <div className="wrap">
         <Reveal><SectionOpen num="05" eyebrow="Cloud and AI infrastructure" title="The intelligence lives in software." sub="The reader captures raw optical signal and hands the heavy work to the cloud, where every measurement is processed, calibrated, quality-checked, and stored against the patient’s history. That is what turns Biomarkr from a testing device into a monitoring platform, the value is the trajectory analysis, not any single reading." /></Reveal>
 
         <div className="r-4" style={{ gap: 16, marginTop: 52 }}>
           {PIPELINE.map((s, i) =>
-          <Reveal key={i} delay={i * 70}>
+          <Reveal key={i} delay={i * 70} className="bm-lift">
               <Card padding="lg" tone="page" style={{ height: '100%', position: 'relative' }}>
                 <div className="eyebrow" style={{ fontSize: 11, color: 'var(--signal-info)', marginBottom: 10 }}>{s[0]}</div>
                 <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 8px' }}>{s[1]}</h3>
@@ -213,7 +213,7 @@ function CloudAI() {
 
         <div className="r-4" style={{ gap: 20, marginTop: 36 }}>
           {AI_CARDS.map((c, i) =>
-          <Reveal key={c[0]} delay={i % 2 * 80}>
+          <Reveal key={c[0]} delay={i % 2 * 80} className="bm-lift">
               <Card padding="lg" tone="page" style={{ height: '100%' }}>
                 <div className="eyebrow" style={{ fontSize: 11, color: 'var(--text-tertiary)', marginBottom: 8 }}>{c[0]}</div>
                 <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 9px' }}>{c[1]}</h3>
@@ -245,7 +245,7 @@ function Validation() {
   ['R² 0.999', 'Luminex equivalency for IL-10 (0.965 for IL-6), Stanford HIMC']];
 
   return (
-    <section className="hairline-top" style={{ padding: '6.5rem 0' }}>
+    <section id="tech-validation" className="hairline-top" style={{ padding: '6.5rem 0', scrollMarginTop: 90 }}>
       <div className="wrap">
         <Reveal>
           <SectionOpen num="06" eyebrow="Validation and performance" title="Developed in part with BARDA DRIVe" sub="Under BARDA the platform demonstrated a validated 5-plex panel and strong agreement with established laboratory methods." />
@@ -254,7 +254,7 @@ function Validation() {
         <div className="r-4" style={{ gap: '40px 32px', marginTop: 52 }}>
           {specs.map((s, i) =>
           <Reveal key={i} delay={i * 70}>
-              <div className="tabular" style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>{s[0]}</div>
+              <div className="tabular" style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}><window.BM_CountUp value={s[0]} /></div>
               <div className="prose" style={{ marginTop: 12, fontSize: 14, maxWidth: 230 }}>{s[1]}</div>
             </Reveal>
           )}
@@ -275,11 +275,22 @@ function Validation() {
 /* ============================================================
    Page
    ============================================================ */
+const TECH_SECTIONS = [
+  { id: 'tech-overview', label: 'Overview' },
+  { id: 'tech-stack', label: 'The stack' },
+  { id: 'tech-detection', label: 'Detection' },
+  { id: 'tech-multiplex', label: 'Multiplex' },
+  { id: 'tech-attributes', label: 'Attributes' },
+  { id: 'tech-cloud', label: 'Cloud & AI' },
+  { id: 'tech-validation', label: 'Validation' }];
+
 function TechnologyPage() {
+  const ScrollSpy = window.BM_ScrollSpy;
   return (
-    <div>
+    <div className="bm-page">
       <SiteHeader active="technology" />
-      <PageHero eyebrow="Technology" title={<span>Laboratory-grade inflammation measurement, <em style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 300 }}>reduced to a fingerstick.</em></span>}
+      <ScrollSpy sections={TECH_SECTIONS} />
+      <div id="tech-overview"><PageHero eyebrow="Technology" segments={[{ text: 'Laboratory-grade inflammation measurement,' }, { text: 'reduced to a fingerstick.', em: true }]}
       lead="Biomarkr is a cloud-connected, silicon-photonic biosensor platform that performs quantitative multiplex immunoassays directly from 10 µL of whole blood, results in under ten minutes, without centrifugation, serum separation, or laboratory infrastructure.">
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px 28px', marginTop: 32 }}>
           {[['Modality', 'Evanescent-wave fluorescence'], ['Sample', '10 µL fingerstick whole blood'], ['Time to result', 'Under 10 minutes'], ['Multiplex capacity', 'Up to 32 analytes per chip']].map((m) =>
@@ -289,8 +300,8 @@ function TechnologyPage() {
             </div>
           )}
         </div>
-      </PageHero>
-      <TechStack />
+      </PageHero></div>
+      <div id="tech-stack"><TechStack /></div>
       <Detection />
       <Multiplex />
       <Attributes />

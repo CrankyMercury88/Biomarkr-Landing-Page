@@ -5,6 +5,24 @@
 
 const { Button, IconButton } = window.BiomarkrDesignSystem_734cca;
 
+/* ---------- Path resolver ----------
+   Live site is served from the domain root, so internal links stay as clean
+   root-absolute URLs (/technology, /assets/...). In any other host (e.g. the
+   in-editor preview, which is NOT served from a domain root) those 404, so we
+   resolve everything relative to where chrome.jsx actually loaded and map the
+   clean URLs to the real page files. Live behaviour is unchanged. */
+const BM_PROD_HOSTS = ['biomarkr.health', 'www.biomarkr.health'];
+const BM_isProd = BM_PROD_HOSTS.indexOf(location.hostname) !== -1;
+const BM_scriptEl = document.querySelector('script[src*="chrome.jsx"]');
+const BM_ROOT = BM_scriptEl ? BM_scriptEl.src.replace(/chrome\.jsx.*$/, '') : '/';
+const BM_PAGE_FILE = { '/': 'index.html', '/technology': 'technology.html', '/inflammation': 'inflammation.html', '/use-cases': 'practice.html', '/cytokines': 'cytokines/index.html', '/faq': 'faq.html' };
+const bmAsset = (p) => BM_isProd ? p : BM_ROOT + p.replace(/^\//, '');
+const bmLink = (href) => {
+  if (BM_isProd || !href || /^(https?:|mailto:|tel:|#)/.test(href)) return href;
+  const clean = href.replace(/\/$/, '') || '/';
+  return BM_ROOT + (BM_PAGE_FILE[clean] || href.replace(/^\//, ''));
+};
+
 /* ---------- Icons (2px stroke, brand line style) ---------- */
 const Sun = (p) => <svg width={p.size || 20} height={p.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" /></svg>;
 const Moon = (p) => <svg width={p.size || 20} height={p.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>;
@@ -71,6 +89,121 @@ function Reveal({ children, delay = 0, as = 'div', style = {}, className = '' })
   return React.createElement(as, { ref, className: 'reveal ' + className, style: { transitionDelay: delay + 'ms', ...style } }, children);
 }
 
+/* ---------- Motion system (intensity: full | subtle | off; honors reduced-motion) ---------- */
+let BM_MOTION = 'full';
+const BM_REDUCED = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const bmSetMotion = (l) => {BM_MOTION = l || 'full';};
+const bmMotion = () => BM_REDUCED ? 'off' : BM_MOTION;
+const bmAnim = () => bmMotion() !== 'off';
+
+/* Reveal-once when an element scrolls into view. */
+function useInView(ref, opts) {
+  const o = opts || {};
+  const [seen, setSeen] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;if (!el) return;
+    let done = false, io;
+    const cleanup = () => {if (io) io.disconnect();window.removeEventListener('scroll', onScroll, { passive: true });window.removeEventListener('resize', onScroll);};
+    const mark = () => {if (done) return;done = true;setSeen(true);cleanup();};
+    const check = () => {const r = el.getBoundingClientRect();if (r.top < window.innerHeight * (o.enter || 0.92) && r.bottom > 0) mark();};
+    const onScroll = () => check();
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver((es) => {es.forEach((e) => {if (e.isIntersecting) mark();});}, { threshold: o.threshold != null ? o.threshold : 0.25, rootMargin: o.rootMargin || '0px 0px -8% 0px' });
+      io.observe(el);
+    }
+    check(); // immediate: above-fold or already scrolled past
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return cleanup;
+  }, []);
+  return seen;
+}
+
+/* Count a number up when it scrolls into view. Animates the first numeric
+   token in `value`, preserving surrounding text ($, %, ×, units, <, commas). */
+const bmFmt = (v, dec, comma) => {
+  let s = dec > 0 ? v.toFixed(dec) : String(Math.round(v));
+  if (comma) {const p = s.split('.');p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');s = p.join('.');}
+  return s;
+};
+function CountUp({ value, dur = 1150, className, style }) {
+  const ref = React.useRef(null);
+  const inView = useInView(ref, { threshold: 0.5 });
+  const str = String(value);
+  const m = str.match(/\d[\d,]*\.?\d*/);
+  const live = m && bmAnim();
+  const [disp, setDisp] = React.useState(() => live ? str.replace(m[0], bmFmt(0, (m[0].split('.')[1] || '').length, m[0].indexOf(',') !== -1)) : str);
+  React.useEffect(() => {
+    if (!live) {setDisp(str);return;}
+    if (!inView) return;
+    const target = parseFloat(m[0].replace(/,/g, ''));
+    const dec = (m[0].split('.')[1] || '').length;
+    const comma = m[0].indexOf(',') !== -1;
+    const t0 = performance.now();
+    const id = setInterval(() => {
+      const p = Math.min(1, (performance.now() - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      setDisp(str.replace(m[0], bmFmt(target * e, dec, comma)));
+      if (p >= 1) clearInterval(id);
+    }, 16);
+    return () => clearInterval(id);
+  }, [inView]);
+  return <span ref={ref} className={className} style={{ fontVariantNumeric: 'tabular-nums', ...style }}>{disp}</span>;
+}
+
+/* Headline word-rise: each word rises from behind a mask line, staggered,
+   when scrolled into view. `segments` lets one headline mix roman + italic
+   (serif em) runs; `text` is the plain-string shorthand. */
+function SplitText({ segments, text, as = 'h2', className = '', stagger = 38, delay = 0, style = {} }) {
+  const ref = React.useRef(null);
+  const inView = useInView(ref, { threshold: 0.2 });
+  const on = !bmAnim() || inView;
+  const segs = segments || [{ text: String(text == null ? '' : text) }];
+  let gi = 0;
+  const nodes = [];
+  segs.forEach((s, si) => {
+    s.text.split(/\s+/).filter(Boolean).forEach((w, wi) => {
+      const idx = gi++;
+      nodes.push(
+        <span key={si + '_' + wi} className="bm-word">
+          <span className="bm-word-i" style={{ transitionDelay: delay + idx * stagger + 'ms', transform: on ? 'none' : 'translateY(115%)', opacity: on ? 1 : 0, ...s.em ? { fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 300 } : null }}>{w}</span>
+          <span className="bm-word-sp">{'\u00a0'}</span>
+        </span>);
+    });
+  });
+  return React.createElement(as, { ref, className: 'bm-split ' + className, style }, nodes);
+}
+
+/* Scroll-linked vertical parallax. Positive speed drifts up as it scrolls past;
+   negative drifts down (use opposite signs on paired elements for depth). */
+function Parallax({ speed = 0.06, children, className = '', style = {} }) {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const el = ref.current;if (!el || !bmAnim()) return;
+    let raf = 0;
+    const upd = () => {raf = 0;const r = el.getBoundingClientRect();const c = r.top + r.height / 2 - window.innerHeight / 2;el.style.transform = 'translate3d(0,' + (-c * speed).toFixed(1) + 'px,0)';};
+    const onScroll = () => {if (raf) return;raf = requestAnimationFrame(upd);};
+    upd();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {window.removeEventListener('scroll', onScroll);window.removeEventListener('resize', onScroll);if (raf) cancelAnimationFrame(raf);};
+  }, [speed]);
+  return <div ref={ref} className={className} style={{ willChange: 'transform', ...style }}>{children}</div>;
+}
+
+/* Magnetic wrapper: the child eases toward the pointer, springs back on leave. */
+function Magnetic({ children, strength = 0.35, className = '', style = {} }) {
+  const ref = React.useRef(null);
+  const onMove = (e) => {
+    const lvl = bmMotion();if (lvl === 'off' || !ref.current) return;
+    const s = lvl === 'subtle' ? strength * 0.5 : strength;
+    const r = ref.current.getBoundingClientRect();
+    ref.current.style.transform = 'translate(' + ((e.clientX - (r.left + r.width / 2)) * s).toFixed(1) + 'px,' + ((e.clientY - (r.top + r.height / 2)) * s).toFixed(1) + 'px)';
+  };
+  const reset = () => {if (ref.current) ref.current.style.transform = '';};
+  return <span ref={ref} className={className} onMouseMove={onMove} onMouseLeave={reset} style={{ display: 'inline-block', transition: 'transform .3s var(--ease-out)', ...style }}>{children}</span>;
+}
+
 /* ---------- Eyebrow + rule lockup ---------- */
 function Lockup({ eyebrow, title, align = 'left', sub, style = {} }) {
   return (
@@ -131,12 +264,12 @@ function SiteHeader({ active }) {
   return (
     <React.Fragment>
       <header className="site-header">
-        <a href="/" aria-label="Biomarkr home" style={{ display: 'flex', alignItems: 'center' }}>
-          <img className="brandmark" src="/assets/logo-wordmark-black.png" alt="biomarkr" />
+        <a href={bmLink('/')} aria-label="Biomarkr home" style={{ display: 'flex', alignItems: 'center' }}>
+          <img className="brandmark" src={bmAsset('/assets/logo-wordmark-black.png')} alt="biomarkr" />
         </a>
         <nav className="navpill center">
           {NAV.map((n) =>
-          <a key={n.key} href={n.href} className={'navlink' + (active === n.key ? ' active' : '')}>{n.label}</a>
+          <a key={n.key} href={bmLink(n.href)} className={'navlink' + (active === n.key ? ' active' : '')}>{n.label}</a>
           )}
         </nav>
         <div className="nav-right">
@@ -146,12 +279,12 @@ function SiteHeader({ active }) {
       </header>
       <div className={'mobile-sheet' + (open ? ' open' : '')}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <img className="brandmark" src="/assets/logo-wordmark-black.png" alt="biomarkr" />
+          <img className="brandmark" src={bmAsset('/assets/logo-wordmark-black.png')} alt="biomarkr" />
           <button className="btn btn-ghost" style={{ padding: 10 }} aria-label="Close" onClick={() => setOpen(false)}><Close /></button>
         </div>
-        {NAV.map((n) => <a key={n.key} href={n.href}>{n.label}</a>)}
-        <a href="/cytokines">Cytokine model</a>
-        <a href="/faq">FAQ</a>
+        {NAV.map((n) => <a key={n.key} href={bmLink(n.href)}>{n.label}</a>)}
+        <a href={bmLink('/cytokines')}>Cytokine model</a>
+        <a href={bmLink('/faq')}>FAQ</a>
         <button onClick={() => {setOpen(false);setContactOpen(true);}} style={{ border: 'none', background: 'none', padding: 0, marginTop: 20, textAlign: 'left', cursor: 'pointer' }}>
           <span className="btn btn-primary">Get in touch</span>
         </button>
@@ -172,7 +305,7 @@ function SiteFooter() {
     <footer className="site-footer">
       <div style={{ maxWidth: 1240, margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '64px 48px', justifyContent: 'space-between' }}>
         <div style={{ flex: '1 1 280px', minWidth: 240 }}>
-          <img src="/assets/logo-wordmark-white.png" alt="biomarkr" style={{ height: 26 }} />
+          <img src={bmAsset('/assets/logo-wordmark-white.png')} alt="biomarkr" style={{ height: 26 }} />
           <p className="serif" style={{ fontSize: 20, lineHeight: 1.4, color: 'var(--grey-250)', margin: '26px 0 0', maxWidth: 320 }}>Monitor, detect, prevent.</p>
           <p style={{ fontSize: 14, color: 'var(--grey-400)', lineHeight: 1.7, marginTop: 18, maxWidth: 340 }}>Silicon photonic biosensors making blood testing roughly 25× faster and cheaper, building a personal immune baseline with the goal of catching disease before symptoms appear.</p>
         </div>
@@ -180,7 +313,7 @@ function SiteFooter() {
           {cols.map((c) =>
           <div key={c.h}>
               <h4>{c.h}</h4>
-              {c.items.map(([label, href]) => href ? <a key={label} href={href}>{label}</a> : <span key={label} style={{ color: 'var(--grey-350)', fontSize: 14, display: 'block', padding: '5px 0', maxWidth: 220 }}>{label}</span>)}
+              {c.items.map(([label, href]) => href ? <a key={label} href={bmLink(href)}>{label}</a> : <span key={label} style={{ color: 'var(--grey-350)', fontSize: 14, display: 'block', padding: '5px 0', maxWidth: 220 }}>{label}</span>)}
             </div>
           )}
         </div>
@@ -194,14 +327,19 @@ function SiteFooter() {
 }
 
 /* ---------- Interior page hero ---------- */
-function PageHero({ eyebrow, title, lead, children }) {
+function PageHero({ eyebrow, title, segments, lead, children }) {
+  const h1 = { margin: 0, fontSize: 'clamp(42px,5.6vw,80px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1.02, maxWidth: 980 };
   return (
     <section style={{ padding: 'clamp(60px,10vh,120px) 0 clamp(40px,6vh,72px)' }}>
       <div className="wrap">
         <Reveal>
           <span className="rule" style={{ marginBottom: 26 }} />
           <div className="eyebrow" style={{ marginBottom: 18 }}>{eyebrow}</div>
-          <h1 style={{ margin: 0, fontSize: 'clamp(42px,5.6vw,80px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1.02, maxWidth: 980 }}>{title}</h1>
+          {segments ?
+          <SplitText as="h1" segments={segments} stagger={40} style={h1} /> :
+          typeof title === 'string' ?
+          <SplitText as="h1" text={title} stagger={40} style={h1} /> :
+          <h1 style={h1}>{title}</h1>}
           {lead && <p className="lead" style={{ maxWidth: 660, marginTop: 28, color: 'var(--text-secondary)' }}>{lead}</p>}
           {children}
         </Reveal>
@@ -222,8 +360,8 @@ function CTABand({ title, body, primary, primaryHref, secondary, secondaryHref }
         <div>
           {body && <p style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--grey-250)', marginTop: 0 }}>{body}</p>}
           <div style={{ display: 'flex', gap: 12, marginTop: 26, flexWrap: 'wrap' }}>
-            <a className="btn" href={primaryHref} style={{ background: 'var(--white)', color: 'var(--black)' }}>{primary} <ArrowRight /></a>
-            {secondary && <a className="btn" href={secondaryHref} style={{ border: '1px solid var(--paper-a12)', color: 'var(--white)' }}>{secondary}</a>}
+            <a className="btn" href={bmLink(primaryHref)} style={{ background: 'var(--white)', color: 'var(--black)' }}>{primary} <ArrowRight /></a>
+            {secondary && <a className="btn" href={bmLink(secondaryHref)} style={{ border: '1px solid var(--paper-a12)', color: 'var(--white)' }}>{secondary}</a>}
           </div>
         </div>
       </div>
@@ -300,4 +438,4 @@ function ScrollSpy({ sections }) {
 
 }
 
-Object.assign(window, { BM_useTheme: useTheme, BM_Reveal: Reveal, BM_Lockup: Lockup, BM_PageHero: PageHero, BM_CTABand: CTABand, BM_Trajectory: Trajectory, BM_ScrollSpy: ScrollSpy, SiteHeader, SiteFooter, BM_Icons: { Sun, Moon, ArrowRight, Menu, Close, LinkedIn }, BM_NAV: NAV });
+Object.assign(window, { BM_useTheme: useTheme, BM_Reveal: Reveal, BM_Lockup: Lockup, BM_useInView: useInView, BM_CountUp: CountUp, BM_SplitText: SplitText, BM_Parallax: Parallax, BM_Magnetic: Magnetic, BM_setMotion: bmSetMotion, BM_motion: bmMotion, BM_anim: bmAnim, BM_PageHero: PageHero, BM_CTABand: CTABand, BM_Trajectory: Trajectory, BM_ScrollSpy: ScrollSpy, SiteHeader, SiteFooter, BM_Icons: { Sun, Moon, ArrowRight, Menu, Close, LinkedIn }, BM_NAV: NAV });

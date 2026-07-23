@@ -79,6 +79,29 @@ a { color: inherit; }
   text-transform: uppercase; color: var(--text-tertiary);
 }
 .rule { display: block; width: 60px; height: 2px; background: var(--text-primary); border: 0; }
+/* Home: accent rule grows 0 -> 60px as each section reveals */
+.bm-page .reveal .rule { width: 0; transition: width .8s var(--ease-out) .12s; }
+.bm-page .reveal.in .rule { width: 60px; }
+.bm-page.bm-motion-off .reveal .rule, .bm-page.bm-motion-off .reveal.in .rule { width: 60px; transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .bm-page .reveal .rule, .bm-page .reveal.in .rule { width: 60px; transition: none; }
+}
+
+/* Headline word-rise reveal */
+.bm-split { text-wrap: balance; }
+.bm-word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.14em; margin-bottom: -0.14em; }
+.bm-word-i { display: inline-block; transition: transform .72s var(--ease-out), opacity .72s var(--ease-out); will-change: transform; }
+.bm-word-sp { display: inline-block; white-space: pre; }
+
+/* Card hover lift (opt-in via .bm-lift on the Reveal wrapper) */
+.bm-page .reveal.bm-lift { border-radius: 16px; transition: opacity .8s var(--ease-out), transform .8s var(--ease-out), box-shadow .35s var(--ease-out); }
+.bm-page .reveal.bm-lift.in { transition: transform .38s var(--ease-out), box-shadow .38s var(--ease-out); }
+.bm-page .reveal.bm-lift.in:hover { transform: translateY(-6px); box-shadow: 0 18px 44px rgba(0,0,0,0.11); }
+.bm-page.bm-motion-off .reveal.bm-lift.in:hover { transform: none; box-shadow: none; }
+@media (prefers-reduced-motion: reduce) {
+  .bm-word-i { transition: none !important; }
+  .bm-page .reveal.bm-lift.in:hover { transform: none; box-shadow: none; }
+}
 
 /* --- Body type helpers --- */
 .lead { font-size: 20px; line-height: 1.55; font-weight: 300; letter-spacing: -0.01em; color: var(--text-primary); }
@@ -267,3 +290,9 @@ img, svg, table { max-width: 100%; }
   font-family: var(--font-mono);
 }
 .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* Standalone card hover-lift wrapper */
+.bm-page .bm-hoverlift{border-radius:16px;transition:transform .38s var(--ease-out),box-shadow .38s var(--ease-out)}
+.bm-page .bm-hoverlift:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(0,0,0,.11)}
+.bm-page.bm-motion-off .bm-hoverlift:hover{transform:none;box-shadow:none}
+@media (prefers-reduced-motion: reduce){.bm-page .bm-hoverlift:hover{transform:none;box-shadow:none}}

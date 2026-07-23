@@ -5,6 +5,7 @@
    is exported to window for the two page files to compose differently. */
 
 /* Cytokine → design-system functional signal (the cytokine model's register) */
+/* CountUp, useInView, bmAnim are globals from chrome.jsx (shared script scope). */
 const MARKER_COLOR = {
   'IL-6': 'var(--signal-critical)',
   'TNF-α': 'var(--signal-caution)',
@@ -114,7 +115,34 @@ const USE_CASES = [
 
 /* Flexible multi-series line chart (SVG). series: [{key,data,dash,dot}].
    `prefix` must be unique per instance for gradient ids. */
-function LineChart({ width = 560, height = 250, series, xTicks = {}, xLabel, yMax, yMin = 0, yTicks = [1], prefix = 'c', fill = false, strokeWidth = 2 }) {
+/* Play an SVG chart's draw-in: solid lines draw via stroke-dashoffset,
+   `.ln-fade` elements fade in after. Uses a forced reflow (no rAF, which is
+   throttled in background frames) plus a safety net that forces the final
+   state if transitions are frozen. */
+function bmPlaySvg(svg, opts) {
+  const o = opts || {};
+  const solidDur = o.solidDur || 1.05, stagger = o.stagger != null ? o.stagger : 80, fadeAfter = o.fadeAfter != null ? o.fadeAfter : 460;
+  const solids = svg.querySelectorAll('.ln-solid');
+  const fades = svg.querySelectorAll('.ln-fade');
+  const finalNow = () => {
+    solids.forEach((p) => {p.style.transition = 'none';p.style.strokeDasharray = 'none';p.style.strokeDashoffset = '0';});
+    fades.forEach((e) => {e.style.transition = 'none';e.style.opacity = e.dataset.op || '1';});
+  };
+  if (!bmAnim()) {finalNow();return;}
+  solids.forEach((p) => {const len = p.getTotalLength();p.style.transition = 'none';p.style.strokeDasharray = len + ' ' + len;p.style.strokeDashoffset = len;});
+  fades.forEach((e) => {e.style.transition = 'none';e.style.opacity = '0';});
+  svg.getBoundingClientRect(); // commit hidden state before transitioning
+  solids.forEach((p, i) => {p.style.transition = 'stroke-dashoffset ' + solidDur + 's var(--ease-out) ' + i * stagger + 'ms';p.style.strokeDashoffset = '0';});
+  const base = solids.length * stagger + fadeAfter;
+  fades.forEach((e, i) => {e.style.transition = 'opacity .55s var(--ease-out) ' + (base + i * 8) + 'ms';e.style.opacity = e.dataset.op || '1';});
+  setTimeout(() => {const last = solids[solids.length - 1];if (last && parseFloat(getComputedStyle(last).strokeDashoffset) > 1) finalNow();}, 2400);
+}
+function bmHideSvg(svg) {
+  svg.querySelectorAll('.ln-solid').forEach((p) => {const len = p.getTotalLength();p.style.transition = 'none';p.style.strokeDasharray = len + ' ' + len;p.style.strokeDashoffset = len;});
+  svg.querySelectorAll('.ln-fade').forEach((e) => {e.style.transition = 'none';e.style.opacity = '0';});
+}
+
+function LineChart({ width = 560, height = 250, series, xTicks = {}, xLabel, yMax, yMin = 0, yTicks = [1], prefix = 'c', fill = false, strokeWidth = 2, animate = false }) {
   const pad = { l: 30, r: 16, t: 16, b: xLabel ? 34 : 24 };
   const n = series[0].data.length;
   const max = yMax || Math.max(...series.flatMap((s) => s.data)) * 1.08;
@@ -123,8 +151,15 @@ function LineChart({ width = 560, height = 250, series, xTicks = {}, xLabel, yMa
   const toLine = (d) => d.map((v, i) => `${i ? 'L' : 'M'} ${px(i).toFixed(1)} ${py(v).toFixed(1)}`).join(' ');
   const toArea = (d) => `${toLine(d)} L ${px(n - 1).toFixed(1)} ${py(yMin).toFixed(1)} L ${px(0).toFixed(1)} ${py(yMin).toFixed(1)} Z`;
   const color = (s) => MARKER_COLOR[s.key] || 'var(--text-primary)';
+  const svgRef = React.useRef(null);
+  const inView = useInView(svgRef, { threshold: 0.28 });
+  React.useLayoutEffect(() => {
+    if (!animate) return;
+    const svg = svgRef.current;if (!svg) return;
+    if (!bmAnim() || inView) bmPlaySvg(svg);else bmHideSvg(svg);
+  }, [inView]);
   return (
-    <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ display: 'block', overflow: 'visible' }}>
+    <svg ref={svgRef} width="100%" viewBox={`0 0 ${width} ${height}`} style={{ display: 'block', overflow: 'visible' }}>
       <defs>
         {fill && series.map((s, i) => (
           <linearGradient key={i} id={`${prefix}-f-${i}`} x1="0" y1="0" x2="0" y2="1">
@@ -140,12 +175,12 @@ function LineChart({ width = 560, height = 250, series, xTicks = {}, xLabel, yMa
         </g>
       ))}
       <line x1={pad.l} x2={width - pad.r} y1={py(1)} y2={py(1)} stroke="var(--border-strong)" strokeWidth="1" strokeDasharray="4 4" />
-      {fill && series.map((s, i) => <path key={'a' + i} d={toArea(s.data)} fill={`url(#${prefix}-f-${i})`} />)}
+      {fill && series.map((s, i) => <path className="ln-fade" key={'a' + i} d={toArea(s.data)} fill={`url(#${prefix}-f-${i})`} />)}
       {series.map((s, i) => (
         <g key={'l' + i}>
-          <path d={toLine(s.data)} fill="none" stroke={color(s)} strokeWidth={strokeWidth} strokeDasharray={s.dash || '0'} strokeLinecap="round" strokeLinejoin="round" opacity={s.dash ? 0.92 : 1} />
-          {s.dot && s.data.map((v, j) => <circle key={j} cx={px(j)} cy={py(v)} r="1.7" fill={color(s)} />)}
-          <circle cx={px(n - 1)} cy={py(s.data[n - 1])} r="3" fill={color(s)} />
+          <path className={s.dash ? 'ln-fade' : 'ln-solid'} data-op={s.dash ? '0.92' : undefined} d={toLine(s.data)} fill="none" stroke={color(s)} strokeWidth={strokeWidth} strokeDasharray={s.dash || '0'} strokeLinecap="round" strokeLinejoin="round" opacity={s.dash ? 0.92 : 1} />
+          {s.dot && s.data.map((v, j) => <circle className="ln-fade" key={j} cx={px(j)} cy={py(v)} r="1.7" fill={color(s)} />)}
+          <circle className="ln-fade" cx={px(n - 1)} cy={py(s.data[n - 1])} r="3" fill={color(s)} />
         </g>
       ))}
       {Object.entries(xTicks).map(([i, t]) => (
@@ -187,8 +222,14 @@ function SnapshotChart({ width = 560, height = 320 }) {
   const px = (i) => pad.l + (i * (width - pad.l - pad.r)) / (n - 1);
   const py = (v) => height - pad.b - ((v - min) / (max - min)) * (height - pad.t - pad.b);
   const toLine = (d) => d.map((v, i) => `${i ? 'L' : 'M'} ${px(i).toFixed(1)} ${py(v).toFixed(1)}`).join(' ');
+  const svgRef = React.useRef(null);
+  const inView = useInView(svgRef, { threshold: 0.2 });
+  React.useLayoutEffect(() => {
+    const svg = svgRef.current;if (!svg) return;
+    if (!bmAnim() || inView) bmPlaySvg(svg, { solidDur: 1.25, stagger: 0, fadeAfter: 700 });else bmHideSvg(svg);
+  }, [inView]);
   return (
-    <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ display: 'block', overflow: 'visible' }}>
+    <svg ref={svgRef} width="100%" viewBox={`0 0 ${width} ${height}`} style={{ display: 'block', overflow: 'visible' }}>
       {[5, 10, 15, 20].map((g) => (
         <g key={g}>
           <line x1={pad.l} x2={width - pad.r} y1={py(g)} y2={py(g)} stroke="var(--border-subtle)" strokeWidth="1" />
@@ -196,14 +237,14 @@ function SnapshotChart({ width = 560, height = 320 }) {
         </g>
       ))}
       {/* the single shared reading */}
-      <line x1={px(hit)} x2={px(hit)} y1={pad.t} y2={height - pad.b} stroke="var(--border-default)" strokeWidth="1" strokeDasharray="3 3" />
-      <path d={toLine(stable)} fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeDasharray="5 4" strokeLinecap="round" />
-      <path d={toLine(rising)} fill="none" stroke="var(--signal-critical)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={px(hit)} cy={py(15)} r="7" fill="none" stroke="var(--text-primary)" strokeWidth="2" />
-      <circle cx={px(hit)} cy={py(15)} r="2.6" fill="var(--text-primary)" />
-      <text x={px(hit)} y={py(15) - 14} fontSize="10.5" fontFamily="var(--font-mono)" fill="var(--text-primary)" textAnchor="middle" fontWeight="600">IL-6 · 15 pg/mL</text>
-      <text x={px(n - 1)} y={py(rising[n - 1]) - 8} fontSize="10" fill="var(--signal-critical)" textAnchor="end" fontWeight="600">Rising flare</text>
-      <text x={px(0)} y={py(stable[0]) - 10} fontSize="10" fill="var(--text-tertiary)" textAnchor="start">Stable for weeks</text>
+      <line className="ln-fade" x1={px(hit)} x2={px(hit)} y1={pad.t} y2={height - pad.b} stroke="var(--border-default)" strokeWidth="1" strokeDasharray="3 3" />
+      <path className="ln-fade" data-op="1" d={toLine(stable)} fill="none" stroke="var(--text-tertiary)" strokeWidth="2" strokeDasharray="5 4" strokeLinecap="round" />
+      <path className="ln-solid" d={toLine(rising)} fill="none" stroke="var(--signal-critical)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+      <circle className="ln-fade" cx={px(hit)} cy={py(15)} r="7" fill="none" stroke="var(--text-primary)" strokeWidth="2" />
+      <circle className="ln-fade" cx={px(hit)} cy={py(15)} r="2.6" fill="var(--text-primary)" />
+      <text className="ln-fade" x={px(hit)} y={py(15) - 14} fontSize="10.5" fontFamily="var(--font-mono)" fill="var(--text-primary)" textAnchor="middle" fontWeight="600">IL-6 · 15 pg/mL</text>
+      <text className="ln-fade" x={px(n - 1)} y={py(rising[n - 1]) - 8} fontSize="10" fill="var(--signal-critical)" textAnchor="end" fontWeight="600">Rising flare</text>
+      <text className="ln-fade" x={px(0)} y={py(stable[0]) - 10} fontSize="10" fill="var(--text-tertiary)" textAnchor="start">Stable for weeks</text>
     </svg>
   );
 }
@@ -219,7 +260,7 @@ function SignatureCard({ sig, prefix, fill = false }) {
     <Card padding="lg" style={{ background: 'var(--surface-page)', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div className="eyebrow" style={{ fontSize: 11, marginBottom: 10 }}>{sig.eyebrow}</div>
       <div style={{ fontSize: 20, fontWeight: 300, letterSpacing: '-0.02em', marginBottom: 14 }}>{sig.title}</div>
-      <LineChart width={420} height={210} series={sig.series} xTicks={sig.xTicks} yMax={sig.yMax} yTicks={sig.yTicks} prefix={prefix} fill={fill} />
+      <LineChart width={420} height={210} series={sig.series} xTicks={sig.xTicks} yMax={sig.yMax} yTicks={sig.yTicks} prefix={prefix} fill={fill} animate />
       <MarkerLegend keys={sig.series.map((s) => s.key)} uln={false} style={{ margin: '14px 0 16px' }} />
       <p style={{ margin: '0', fontSize: 14, lineHeight: 1.6, color: 'var(--text-secondary)' }}>{sig.note}</p>
     </Card>
@@ -233,7 +274,7 @@ function CircadianBlock() {
     <div className="r-wide" style={{ gap: 'clamp(32px,5vw,64px)', alignItems: 'center' }}>
       <Card padding="lg" style={{ background: 'var(--surface-page)' }}>
         <div className="eyebrow" style={{ fontSize: 11, marginBottom: 12 }}>24-hour cycle · wake-normalized</div>
-        <LineChart width={560} height={260} series={CIRCADIAN.series} xTicks={CIRCADIAN.xTicks} xLabel={CIRCADIAN.xLabel} yMax={CIRCADIAN.yMax} yMin={CIRCADIAN.yMin} yTicks={CIRCADIAN.yTicks} prefix="circ" />
+        <LineChart width={560} height={260} series={CIRCADIAN.series} xTicks={CIRCADIAN.xTicks} xLabel={CIRCADIAN.xLabel} yMax={CIRCADIAN.yMax} yMin={CIRCADIAN.yMin} yTicks={CIRCADIAN.yTicks} prefix="circ" animate />
         <MarkerLegend keys={CIRCADIAN.series.map((s) => s.key)} uln={false} style={{ marginTop: 14 }} />
         <p style={{ margin: '12px 0 0', fontSize: 12, fontStyle: 'italic', color: 'var(--text-tertiary)', lineHeight: 1.5 }}>Peak-to-nadir amplitude varies between individuals (solid vs. dashed), so population-level correction fails.</p>
       </Card>
@@ -242,7 +283,7 @@ function CircadianBlock() {
         <p className="prose">Biomarkr runs a dedicated <strong>circadian characterization phase</strong>: test every four hours for 14 days, normalized to wake time. Every later reading is phase-corrected against that personal map.</p>
         <div className="r-2" style={{ gap: '28px 28px', marginTop: 28 }}>
           <div>
-            <div className="tabular" style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>40%</div>
+            <div className="tabular" style={{ fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}><CountUp value="40%" /></div>
             <div className="prose" style={{ marginTop: 8, fontSize: 14 }}>of apparent “deviations” are circadian noise without correction</div>
           </div>
           <div>
@@ -261,12 +302,12 @@ function UseCaseGrid() {
   return (
     <div className="r-cards" style={{ gap: 24 }}>
       {USE_CASES.map((u, i) => (
-        <Reveal key={u.title} delay={(i % 3) * 90}>
+        <Reveal key={u.title} delay={(i % 3 + Math.floor(i / 3)) * 80} className="bm-lift">
           <Card padding="lg" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16 }}>
               <span className="pill-tag">{u.tag}</span>
               <div style={{ textAlign: 'right' }}>
-                <div className="tabular" style={{ fontSize: 24, fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1 }}>{u.stat}</div>
+                <div className="tabular" style={{ fontSize: 24, fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1 }}><CountUp value={u.stat} /></div>
               </div>
             </div>
             <div style={{ fontSize: 11, color: 'var(--text-tertiary)', textAlign: 'right', marginTop: 4, letterSpacing: '0.02em' }}>{u.statLabel}</div>
@@ -300,7 +341,7 @@ function SpecRow() {
     <div className="r-4" style={{ gap: '36px 28px' }}>
       {SPECS.map((s, i) => (
         <Reveal key={s[1]} delay={i * 70}>
-          <div className="tabular" style={{ fontSize: 'clamp(38px,4.7vw,60px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}>{s[0]}</div>
+          <div className="tabular" style={{ fontSize: 'clamp(38px,4.7vw,60px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1 }}><CountUp value={s[0]} /></div>
           <div style={{ marginTop: 12, fontSize: 15, fontWeight: 500, color: 'var(--text-primary)' }}>{s[1]}</div>
           <div className="prose" style={{ marginTop: 4, fontSize: 13 }}>{s[2]}</div>
         </Reveal>

@@ -19,7 +19,7 @@ function SectionOpen({ num, eyebrow, title, sub, align = 'left', maxTitle = 820,
     <header className="iv2-open" style={{ display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, ...style }}>
       <span className="rule" style={{ marginBottom: 20 }} />
       <span className="eyebrow" style={{ marginBottom: 15 }}><span className="n">{num} ·</span> {eyebrow}</span>
-      <h2 style={{ margin: 0, fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.028em', lineHeight: 1.08, maxWidth: maxTitle }}>{title}</h2>
+      {title && <window.BM_SplitText as="h2" text={typeof title === 'string' ? title : ''} style={{ margin: 0, fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.028em', lineHeight: 1.08, maxWidth: maxTitle }} />}
       {sub && <p className="prose" style={{ maxWidth: 660, marginTop: 22, marginBottom: 0, fontSize: 17, textAlign: align }}>{sub}</p>}
     </header>
   );
@@ -48,9 +48,8 @@ function Hero() {
       <div className="wrap r-hero" style={{ gap: 'clamp(40px,6vw,88px)', alignItems: 'center', gridTemplateColumns: 'minmax(0,1.1fr) minmax(0,0.9fr)' }}>
         <Reveal>
           <div className="eyebrow" style={{ marginBottom: 22 }}>Why inflammation</div>
-          <h1 style={{ margin: 0, fontSize: 'clamp(42px,5.6vw,80px)', fontWeight: 300, letterSpacing: '-0.035em', lineHeight: 1.0 }}>
-            Inflammation is the <span style={{ color: 'var(--signal-caution)' }}>throughline</span> of chronic disease.
-          </h1>
+          <window.BM_SplitText as="h1" stagger={40} style={{ margin: 0, fontSize: 'clamp(42px,5.6vw,80px)', fontWeight: 300, letterSpacing: '-0.035em', lineHeight: 1.0 }}
+          segments={[{ text: 'Inflammation is the' }, { text: 'throughline', em: true }, { text: 'of chronic disease.' }]} />
           <p className="lead" style={{ maxWidth: 520, marginTop: 28, color: 'var(--text-secondary)' }}>The same biological process that protects us from infection and injury becomes the quiet driver of the conditions that cause most death and disability — once it stops switching off. We can treat it. We barely measure it.</p>
           <div style={{ display: 'flex', gap: 12, marginTop: 34, flexWrap: 'wrap' }}>
             <a className="btn btn-primary" href="/cytokines">See the model <ArrowRight /></a>
@@ -354,7 +353,7 @@ function InflammationV2Page() {
   const CTABand = window.BM_CTABand;
   const ScrollSpy = window.BM_ScrollSpy;
   return (
-    <div className="iv2">
+    <div className="iv2 bm-page">
       <SiteHeader active="inflammation" />
       <ScrollSpy sections={IV2_SECTIONS} />
       <Hero />

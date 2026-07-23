@@ -13,8 +13,27 @@ const TRAJ_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "heroFace": "sans",
   "rhythm": "regular",
   "chartFill": false,
-  "showDevice": true
+  "showDevice": true,
+  "motion": "full"
 } /*EDITMODE-END*/;
+
+/* CountUp is a global from chrome.jsx (shared script scope). */
+
+/* Device render that tilts subtly toward the pointer (transform only). */
+function DeviceParallax({ src, alt }) {
+  const ref = React.useRef(null);
+  const onMove = (e) => {
+    const lvl = window.BM_motion ? window.BM_motion() : 'full';
+    if (lvl === 'off' || !ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    const cx = (e.clientX - r.left) / r.width - 0.5;
+    const cy = (e.clientY - r.top) / r.height - 0.5;
+    const mag = lvl === 'subtle' ? 3 : 6.5;
+    ref.current.style.transform = `perspective(1000px) rotateY(${(cx * mag).toFixed(2)}deg) rotateX(${(-cy * mag).toFixed(2)}deg) translateZ(0)`;
+  };
+  const reset = () => {if (ref.current) ref.current.style.transform = '';};
+  return <img ref={ref} src={src} alt={alt} onMouseMove={onMove} onMouseLeave={reset} style={{ width: '100%', maxWidth: 380, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))', transition: 'transform .35s var(--ease-out)', willChange: 'transform' }} />;
+}
 
 const RHYTHM_PAD = { compact: '4.5rem', regular: '7rem', spacious: '9.5rem' };
 
@@ -34,7 +53,9 @@ function SectionOpen({ num, eyebrow, title, sub, align = 'left', style = {} }) {
     <header style={{ display: 'flex', flexDirection: 'column', alignItems: align === 'center' ? 'center' : 'flex-start', textAlign: align, ...style }}>
       <span className="rule" style={{ marginBottom: 20 }} />
       <span className="eyebrow" style={{ marginBottom: 14 }}><span style={{ color: 'var(--text-tertiary)' }}>{num} ·</span> {eyebrow}</span>
-      <h2 style={{ margin: 0, fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.1, maxWidth: 760 }}>{title}</h2>
+      {typeof title === 'string' ?
+      <window.BM_SplitText as="h2" text={title} style={{ margin: 0, fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.1, maxWidth: 760 }} /> :
+      <h2 style={{ margin: 0, fontSize: 'clamp(32px,4.2vw,50px)', fontWeight: 300, letterSpacing: '-0.025em', lineHeight: 1.1, maxWidth: 760 }}>{title}</h2>}
       {sub && <p className="prose" style={{ maxWidth: 640, marginTop: 20, marginBottom: 0, textAlign: align }}>{sub}</p>}
     </header>);
 
@@ -46,17 +67,17 @@ function HeroTrajectory({ heroFace }) {
       <div className="wrap r-hero" style={{ gap: 'clamp(40px,6vw,88px)', alignItems: 'center', gridTemplateColumns: 'minmax(0,1.18fr) minmax(0,0.92fr)' }}>
         <Reveal>
           <div className="eyebrow" style={{ marginBottom: 24 }}>INFLAMMATION MONITORING</div>
-          <h1 style={{ margin: 0, fontFamily: heroFace === 'serif' ? 'var(--font-serif)' : 'var(--font-sans)', fontSize: 'clamp(38px,4.7vw,60px)', fontWeight: 300, letterSpacing: heroFace === 'serif' ? '-0.02em' : '-0.035em', lineHeight: 1.06, textWrap: 'balance', maxWidth: 600 }}>
-            Medicine reads one snapshot at a time. <em style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 300 }}>We see the entire&nbsp;story.</em>
-          </h1>
+          <window.BM_SplitText as="h1" stagger={44} style={{ margin: 0, fontFamily: heroFace === 'serif' ? 'var(--font-serif)' : 'var(--font-sans)', fontSize: 'clamp(38px,4.7vw,60px)', fontWeight: 300, letterSpacing: heroFace === 'serif' ? '-0.02em' : '-0.035em', lineHeight: 1.06, maxWidth: 600 }}
+          segments={[{ text: 'Medicine reads one snapshot at a time.' }, { text: 'We see the entire story.', em: true }]} />
           <p className="lead" style={{ maxWidth: 500, marginTop: 28, color: 'var(--text-secondary)' }}>A single measurement means nothing on its own, not unless you know whether it rose in six hours or has held steady for two weeks. Biomarkr measures five cytokines from a fingerstick, again and again, against your own baseline.
 
           </p>
           <div style={{ display: 'flex', gap: 12, marginTop: 34, flexWrap: 'wrap' }}>
-            <a className="btn btn-primary" href="/cytokines">See the model <ArrowRight /></a>
-            <a className="btn btn-ghost" href="/technology">How Biomarkr works</a>
+            <window.BM_Magnetic><a className="btn btn-primary" href="/cytokines">See the model <ArrowRight /></a></window.BM_Magnetic>
+            <window.BM_Magnetic><a className="btn btn-ghost" href="/technology">How Biomarkr works</a></window.BM_Magnetic>
           </div>
         </Reveal>
+        <window.BM_Parallax speed={-0.05}>
         <Reveal delay={140}>
           <Card padding="lg" elevation="float" style={{ background: 'var(--surface-page)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8, gap: 16 }}>
@@ -67,6 +88,7 @@ function HeroTrajectory({ heroFace }) {
             <ARPA_SnapshotChart width={560} height={320} />
           </Card>
         </Reveal>
+        </window.BM_Parallax>
       </div>
     </section>);
 
@@ -149,8 +171,9 @@ function HomeTrajectory() {
   const [t, setTweak] = useTweaks(TRAJ_TWEAK_DEFAULTS);
   const secPad = RHYTHM_PAD[t.rhythm] || RHYTHM_PAD.regular;
   const sec = { padding: 'var(--sec-pad) 0' };
+  if (window.BM_setMotion) window.BM_setMotion(t.motion);
   return (
-    <div style={{ '--sec-pad': secPad }}>
+    <div className={'bm-page' + (t.motion === 'off' ? ' bm-motion-off' : '')} style={{ '--sec-pad': secPad }}>
       <SiteHeader active="home" />
       <ScrollSpy sections={SPY_SECTIONS} />
       <HeroTrajectory heroFace={t.heroFace} />
@@ -161,7 +184,7 @@ function HomeTrajectory() {
           <Reveal><SectionOpen num="01" eyebrow="The problem" title="Medicine is blind to immune trajectories." /></Reveal>
           <div className="r-split" style={{ gap: 'clamp(40px,6vw,88px)', alignItems: 'start', marginTop: 48 }}>
             <Reveal>
-              <p className="lead" style={{ marginTop: 0 }}>Chronic inflammatory disease touches <strong>100 million Americans</strong> and costs more than <strong>$800 billion</strong> a year, yet it's managed with tools structurally mismatched to the biology.</p>
+              <p className="lead" style={{ marginTop: 0 }}>Chronic inflammatory disease touches <strong><CountUp value="100 million" /> Americans</strong> and costs more than <strong><CountUp value="$800 billion" /></strong> a year, yet it's managed with tools structurally mismatched to the biology.</p>
               <div className="prose" style={{ marginTop: 22 }}>
                 <p>Immune states are dynamic, personal, and trajectory-dependent. Every existing diagnostic returns a single snapshot. So flares go undetected until they're severe, treatments continue past the point of efficacy, and dose changes follow symptom reports instead of biological evidence.</p>
                 <p>This is an engineering problem, not a scientific one. The biology is understood. The measurement infrastructure does not exist.</p>
@@ -185,9 +208,11 @@ function HomeTrajectory() {
           <div className={t.showDevice ? 'r-split' : ''} style={{ gap: 'clamp(40px,6vw,80px)', alignItems: 'center' }}>
             <Reveal><SectionOpen num="02" eyebrow="The platform" title="Biomarkr turns a snapshot into a trajectory." sub="A handheld silicon photonic biosensor, 22 issued patents, no moving parts, that runs a quantitative five-cytokine immunoassay from a 10 µL fingerstick in under ten minutes. The cytokine equivalent of continuous glucose monitoring." /></Reveal>
             {t.showDevice &&
+            <window.BM_Parallax speed={0.07}>
             <Reveal delay={120}>
-              <img src="assets/device-reader.png" alt="The Biomarkr reader" style={{ width: '100%', maxWidth: 380, margin: '0 auto', display: 'block', filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.14))' }} />
+              <DeviceParallax src="assets/device-reader.png" alt="The Biomarkr reader" />
             </Reveal>
+            </window.BM_Parallax>
             }
           </div>
           <Reveal delay={80} style={{ marginTop: 56 }}><ARPA_SpecRow /></Reveal>
@@ -204,7 +229,7 @@ function HomeTrajectory() {
           <Reveal><SectionOpen num="03" eyebrow="The signal" title="Disease lives in the pattern, not the number." sub="The five cytokines span four immune axes, innate initiation, systemic amplification, adaptive effector function, and counter-regulation. Each condition writes a characteristic signature in how those markers move together over time." /></Reveal>
           <div className="r-3" style={{ gap: 24, marginTop: 52 }}>
             {['sepsis', 'ra', 'longcovid'].map((k, i) =>
-            <Reveal key={k} delay={i * 110}><ARPA_SignatureCard sig={ARPA_SIGNATURES[k]} prefix={'sigA-' + k} fill={t.chartFill} /></Reveal>
+            <Reveal key={k} delay={i * 110} className="bm-lift"><ARPA_SignatureCard sig={ARPA_SIGNATURES[k]} prefix={'sigA-' + k} fill={t.chartFill} /></Reveal>
             )}
           </div>
           <Reveal delay={120}>
@@ -247,6 +272,8 @@ function HomeTrajectory() {
         <TweakToggle label="Show device photo" value={t.showDevice} onChange={(v) => setTweak('showDevice', v)} />
         <TweakSection label="Charts" />
         <TweakToggle label="Signature area fill" value={t.chartFill} onChange={(v) => setTweak('chartFill', v)} />
+        <TweakSection label="Motion" />
+        <TweakRadio label="Interactivity" value={t.motion} options={['off', 'subtle', 'full']} onChange={(v) => {setTweak('motion', v);if (window.BM_setMotion) window.BM_setMotion(v);}} />
       </TweaksPanel>
     </div>);
 
